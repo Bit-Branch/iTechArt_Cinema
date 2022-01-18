@@ -30,7 +30,7 @@ namespace Cinema.Controllers
 
             var token = _tokenService.CreateToken(user);
 
-            return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
+            return Ok(new AuthResponseDto { Token = token });
         }
 
         [HttpPost("Register")]
@@ -45,7 +45,7 @@ namespace Cinema.Controllers
 
             await _userService.CreateUserAsync(userForRegistration);
 
-            return StatusCode(201);
+            return StatusCode(201, "You successfully registered, please log in with your credentials");
         }
 
 

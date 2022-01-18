@@ -15,13 +15,12 @@ export class AuthService {
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   register(email: string, password: string): Observable<Object> {
-    return this.http.post(environment.hostUrl + '/api/users/register', {email, password})
-            .pipe(shareReplay());
+    return this.http.post(environment.hostUrl + '/api/users/register', {email, password});
   }
 
   login(email:string, password:string ): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(environment.hostUrl + '/api/users/authenticate', {email, password})
-            .pipe(tap((res => this.setSession(res)), shareReplay()));
+            .pipe(tap(res => this.setSession(res)));
   }
 
   private setSession(authResponse : AuthResponse): void {
