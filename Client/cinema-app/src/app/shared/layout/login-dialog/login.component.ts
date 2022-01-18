@@ -3,16 +3,20 @@ import { Component} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { $animations } from './login-animations';
-import {$pages} from './login-pages';
+import { animations } from './login-animations';
+import { pages} from './login-pages';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  animations: $animations
+  animations: animations
 })
 export class LoginComponent{
+
+  page: string;
+  error: string;
+  hidePassword: boolean;
 
   form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -20,49 +24,31 @@ export class LoginComponent{
     confirmPassword: ['', [Validators.required, Validators.minLength(8)]]
     });
 
-  pages = $pages;
-
-  page: string;
-
-  error: string;
-  progress: boolean;
-  hidePassword: boolean;
-
   constructor(private ref: MatDialogRef<LoginComponent>, 
               private authService: AuthService,
               private formBuilder: FormBuilder) { 
 
     this.error = '';
-    this.progress = false;
     this.hidePassword = true;
-
     this.page = 'login';
-
     this.switchPage(this.page);
   }
 
-  get currentPage(): any { 
-    return this.pages[this.page]; 
+  get currentPageContent(): any { 
+    return pages[this.page]; 
   }
 
   public switchPage(page: string): void {
     switch(this.page = page) {
 
       case 'register':
-      this.form.controls["confirmPassword"].enable();
+        this.form.controls["confirmPassword"].enable();
       break;
 
       case 'login':
         this.form.controls["confirmPassword"].disable();
       break;
     }
-  }
-
-  private showError(error: string): void {
-
-    this.error = error;
-    this.progress = false;
-    setTimeout(() => this.error = '', 5000);
   }
 
   public activate(action: string): void {
@@ -84,8 +70,7 @@ export class LoginComponent{
           .subscribe(
             () => {
               this.ref.close();
-            },
-            err => this.showError(err.code)
+            }
           );
   }
 
@@ -94,8 +79,7 @@ export class LoginComponent{
           .subscribe(
             () => {
               this.ref.close();
-            },
-            err => this.showError(err.code)
+            }
           );
   }
 

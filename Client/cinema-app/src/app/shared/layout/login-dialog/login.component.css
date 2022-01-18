@@ -23,16 +23,10 @@
     color: rgb(27, 27, 27);
 }
 
-
-/* Change label color on focused */
-
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
     color: #78ffd6;
 }
 
-
-/* underline border color on focused */
-
- ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
     background-color: #78ffd6;
 }

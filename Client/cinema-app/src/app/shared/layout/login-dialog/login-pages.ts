@@ -2,7 +2,7 @@ type tPages = {
   [key: string]: any
 }
 
-export const $pages: tPages = {
+export const pages: tPages = {
 
     "register": {
       title: 'Register',

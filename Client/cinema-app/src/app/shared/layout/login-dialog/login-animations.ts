@@ -1,13 +1,13 @@
 import { trigger, animate, style, transition } from '@angular/animations';
 
-const $timing = '400ms cubic-bezier(0.5,0.5,0.5,1.0)';
+const timing = '400ms cubic-bezier(0.5,0.5,0.5,1.0)';
 
-export const $animations = [
+export const animations = [
 
   trigger('vanish', [
     transition('* => *', [
       style({ opacity: '0'}),
-      animate($timing, style('*'))  
+      animate(timing, style('*'))  
     ])
   ]),
 
@@ -18,10 +18,10 @@ export const $animations = [
         height: '0',
         transform: 'rotateX(90deg)'
       }),
-      animate($timing, style('*'))
+      animate(timing, style('*'))
     ]),
     transition(':leave', [
-      animate($timing, style({ 
+      animate(timing, style({ 
         opacity: '0', 
         height: '0',
         transform: 'rotateX(90deg)'

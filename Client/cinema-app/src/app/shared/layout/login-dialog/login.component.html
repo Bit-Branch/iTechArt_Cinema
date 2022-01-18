@@ -1,14 +1,11 @@
 <div [@vanish]="page">
-    <h1 class="mat-title">{{ currentPage.title }}</h1>
-    <p class="mat-small">{{ currentPage.message }}</p>
+    <h1 class="mat-title">{{ currentPageContent.title }}</h1>
+    <p class="mat-small">{{ currentPageContent.message }}</p>
 </div>
 
-<form [formGroup]="form" fxLayout="column" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" (ngSubmit)="activate(page)">
+<form [formGroup]="form" (ngSubmit)="activate(page)">
 
-    <!-- ERROR MESSAGE -->
-    <mat-error *ngIf="error" @inflate>{{ error }}</mat-error>
 
-    <!-- EMAIL -->
     <mat-form-field appearance="legacy" @inflate>
         <mat-label>Email</mat-label>
         <input matInput formControlName="email">
@@ -21,7 +18,8 @@
         </mat-error>
     </mat-form-field>
 
-    <!-- PASSWORD -->
+
+
     <mat-form-field appearance="legacy" @inflate>
         <mat-label>Password</mat-label>
         <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
@@ -35,32 +33,29 @@
         <mat-error *ngIf="form.controls['password'].errors?.['minlength']">
             Password must be at least 8 characters long.
         </mat-error>
-
     </mat-form-field>
 
-    <!-- CONFIRM PASSWORD -->
+
+
     <mat-form-field appearance="legacy" *ngIf="page === 'register'" @inflate>
         <mat-label>Confirm password</mat-label>
         <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="confirmPassword">
         <mat-icon matSuffix (click)="hidePassword = !hidePassword">
             {{ hidePassword ? 'visibility_off' : 'visibility'}}
         </mat-icon>
-
         <mat-error *ngIf="form.controls['confirmPassword'].errors?.['required']">
             Confirmation password is required.
         </mat-error>
-
     </mat-form-field>
 
-    <!-- ACTION BUTTON -->
-    <button mat-stroked-button color="primary" type="submit" [disabled]="!form.valid || ((form.controls['password'].value !== form.controls['confirmPassword'].value) && page === 'register')" class="btn">
-      {{ currentPage.caption }}
+
+
+    <button mat-stroked-button color="primary" type="submit" class="btn" [disabled]="!form.valid || ((form.controls['password'].value !== form.controls['confirmPassword'].value) && page === 'register')">
+      {{ currentPageContent.caption }}
     </button>
     <mat-error *ngIf="((form.controls['password'].value !== form.controls['confirmPassword'].value) && page === 'register')">
         Passwords are not equal.
     </mat-error>
-
-    <mat-progress-bar *ngIf="progress" mode="indeterminate" @inflate></mat-progress-bar>
 
 </form>
 
