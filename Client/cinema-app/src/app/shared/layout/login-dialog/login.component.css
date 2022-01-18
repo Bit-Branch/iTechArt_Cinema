@@ -1,0 +1,38 @@
+:host {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: stretch;
+    width: 300px;
+    max-width: 100%;
+    text-align: center;
+}
+
+:host .btn {
+    margin-top: 10px;
+    min-height: 48px;
+}
+
+:host .providers {
+    font-size: 1.5em;
+}
+
+.mat-stroked-button:enabled {
+    background: linear-gradient(to right, #78ffd6, #a8ff78);
+    color: rgb(27, 27, 27);
+}
+
+
+/* Change label color on focused */
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #78ffd6;
+}
+
+
+/* underline border color on focused */
+
+ ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+    background-color: #78ffd6;
+}

@@ -1,0 +1,51 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "0b29338c-43a8-483e-8a5e-df860a69e045": {
+      "ProjectGuid": "0b29338c-43a8-483e-8a5e-df860a69e045",
+      "DisplayName": "Cinema.WebApi",
+      "ColorIndex": 0
+    },
+    "f752c834-062c-4706-828f-b3d1f270ce60": {
+      "ProjectGuid": "f752c834-062c-4706-828f-b3d1f270ce60",
+      "DisplayName": "Cinema.Infrastructure.Identity",
+      "ColorIndex": 1
+    },
+    "d34d7e48-02bd-4f1b-9683-6361c25f3c05": {
+      "ProjectGuid": "d34d7e48-02bd-4f1b-9683-6361c25f3c05",
+      "DisplayName": "Cinema.Infrastructure.Persistence",
+      "ColorIndex": 2
+    },
+    "62a929a3-627e-4beb-a28b-ba27ee44aa3e": {
+      "ProjectGuid": "62a929a3-627e-4beb-a28b-ba27ee44aa3e",
+      "DisplayName": "Cinema.Infrastructure.Shared",
+      "ColorIndex": 3
+    },
+    "df0f9e06-940d-4d40-994e-1e698be59254": {
+      "ProjectGuid": "df0f9e06-940d-4d40-994e-1e698be59254",
+      "DisplayName": "Cinema.Application",
+      "ColorIndex": 4
+    },
+    "e29954fe-aa3b-4bb1-a059-922614cebfcf": {
+      "ProjectGuid": "e29954fe-aa3b-4bb1-a059-922614cebfcf",
+      "DisplayName": "Cinema.Domain",
+      "ColorIndex": 5
+    },
+    "262215af-3889-41fa-bc98-d7c3a1364d44": {
+      "ProjectGuid": "262215af-3889-41fa-bc98-d7c3a1364d44",
+      "DisplayName": "Cinema.Infrastructure",
+      "ColorIndex": 6
+    },
+    "f2641e19-0325-448d-8ac4-42f90e80868b": {
+      "ProjectGuid": "f2641e19-0325-448d-8ac4-42f90e80868b",
+      "DisplayName": "Cinema.Service",
+      "ColorIndex": 7
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 8
+}
