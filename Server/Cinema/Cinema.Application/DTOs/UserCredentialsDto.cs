@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Cinema.Service.DTO
+namespace Cinema.Application.DTO
 {
-    public class UserCredsDto
+    public class UserCredentialsDto
     {
         [Required]
         [EmailAddress]

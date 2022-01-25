@@ -1,4 +1,4 @@
-﻿namespace Cinema.Service.DTO
+﻿namespace Cinema.Application.DTO
 {
     public class UserDto
     {

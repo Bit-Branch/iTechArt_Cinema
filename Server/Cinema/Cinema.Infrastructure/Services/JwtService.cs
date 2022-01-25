@@ -1,14 +1,13 @@
-﻿using Cinema.Domain.Entities;
-using Cinema.Domain.Settings;
-using Cinema.Service.DTO;
-using Cinema.Service.Interfaces;
+﻿using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using Cinema.Domain.Settings;
+using Cinema.Application.DTO;
+using Cinema.Application.Interfaces;
 
-namespace Cinema.Service
+namespace Cinema.Infrastructure.Services
 {
     public class JwtService : IJwtService
     {
@@ -20,14 +19,14 @@ namespace Cinema.Service
         }
 
         public string CreateToken(UserDto user)
-        {
+        { 
             var claims = new List<Claim>
-           {
-               new Claim(ClaimTypes.Name,user.Email),
-               new Claim(ClaimTypes.Role, user.Role),
-               new Claim(ClaimTypes.Sid, user.Id.ToString())
-           };
-
+            {
+                new(ClaimTypes.Name,user.Email),
+                new(ClaimTypes.Role, user.Role),
+                new(ClaimTypes.Sid, user.Id.ToString())
+            };
+            
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecurityKey)), SecurityAlgorithms.HmacSha256);
 
@@ -36,7 +35,7 @@ namespace Cinema.Service
                 Issuer = _options.Issuer,
                 Audience = _options.Audience,
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(_options.ExpiryInMinutes),
+                Expires = DateTime.UtcNow.Add(_options.ExpireIn),
                 SigningCredentials = credentials,
             };
 

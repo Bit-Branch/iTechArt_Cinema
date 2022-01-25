@@ -1,7 +1,6 @@
-﻿
-using Cinema.Service.DTO;
-using Cinema.Service.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Cinema.Application.DTO;
+using Cinema.Application.Interfaces;
 
 namespace Cinema.Controllers
 {
@@ -19,35 +18,32 @@ namespace Cinema.Controllers
         }
 
         [HttpPost("Authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] UserCredsDto userForAuthentication)
+        public async Task<IActionResult> Authenticate([FromBody] UserCredentialsDto userForAuthentication)
         {
             var user = await _userService.AuthenticateAsync(userForAuthentication);
 
             if (user == null)
             {
-                return Unauthorized(new AuthResponseDto { ErrorMessage = "User name or password invalid" });
+                return Unauthorized("Email or password invalid.");
             }
 
             var token = _tokenService.CreateToken(user);
 
-            return Ok(new AuthResponseDto { Token = token });
+            return Ok(new AuthenticationResponseDto { Token = token });
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserCredsDto userForRegistration)
+        public async Task<IActionResult> Register([FromBody] UserCredentialsDto userForRegistration)
         {
-            var user = await _userService.FindUserByEmailAsync(userForRegistration);
+            var user = await _userService.FindUserByEmailAsync(userForRegistration.Email);
 
-            if (user != null)
+            if (user == null)
             {
-                return BadRequest("User with this email is already exists");
+                await _userService.CreateUserAsync(userForRegistration);
+                
             }
 
-            await _userService.CreateUserAsync(userForRegistration);
-
-            return StatusCode(201, "You successfully registered, please log in with your credentials");
+            return Ok("Registration successful. Check your email for details."); // TODO: Implement email authentication
         }
-
-
     }
 }

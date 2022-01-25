@@ -1,5 +1,5 @@
-﻿using Cinema.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Cinema.Domain.Entities;
 
 namespace Cinema.Infrastructure.Contexts
 {
