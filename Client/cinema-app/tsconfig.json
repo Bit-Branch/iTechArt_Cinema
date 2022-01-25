@@ -5,6 +5,8 @@
     "baseUrl": "./",
     "paths": {
       "@core/*": ["src/app/core/*"],
+      "@login/*": ["src/app/login/*"],
+      "@admin/*": ["src/app/admin/*"],
       "@pages/*": ["src/app/pages/*"],
       "@shared/*": ["src/app/shared/*"],
       "@environment/*": ["src/environments/*"]

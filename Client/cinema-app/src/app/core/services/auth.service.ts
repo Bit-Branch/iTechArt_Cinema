@@ -1,38 +1,43 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthResponse } from '@core/models/auth-response';
-import { shareReplay, tap } from 'rxjs/operators';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpClient } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 import { environment } from '@environment/environment';
+import { AuthResponse } from '@core/models/auth-response';
+
+const tokenId = 'id_token';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
-
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
-
-  register(email: string, password: string): Observable<Object> {
-    return this.http.post(environment.hostUrl + '/api/users/register', {email, password});
+  constructor(
+    private readonly http: HttpClient,
+    private readonly jwtHelper: JwtHelperService
+  ) {
   }
 
-  login(email:string, password:string ): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(environment.hostUrl + '/api/users/authenticate', {email, password})
-            .pipe(tap(res => this.setSession(res)));
+  register(email: string, password: string): Observable<string> {
+    return this.http.post(`${environment.hostUrl}/api/users/register`, { email, password }, { responseType: 'text' });
   }
 
-  private setSession(authResponse : AuthResponse): void {
-    localStorage.setItem('id_token', authResponse.token);
-  } 
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${environment.hostUrl}/api/users/authenticate`, { email, password })
+      .pipe(
+        tap((response: AuthResponse) => this.setSession(response.token))
+      );
+  }
 
   logout(): void {
-    localStorage.removeItem("id_token");
+    localStorage.removeItem(tokenId);
   }
 
   getToken(): string | null {
-    return localStorage.getItem("id_token");
+    return localStorage.getItem(tokenId);
   }
 
   isLoggedIn(): boolean {
@@ -40,7 +45,7 @@ export class AuthService {
     return (!!token && !this.jwtHelper.isTokenExpired(token));
   }
 
-  isLoggedOut(): boolean | null {
-      return !this.isLoggedIn();
+  private setSession(token: string): void {
+    localStorage.setItem(tokenId, token);
   }
 }

@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+
 import { AuthService } from '@core/services/auth.service';
-import { LoginComponent } from '@shared/layout/login-dialog/login.component';
+import { LoginComponent } from '@login/login.component';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
-
-  constructor(private dialog: MatDialog, private authService: AuthService) { }
-
-  ngOnInit(): void {
+export class NavbarComponent {
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly authService: AuthService
+  ) {
   }
 
   openLoginDialog(): void {
@@ -27,8 +28,7 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
   }
 
-  listPurchases(): void { //TODO
-
+  listPurchases(): void {
+    throw new Error('Method not implemented yet.');
   }
-
 }

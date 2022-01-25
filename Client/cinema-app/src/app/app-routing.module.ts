@@ -1,25 +1,29 @@
+//Angular modules
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomePageComponent } from '@pages/home-page/home-page.component';
+
+//Custom modules
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: 'home',
-    component: HomePageComponent
+    component: AppComponent
   },
   {
     path: '**',
-    redirectTo: 'home',
-  },
+    redirectTo: 'home'
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

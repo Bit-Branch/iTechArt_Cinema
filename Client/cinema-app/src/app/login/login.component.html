@@ -1,0 +1,82 @@
+<div [@vanish]="page">
+  <h1 class="mat-title">{{ currentPageContent.title }}</h1>
+  <p class="mat-small">{{ currentPageContent.message }}</p>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="activate(page)">
+
+  <mat-error *ngIf="error" @inflate>{{ error }}</mat-error>
+
+  <mat-form-field appearance="legacy" @inflate>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+    <mat-icon matSuffix></mat-icon>
+    <mat-error *ngIf="form.get(emailControl)?.getError('required')">
+      Please specify an email address.
+    </mat-error>
+    <mat-error *ngIf="form.get(emailControl)?.getError(emailControl)">
+      Ooops! it looks like this is not a valid email.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="legacy" @inflate>
+    <mat-label>Password</mat-label>
+    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="password">
+    <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+      {{ hidePassword ? 'visibility_off' : 'visibility' }}
+    </mat-icon>
+    <mat-error *ngIf="form.get(passwordControl)?.getError('required')">
+      Please specify the password.
+    </mat-error>
+    <mat-error *ngIf="form.get(passwordControl)?.getError('pattern')">
+      Password should contain at least: one number,one uppercase character,one lowercase character.
+    </mat-error>
+    <mat-error *ngIf="form.get(passwordControl)?.getError('minlength')">
+      Password must be at least 8 characters long.
+    </mat-error>
+    <mat-error *ngIf="form.get(passwordControl)?.getError('noWhiteSpace')">
+      Password can't contain whitespaces.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="legacy" *ngIf="page === registerPage" @inflate>
+    <mat-label>Confirm password</mat-label>
+    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="confirmPassword">
+    <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+      {{ hidePassword ? 'visibility_off' : 'visibility' }}
+    </mat-icon>
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('required')">
+      Please specify the confirmation password.
+    </mat-error>
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('minlength')">
+      Password must be at least 8 characters long.
+    </mat-error>
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('pattern')">
+      Password should contain at least: one number,one uppercase character,one lowercase character.
+    </mat-error>
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('noWhiteSpace')">
+      Password can't contain whitespaces.
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    mat-stroked-button
+    class="btn"
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    {{ currentPageContent.caption }}
+  </button>
+  <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('passwordsIsNotMatch')">
+    Passwords are not equal.
+  </mat-error>
+</form>
+
+<a class="mat-small" *ngIf="page === loginPage">
+  Are you a new user? <span class="mat-link" (click)="switchPage(registerPage)">Register</span>
+</a>
+
+<a class="mat-small" *ngIf="page === registerPage">
+  Already have login and password? <span class="mat-link" (click)="switchPage(loginPage)">Login</span>
+</a>
