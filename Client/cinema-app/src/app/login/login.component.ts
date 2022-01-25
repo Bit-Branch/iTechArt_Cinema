@@ -62,8 +62,8 @@ export class LoginComponent {
     });
     this.form.get(confirmPasswordControl)
       ?.setValidators(passwordsMatchValidator(this.form.get(passwordControl)));
-    this.switchPage(this.page);
 
+    this.switchPage(this.page);
     setInterval(() => console.log(this.form.get(passwordControl)?.errors), 2000);
   }
 
@@ -146,12 +146,12 @@ export class LoginComponent {
       );
   }
 
-  private showError(error: string) {
+  private showError(error: string): void {
     this.error = error;
     setTimeout(() => this.error = '', 5000);
   }
 
-  private showRegisteredMessage(message: string) {
+  private showRegisteredMessage(message: string): void {
     this.snackbarService.showSuccessSnackBar(message);
   }
 }

@@ -8,7 +8,7 @@ export class SnackbarService {
   constructor(private readonly snackbar: MatSnackBar) {
   }
 
-  showSuccessSnackBar(message: string) {
+  showSuccessSnackBar(message: string): void {
     this.snackbar.open(message, '', {
       duration: 3000,
       panelClass: ['snackbar', 'success-snackbar'],
@@ -17,7 +17,7 @@ export class SnackbarService {
     });
   }
 
-  showDangerSnackBar(message: string) {
+  showDangerSnackBar(message: string): void {
     this.snackbar.open(message, '', {
       duration: 3000,
       panelClass: ['snackbar', 'danger-snackbar'],
