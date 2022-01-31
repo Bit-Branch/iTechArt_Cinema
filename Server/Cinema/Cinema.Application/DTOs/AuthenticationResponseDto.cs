@@ -1,6 +1,7 @@
-﻿namespace Cinema.Application.DTO;
-
-public class AuthenticationResponseDto
+﻿namespace Cinema.Application.DTO
 {
-    public string Token { get; set; }
+    public class AuthenticationResponseDto
+    {
+        public string Token { get; set; }
+    }
 }

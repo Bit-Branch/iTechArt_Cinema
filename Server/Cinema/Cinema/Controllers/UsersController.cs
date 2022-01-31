@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cinema.Application.DTO;
 using Cinema.Application.Interfaces;
-using Cinema.Domain.Settings;
 using Cinema.Infrastructure.Services;
-using Microsoft.Extensions.Options;
 
 namespace Cinema.Controllers
 {
