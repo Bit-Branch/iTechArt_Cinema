@@ -10,9 +10,9 @@ import { SnackbarService } from '@core/services/snackbar.service';
 import { noWhiteSpaceValidator } from '@shared/validators/noWhiteSpaceValidator';
 import { passwordsMatchValidator } from '@shared/validators/passwords-match-validator';
 import { animations } from './login-animations';
-import { loginPageMessages, AuthenticationPages } from './login-page-messages';
+import { loginPageMessages, LoginPages } from './login-page-messages';
 
-const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
+const authenticationPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
 const emailControl = 'email';
 const passwordControl = 'password';
 const confirmPasswordControl = 'confirmPassword';
@@ -28,7 +28,7 @@ const loginPage = 'login';
 export class LoginComponent {
   error = '';
   hidePassword = true;
-  page: AuthenticationPages = loginPage;
+  page: LoginPages = loginPage;
   form: FormGroup;
 
   constructor(
@@ -37,41 +37,40 @@ export class LoginComponent {
     private readonly formBuilder: FormBuilder,
     private readonly snackbarService: SnackbarService
   ) {
-    this.form = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          noWhiteSpaceValidator(),
-          Validators.pattern(pattern)
+    this.form = this.formBuilder.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            noWhiteSpaceValidator(),
+            Validators.pattern(authenticationPasswordPattern)
+          ]
+        ],
+        confirmPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            noWhiteSpaceValidator(),
+            Validators.pattern(authenticationPasswordPattern)
+          ]
         ]
-      ],
-      confirmPassword: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          noWhiteSpaceValidator(),
-          Validators.pattern(pattern)
-        ]
-      ]
-    }, {
-      validators: []
-    });
-    this.form.get(confirmPasswordControl)
-      ?.setValidators(passwordsMatchValidator(this.form.get(passwordControl)));
-
+      },
+      {
+        validators: [passwordsMatchValidator(passwordControl, confirmPasswordControl)]
+      }
+    );
     this.switchPage(this.page);
-    setInterval(() => console.log(this.form.get(passwordControl)?.errors), 2000);
   }
 
   get currentPageContent(): { title: string, message: string, caption: string } {
     return loginPageMessages[this.page];
   }
 
-  switchPage(page: AuthenticationPages): void {
+  switchPage(page: LoginPages): void {
     switch (this.page = page) {
       case registerPage:
         this.form.get(confirmPasswordControl)?.enable();
@@ -83,7 +82,7 @@ export class LoginComponent {
     }
   }
 
-  activate(action: AuthenticationPages): void {
+  activate(action: LoginPages): void {
     switch (action) {
       case loginPage:
         this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
@@ -95,11 +94,11 @@ export class LoginComponent {
     }
   }
 
-  get registerPage(): AuthenticationPages {
+  get registerPage(): LoginPages {
     return registerPage;
   }
 
-  get loginPage(): AuthenticationPages {
+  get loginPage(): LoginPages {
     return loginPage;
   }
 
