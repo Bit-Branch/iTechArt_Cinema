@@ -12,10 +12,12 @@ namespace Cinema.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly JwtService _jwtService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, JwtService jwtService)
         {
             _userService = userService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("Authenticate")]
@@ -28,7 +30,7 @@ namespace Cinema.Controllers
                 return Unauthorized("Email or password invalid.");
             }
 
-            var token = new JwtService(Options.Create(new JwtSettings())).CreateToken(user);
+            var token = _jwtService.CreateToken(user);
 
             return Ok(new AuthenticationResponseDto {Token = token});
         }
