@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 

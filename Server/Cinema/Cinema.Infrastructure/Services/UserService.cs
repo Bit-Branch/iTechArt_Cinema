@@ -16,10 +16,10 @@ namespace Cinema.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserCredentialsDto credentials)
+        public async Task<UserDto> CreateUserAsync(RegistrationRequestDto credentials)
         {
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
-            
+
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(credentials.Password, salt);
 
             User user = new User
@@ -30,20 +30,20 @@ namespace Cinema.Infrastructure.Services
             };
 
             await _context.Users.AddAsync(user);
-            
+
             await _context.SaveChangesAsync();
 
-            return new UserDto { Id = user.Id, Email = user.Email, Role = user.Role };
+            return new UserDto {Id = user.Id, Email = user.Email, Role = user.Role};
         }
 
         public async Task<UserDto> FindUserByEmailAsync(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == email);
-            
-            return user != null ? new UserDto { Id = user.Id, Email = user.Email, Role = user.Role } : null;
+
+            return user != null ? new UserDto {Id = user.Id, Email = user.Email, Role = user.Role} : null;
         }
 
-        public async Task<UserDto> AuthenticateAsync(UserCredentialsDto credentials)
+        public async Task<UserDto> AuthenticateAsync(AuthenticationRequestDto credentials)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == credentials.Email);
 
@@ -52,9 +52,10 @@ namespace Cinema.Infrastructure.Services
                 bool verified = BCrypt.Net.BCrypt.Verify(credentials.Password, user.PasswordHash);
                 if (verified)
                 {
-                    return new UserDto { Id = user.Id, Email = user.Email, Role = user.Role };
+                    return new UserDto {Id = user.Id, Email = user.Email, Role = user.Role};
                 }
             }
+
             return null;
         }
     }

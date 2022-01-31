@@ -4,10 +4,10 @@ namespace Cinema.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> FindUserByEmailAsync(string email);
+        Task<UserDto?> FindUserByEmailAsync(string email);
 
-        Task<UserDto> AuthenticateAsync(UserCredentialsDto credentials);
+        Task<UserDto?> AuthenticateAsync(AuthenticationRequestDto credentials);
 
-        Task<UserDto> CreateUserAsync(UserCredentialsDto credentials);
+        Task<UserDto> CreateUserAsync(RegistrationRequestDto credentials);
     }
 }

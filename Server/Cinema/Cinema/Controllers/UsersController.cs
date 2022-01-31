@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cinema.Application.DTO;
 using Cinema.Application.Interfaces;
+using Cinema.Domain.Settings;
+using Cinema.Infrastructure.Services;
+using Microsoft.Extensions.Options;
 
 namespace Cinema.Controllers
 {
@@ -8,17 +11,15 @@ namespace Cinema.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IJwtService _tokenService;
         private readonly IUserService _userService;
 
-        public UsersController(IJwtService tokenService, IUserService userService)
+        public UsersController(IUserService userService)
         {
-            _tokenService = tokenService;
             _userService = userService;
         }
 
         [HttpPost("Authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] UserCredentialsDto userForAuthentication)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto userForAuthentication)
         {
             var user = await _userService.AuthenticateAsync(userForAuthentication);
 
@@ -27,20 +28,19 @@ namespace Cinema.Controllers
                 return Unauthorized("Email or password invalid.");
             }
 
-            var token = _tokenService.CreateToken(user);
+            var token = new JwtService(Options.Create(new JwtSettings())).CreateToken(user);
 
-            return Ok(new AuthenticationResponseDto { Token = token });
+            return Ok(new AuthenticationResponseDto {Token = token});
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserCredentialsDto userForRegistration)
+        public async Task<IActionResult> Register([FromBody] RegistrationRequestDto userForRegistration)
         {
             var user = await _userService.FindUserByEmailAsync(userForRegistration.Email);
 
             if (user == null)
             {
                 await _userService.CreateUserAsync(userForRegistration);
-                
             }
 
             return Ok("Registration successful. Check your email for details."); // TODO: Implement email authentication
