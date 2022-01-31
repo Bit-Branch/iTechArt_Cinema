@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Token } from '@core/models/token';
 
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -43,6 +44,14 @@ export class AuthService {
   isLoggedIn(): boolean {
     const token = this.getToken();
     return (!!token && !this.jwtHelper.isTokenExpired(token));
+  }
+
+  isAdmin(): boolean {
+    if(this.isLoggedIn()) {
+      const decodedToken: Token = this.jwtHelper.decodeToken(this.getToken() as string);
+      return decodedToken.role === 'Admin'; // need to be in CurrentRole variable
+    }
+    return false;
   }
 
   private setSession(token: string): void {

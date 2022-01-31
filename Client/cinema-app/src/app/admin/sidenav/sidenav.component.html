@@ -1,0 +1,52 @@
+<mat-sidenav-container class="example-container" autosize>
+  <mat-sidenav
+    #sidenav
+    class="example-sidenav mat-drawer"
+    mode="side"
+    opened (mouseenter)="mouseenter()"
+    (mouseleave)="mouseleave()"
+    [@onSideNavChange]="isShowing ? 'open' : 'close'"
+  >
+    <mat-nav-list>
+      <mat-list-item class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Parent Menu</span>
+        <mat-icon mat-list-icon>home</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item [routerLink]="'admin/create-movie'" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add movies</span>
+        <mat-icon mat-list-icon>local_movies</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item [routerLink]="'admin/create-cinema'" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add cinemas</span>
+        <mat-icon mat-list-icon>add_business</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item [routerLink]="'admin/create-movie-session'" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add sessions</span>
+        <mat-icon mat-list-icon>access_time</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item [routerLink]="'admin/create-favor'" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add favors</span>
+        <mat-icon mat-list-icon>fastfood</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add hall</span>
+        <mat-icon mat-list-icon>event_seat</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add cities</span>
+        <mat-icon mat-list-icon>location_city</mat-icon>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content [@onMainContentChange]="isShowing ? 'open': 'close'">
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

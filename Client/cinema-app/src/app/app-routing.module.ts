@@ -2,8 +2,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//Custom modules
+//Components
 import { AppComponent } from './app.component';
+
+//Guards
+import { AdminAuthGuard } from '@core/guards/admin-auth.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +17,13 @@ const routes: Routes = [
   {
     path: 'home',
     component: AppComponent
+  },
+
+  {
+    path: 'home',
+    // matcher: matcherForAuthenticatedRoute,
+    loadChildren: () => import('@admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AdminAuthGuard]
   },
   {
     path: '**',

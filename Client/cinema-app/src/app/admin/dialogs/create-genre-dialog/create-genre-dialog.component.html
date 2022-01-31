@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Enter new genre name</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>New genre</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="createGenre()">Create</button>
+  <button mat-button (click)="cancel()">Cancel</button>
+</div>

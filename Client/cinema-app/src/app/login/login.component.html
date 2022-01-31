@@ -68,7 +68,7 @@
   >
     {{ currentPageContent.caption }}
   </button>
-  <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('passwordsIsNotMatch')">
+  <mat-error *ngIf="form.getError('passwordsIsNotMatch')">
     Passwords are not equal.
   </mat-error>
 </form>

@@ -1,0 +1,119 @@
+<form [formGroup]="movieForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Create movie</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput formControlName="title" placeholder="Title">
+            <mat-error *ngIf="movieForm.get(titleControl)?.getError('required')">
+              Title is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <ngx-mat-file-input
+              accept="image/*"
+              formControlName="cover"
+              placeholder="Upload cover"
+            ></ngx-mat-file-input>
+            <mat-icon matSuffix>attach_file</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select formControlName="genre" placeholder="Select genre">
+              <mat-option *ngFor="let genre of genres" [value]="genre.name">
+                {{ genre.name }}
+              </mat-option>
+              <div>
+                <button mat-button (click)="openCreateGenreDialog()">
+                  +Create new genre
+                </button>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="movieForm.get(genreControl)?.getError('required')">
+              Genre is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="showtimeRange" [rangePicker]="picker">
+              <input
+                matInput
+                matStartDate
+                formControlName="start"
+                placeholder="Start date"
+              >
+              <input
+                matInput
+                matEndDate
+                formControlName="end"
+                placeholder="End date"
+              >
+            </mat-date-range-input>
+
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+
+            <mat-error *ngIf="showtimeRange.get(startControl)?.getError('matStartDateInvalid')">
+              Invalid start date
+            </mat-error>
+            <mat-error *ngIf="showtimeRange.get(endControl)?.getError('matEndDateInvalid')">
+              Invalid end date
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput formControlName="duration" placeholder="Enter movie duration (in minutes)">
+            <mat-error *ngIf="movieForm.get(durationControl)?.getError('required')">
+              Duration is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="movieForm.get(durationControl)?.getError('pattern')">
+              Only nonnegative numbers is allowed
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput formControlName="description" placeholder="Description"></textarea>
+            <mat-error *ngIf="movieForm.get(descriptionControl)?.getError('required')">
+              Description is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <mat-error *ngIf="movieForm.invalid">
+        Fill all fields with data.
+      </mat-error>
+      <button mat-raised-button type="submit" [disabled]="movieForm.invalid">
+        Create
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

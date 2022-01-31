@@ -1,0 +1,128 @@
+<form [formGroup]="sessionForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Create movie session</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <!--      <div class="row">-->
+      <!--        <div class="col">-->
+      <!--          <mat-form-field class="full-width">-->
+      <!--            <input-->
+      <!--              matInput-->
+      <!--              [format]="24"-->
+      <!--              [ngxTimepicker]="timePicker"-->
+      <!--              formControlName="duration"-->
+      <!--              placeholder="Enter movie duration"-->
+      <!--            >-->
+      <!--            <ngx-material-timepicker #timePicker></ngx-material-timepicker>-->
+      <!--            <mat-error *ngIf="movieForm.controls['duration'].hasError('required')">-->
+      <!--              Duration is <strong>required</strong>-->
+      <!--            </mat-error>-->
+      <!--          </mat-form-field>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <mat-form-field class="full-width">-->
+<!--            <mat-label>Choose movie</mat-label>-->
+<!--            <mat-select formControlName="movie">-->
+<!--              <mat-option>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  (click)="$event.stopPropagation()"-->
+<!--                  (keyup)="onKey($event.target!)"-->
+<!--                  placeholder="Type movie title here"-->
+<!--                >-->
+<!--                <mat-divider></mat-divider>-->
+<!--              </mat-option>-->
+<!--              <mat-option *ngFor="let movie of selectedMovies" [value]="movie.id">{{ movie.title }}</mat-option>-->
+<!--            </mat-select>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <mat-form-field class="full-width">-->
+<!--            <mat-label>Choose cinema</mat-label>-->
+<!--            <mat-select>-->
+<!--              <mat-option>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  (click)="$event.stopPropagation()"-->
+<!--                  (keyup)="onKey($event.target!)"-->
+<!--                  placeholder="Type cinema name here"-->
+<!--                >-->
+<!--                <mat-divider></mat-divider>-->
+<!--              </mat-option>-->
+<!--              <mat-option *ngFor="let cinema of selectedCinemas" [value]="cinema.id">{{ cinema.name }}</mat-option>-->
+<!--            </mat-select>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+<!--        <div class="col">-->
+<!--          <mat-form-field class="full-width">-->
+<!--            <mat-label>Choose hall</mat-label>-->
+<!--            <mat-select>-->
+<!--              <mat-option>-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  (click)="$event.stopPropagation()"-->
+<!--                  (keyup)="onKey($event.target!)"-->
+<!--                  placeholder="Type cinema name here"-->
+<!--                >-->
+<!--                <mat-divider></mat-divider>-->
+<!--              </mat-option>-->
+<!--              <mat-option *ngFor="let hall of selectedHalls" [value]="hall.id">{{ hall.name }}</mat-option>-->
+<!--            </mat-select>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <mat-form-field class="full-width">-->
+<!--            <input matInput type="datetime-local" placeholder="Date and time of session">-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <mat-label>Available seat types: </mat-label>-->
+<!--        <div *ngFor="let seatType of selectedSeatTypes" class="row">-->
+<!--          <div class="col">-->
+<!--            <mat-label>{{ seatType.name }}</mat-label>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <mat-form-field class="full-width">-->
+<!--              <input matInput placeholder="Enter price for this seat type">-->
+<!--            </mat-form-field>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+
+      <div class="row">
+        <mat-label>Services: </mat-label>
+        <button mat-button (click)="addService()">+Add</button>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput formControlName="ticketPrice" placeholder="Ticket price (excluding services)">
+            <mat-error *ngIf="sessionForm.controls['ticketPrice'].hasError('required')">
+              Ticket price is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button type="submit">Create</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
