@@ -18,7 +18,7 @@ namespace Cinema.Controllers
         }
 
         [HttpPost("Authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] UserCredentialsDto userForAuthentication)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto userForAuthentication)
         {
             var user = await _userService.AuthenticateAsync(userForAuthentication);
 
@@ -33,14 +33,13 @@ namespace Cinema.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserCredentialsDto userForRegistration)
+        public async Task<IActionResult> Register([FromBody] AuthenticationRequestDto userForRegistration)
         {
             var user = await _userService.FindUserByEmailAsync(userForRegistration.Email);
 
             if (user == null)
             {
                 await _userService.CreateUserAsync(userForRegistration);
-                
             }
 
             return Ok("Registration successful. Check your email for details."); // TODO: Implement email authentication

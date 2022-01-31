@@ -16,7 +16,7 @@ namespace Cinema.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserCredentialsDto credentials)
+        public async Task<UserDto> CreateUserAsync(AuthenticationRequestDto credentials)
         {
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             
@@ -43,7 +43,7 @@ namespace Cinema.Infrastructure.Services
             return user != null ? new UserDto { Id = user.Id, Email = user.Email, Role = user.Role } : null;
         }
 
-        public async Task<UserDto> AuthenticateAsync(UserCredentialsDto credentials)
+        public async Task<UserDto> AuthenticateAsync(AuthenticationRequestDto credentials)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == credentials.Email);
 

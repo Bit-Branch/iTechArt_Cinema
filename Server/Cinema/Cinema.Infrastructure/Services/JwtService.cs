@@ -36,7 +36,7 @@ namespace Cinema.Infrastructure.Services
                 Audience = _options.Audience,
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(_options.ExpireIn),
-                SigningCredentials = credentials,
+                SigningCredentials = credentials
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
