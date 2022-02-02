@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Cinema</span>
+
+    <span class="spacer"></span>
+
+    <button (click)="openLoginDialog()" *ngIf="!isLoggedIn()" mat-icon-button>
+      <mat-icon>input</mat-icon>
+    </button>
+
+    <button *ngIf="isLoggedIn()" [matMenuTriggerFor]="menu" mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button (click)="listPurchases()" mat-menu-item>
+          <mat-icon>shopping_cart</mat-icon>
+          <span>Purchases</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button (click)="logout()" mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </button>
+
+  </mat-toolbar-row>
+</mat-toolbar>
