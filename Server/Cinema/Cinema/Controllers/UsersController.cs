@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Cinema.Application.DTO;
-using Cinema.Application.Interfaces;
+using CinemaApplication.Application.DTO;
+using CinemaApplication.Application.Interfaces;
+using CinemaApplication.Infrastructure.Services;
 
-namespace Cinema.Controllers
+namespace CinemaApplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IJwtService _tokenService;
         private readonly IUserService _userService;
+        private readonly JwtService _jwtService;
 
-        public UsersController(IJwtService tokenService, IUserService userService)
+        public UsersController(IUserService userService, JwtService jwtService)
         {
-            _tokenService = tokenService;
             _userService = userService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("Authenticate")]
@@ -27,13 +28,13 @@ namespace Cinema.Controllers
                 return Unauthorized("Email or password invalid.");
             }
 
-            var token = _tokenService.CreateToken(user);
+            var token = _jwtService.CreateToken(user);
 
-            return Ok(new AuthenticationResponseDto { Token = token });
+            return Ok(new AuthenticationResponseDto {Token = token});
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] AuthenticationRequestDto userForRegistration)
+        public async Task<IActionResult> Register([FromBody] RegistrationRequestDto userForRegistration)
         {
             var user = await _userService.FindUserByEmailAsync(userForRegistration.Email);
 

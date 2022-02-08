@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinema.Domain", "Cinema.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinema.Infrastructure", "Cinema.Infrastructure\Cinema.Infrastructure.csproj", "{262215AF-3889-41FA-BC98-D7C3A1364D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinema.Service", "Cinema.Service\Cinema.Service.csproj", "{F2641E19-0325-448D-8AC4-42F90E80868B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinema.Application", "Cinema.Application\Cinema.Application.csproj", "{F2641E19-0325-448D-8AC4-42F90E80868B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

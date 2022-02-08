@@ -1,4 +1,4 @@
-﻿namespace Cinema.Domain.Settings
+﻿namespace CinemaApplication.Domain.Settings
 {
     public class JwtSettings
     {

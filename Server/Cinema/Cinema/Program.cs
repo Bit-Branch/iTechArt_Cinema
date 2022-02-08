@@ -2,16 +2,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Cinema.Application.Interfaces;
-using Cinema.Domain.Settings;
-using Cinema.Infrastructure.Contexts;
-using Cinema.Infrastructure.Services;
+using CinemaApplication.Application.Interfaces;
+using CinemaApplication.Domain.Settings;
+using CinemaApplication.Infrastructure.Contexts;
+using CinemaApplication.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddCors();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -38,11 +40,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped(typeof(JwtService));
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IGenreService, GenreService>();
+
+builder.Services.AddScoped<ICityService, CityService>();
+
+builder.Services.AddScoped<IFavorService, FavorService>();
+
+builder.Services.AddScoped<ICinemaService, CinemaService>();
 
 var app = builder.Build();
 

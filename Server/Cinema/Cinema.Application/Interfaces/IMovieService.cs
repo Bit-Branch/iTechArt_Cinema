@@ -1,8 +1,11 @@
-﻿using Cinema.Application.DTO;
+﻿using CinemaApplication.Application.DTO;
 
-namespace Cinema.Application.Interfaces;
-
-public interface IMovieService
+namespace CinemaApplication.Application.Interfaces
 {
-    Task<int> CreateMovieAsync(CreateMovieDto createMovieDto);
+    public interface IMovieService
+    {
+        Task<int> CreateMovieAsync(CreateMovieDto createMovieDto);
+        Task<MovieDto> GetMovieByIdAsync(int id);
+        Task<List<MovieDto>> GetAllAsync();
+    }
 }

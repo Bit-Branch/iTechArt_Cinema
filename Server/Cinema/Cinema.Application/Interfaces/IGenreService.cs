@@ -1,6 +1,10 @@
-﻿namespace Cinema.Application.Interfaces;
+﻿using CinemaApplication.Application.DTO;
 
-public interface IGenreService
+namespace CinemaApplication.Application.Interfaces
 {
-    
+    public interface IGenreService
+    {
+        Task<int> CreateGenreAsync(CreateGenreDto createGenreDto);
+        Task<List<GenreDto>> GetAllAsync();
+    }
 }

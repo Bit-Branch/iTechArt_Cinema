@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
-using Cinema.Application.DTO;
-using Cinema.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using CinemaApplication.Application.DTO;
+using CinemaApplication.Application.Interfaces;
+using CinemaApplication.Domain.Constants;
 
-namespace Cinema.Controllers
+namespace CinemaApplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -18,11 +18,36 @@ namespace Cinema.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto movie)
+        [Authorize(Roles=Roles.Admin)]
+        public async Task<IActionResult> CreateMovie([FromForm] CreateMovieDto movie)
         {
-            Debug.Write(movie);
-            Console.WriteLine(movie);
             return Ok(await _movieService.CreateMovieAsync(movie));
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetMovie(int id)
+        {
+            var movie = await _movieService.GetMovieByIdAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(movie);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetMovies()
+        {
+            var movies = await _movieService.GetAllAsync();
+
+            if (movies == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(movies);
         }
     }
 }

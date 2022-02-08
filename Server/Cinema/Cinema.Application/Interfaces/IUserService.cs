@@ -1,6 +1,6 @@
-﻿using Cinema.Application.DTO;
+﻿using CinemaApplication.Application.DTO;
 
-namespace Cinema.Application.Interfaces
+namespace CinemaApplication.Application.Interfaces
 {
     public interface IUserService
     {
@@ -8,6 +8,6 @@ namespace Cinema.Application.Interfaces
 
         Task<UserDto?> AuthenticateAsync(AuthenticationRequestDto credentials);
 
-        Task<UserDto> CreateUserAsync(AuthenticationRequestDto credentials);
+        Task<UserDto> CreateUserAsync(RegistrationRequestDto credentials);
     }
 }

@@ -1,37 +1,51 @@
 ﻿using AutoMapper;
-using Cinema.Application.DTO;
-using Cinema.Application.Interfaces;
-using Cinema.Domain.Entities;
-using Cinema.Infrastructure.Contexts;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using CinemaApplication.Application.DTO;
+using CinemaApplication.Application.Interfaces;
+using CinemaApplication.Domain.Entities;
+using CinemaApplication.Infrastructure.Contexts;
 
-namespace Cinema.Infrastructure.Services;
-
-public class MovieService : IMovieService
+namespace CinemaApplication.Infrastructure.Services
 {
-    private readonly ApplicationDbContext _context;
-
-    public MovieService(ApplicationDbContext context)
+    public class MovieService : IMovieService
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-    public async Task<int> CreateMovieAsync(CreateMovieDto createMovieDto)
-    {
-        var movie = new Movie
+        public MovieService(ApplicationDbContext context, IMapper mapper)
         {
-            Cover = Convert.FromBase64String(createMovieDto.Cover),
-            Description = createMovieDto.Description,
-            DurationInMinutes = createMovieDto.DurationInMinutes,
-            EndDate = createMovieDto.EndDate,
-            Genre = createMovieDto.Genre,
-            StartDate = createMovieDto.StartDate,
-            Title = createMovieDto.Title
-        };
+            _context = context;
+            _mapper = mapper;
+        }
 
-        await _context.Movies.AddAsync(movie);
+        public async Task<int> CreateMovieAsync(CreateMovieDto createMovieDto)
+        {
+            var movie = _mapper.Map<Movie>(createMovieDto);
 
-        await _context.SaveChangesAsync();
+            await _context.Movies.AddAsync(movie);
 
-        return movie.Id;
+            await _context.SaveChangesAsync();
+
+            return movie.Id;
+        }
+
+        public async Task<MovieDto> GetMovieByIdAsync(int id)
+        {
+            var movie = _context.Movies
+                .Where(m => m.Id == id)
+                .Include(m => m.Genre)
+                .SingleOrDefaultAsync()
+                .Result;
+            
+            return _mapper.Map<MovieDto>(movie);
+        }
+        
+        public async Task<List<MovieDto>> GetAllAsync()
+        {
+            return await _context.Movies
+                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
     }
 }

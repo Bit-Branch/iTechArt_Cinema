@@ -1,4 +1,4 @@
-﻿namespace Cinema.Domain.Entities
+﻿namespace CinemaApplication.Domain.Entities
 {
     public class User
     {
