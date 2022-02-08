@@ -9,7 +9,7 @@
   text-align: center;
 
   .btn {
-    margin-top: 10px;
+    margin-top: 23px;
     min-height: 48px;
   }
 
@@ -23,6 +23,14 @@
 
   ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
     background-color: #78ffd6;
+  }
+
+  .mat-small {
+    margin-top: 10px;
+  }
+
+  mat-error + mat-error {
+    display: none;
   }
 }
 

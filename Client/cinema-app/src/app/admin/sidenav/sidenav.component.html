@@ -1,47 +1,38 @@
-<mat-sidenav-container class="example-container" autosize>
+<mat-sidenav-container class="container" autosize>
   <mat-sidenav
-    #sidenav
-    class="example-sidenav mat-drawer"
+    class="sidenav mat-drawer"
     mode="side"
-    opened (mouseenter)="mouseenter()"
+    opened
+    (mouseenter)="mouseenter()"
     (mouseleave)="mouseleave()"
     [@onSideNavChange]="isShowing ? 'open' : 'close'"
   >
     <mat-nav-list>
-      <mat-list-item class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Parent Menu</span>
+      <mat-list-item routerLink="/home" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Home</span>
         <mat-icon mat-list-icon>home</mat-icon>
       </mat-list-item>
 
-      <mat-list-item [routerLink]="'admin/create-movie'" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add movies</span>
+      <mat-list-item routerLink="admin/movies" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Movies</span>
         <mat-icon mat-list-icon>local_movies</mat-icon>
       </mat-list-item>
 
-      <mat-list-item [routerLink]="'admin/create-cinema'" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add cinemas</span>
+      <mat-list-item routerLink="admin/cinemas" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Cinemas</span>
         <mat-icon mat-list-icon>add_business</mat-icon>
       </mat-list-item>
 
-      <mat-list-item [routerLink]="'admin/create-movie-session'" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add sessions</span>
+      <mat-list-item routerLink="admin/movie-sessions" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Sessions</span>
         <mat-icon mat-list-icon>access_time</mat-icon>
       </mat-list-item>
 
-      <mat-list-item [routerLink]="'admin/create-favor'" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add favors</span>
+      <mat-list-item routerLink="admin/favors" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Favors</span>
         <mat-icon mat-list-icon>fastfood</mat-icon>
       </mat-list-item>
 
-      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add hall</span>
-        <mat-icon mat-list-icon>event_seat</mat-icon>
-      </mat-list-item>
-
-      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
-        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Add cities</span>
-        <mat-icon mat-list-icon>location_city</mat-icon>
-      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 

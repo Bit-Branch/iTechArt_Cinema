@@ -56,7 +56,7 @@ export const animations = [
         'hide',
         style(
           {
-            'display': 'none',
+            display: 'none',
             opacity: 0
           }
         )
@@ -65,7 +65,7 @@ export const animations = [
         'show',
         style(
           {
-            'display': 'block',
+            display: 'block',
             opacity: 1
           }
         )

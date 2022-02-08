@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-
-import { MatSidenav } from '@angular/material/sidenav';
+import { Component } from '@angular/core';
 
 import { animations } from './sidenav-animations';
 
@@ -11,21 +9,16 @@ import { animations } from './sidenav-animations';
   animations: animations
 })
 export class SidenavComponent {
-  @ViewChild('sidenav') sidenav!: MatSidenav;
-  showSubmenu = false;
   isShowing = false;
   linkText = false;
 
   mouseenter() {
     this.isShowing = true;
-    setTimeout(() => {
-      this.linkText = this.isShowing;
-    }, 200);
+    setTimeout(() => this.linkText = this.isShowing, 200);
   }
 
   mouseleave() {
     this.isShowing = false;
     this.linkText = false;
   }
-
 }

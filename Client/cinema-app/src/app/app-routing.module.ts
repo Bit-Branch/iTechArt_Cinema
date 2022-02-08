@@ -18,12 +18,10 @@ const routes: Routes = [
     path: 'home',
     component: AppComponent
   },
-
   {
-    path: 'home',
-    // matcher: matcherForAuthenticatedRoute,
+    path: 'admin',
     loadChildren: () => import('@admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AdminAuthGuard]
+    canLoad: [AdminAuthGuard]
   },
   {
     path: '**',

@@ -1,6 +1,6 @@
 export type LoginPageKeys = 'register' | 'login';
 
-interface LoginPageObject {
+export interface LoginPageObject {
   title: string,
   message: string,
   caption: string

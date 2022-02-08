@@ -1,14 +1,16 @@
+import { Observable } from 'rxjs';
+
 import { Injectable } from '@angular/core';
+import { CanLoad, Router, UrlTree } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CanActivate, CanLoad, Router, UrlTree } from '@angular/router';
+
 import { AuthService } from '@core/services/auth.service';
 import { LoginComponent } from '@login/login.component';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AdminAuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanLoad {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -16,7 +18,7 @@ export class AdminAuthGuard implements CanActivate {
   ) {
   }
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canLoad(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.authService.isAdmin()) {
       return true;
     } else {

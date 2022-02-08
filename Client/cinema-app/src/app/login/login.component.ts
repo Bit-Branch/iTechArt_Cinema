@@ -1,18 +1,18 @@
 //Angular components
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 //Local components
 import { AuthService } from '@core/services/auth.service';
 import { SnackbarService } from '@core/services/snackbar.service';
-import { noWhiteSpaceValidator } from '@shared/validators/noWhiteSpaceValidator';
+import { noWhitespaceValidator } from '@shared/validators/no-whitespace-validator';
 import { passwordsMatchValidator } from '@shared/validators/passwords-match-validator';
+import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { animations } from './login-animations';
-import { loginPageMessages, LoginPageKeys } from './login-page-messages';
+import { loginPageMessages, LoginPageKeys, LoginPageObject } from './login-page-messages';
 
-const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
 const emailControl = 'email';
 const passwordControl = 'password';
 const confirmPasswordControl = 'confirmPassword';
@@ -45,8 +45,8 @@ export class LoginComponent {
           [
             Validators.required,
             Validators.minLength(8),
-            noWhiteSpaceValidator(),
-            Validators.pattern(pattern)
+            noWhitespaceValidator(),
+            Validators.pattern(ValidationPatterns.PASSWORD_PATTERN)
           ]
         ],
         confirmPassword: [
@@ -54,8 +54,8 @@ export class LoginComponent {
           [
             Validators.required,
             Validators.minLength(8),
-            noWhiteSpaceValidator(),
-            Validators.pattern(pattern)
+            noWhitespaceValidator(),
+            Validators.pattern(ValidationPatterns.PASSWORD_PATTERN)
           ]
         ]
       },
@@ -68,7 +68,7 @@ export class LoginComponent {
     this.switchPage(this.page);
   }
 
-  get currentPageContent(): { title: string, message: string, caption: string } {
+  get currentPageContent(): LoginPageObject {
     return loginPageMessages[this.page];
   }
 
@@ -91,7 +91,11 @@ export class LoginComponent {
         break;
 
       case registerPage:
-        this.register(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
+        this.register(
+          this.form.get(emailControl)?.value,
+          this.form.get(passwordControl)?.value,
+          this.form.get(confirmPasswordControl)?.value
+        );
         break;
     }
   }
@@ -116,8 +120,8 @@ export class LoginComponent {
     return confirmPasswordControl;
   }
 
-  private register(email: string, password: string): void {
-    this.authService.register(email, password)
+  private register(email: string, password: string, confirmPassword: string): void {
+    this.authService.register(email, password, confirmPassword)
       .subscribe(
         {
           next: (response: string) => {

@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{ currentPageContent.title }}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>{{ currentPageContent.label }}</mat-label>
+    <input matInput [formControl]="name">
+    <mat-error *ngIf="name.getError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+</div>
+<mat-dialog-actions>
+  <button mat-button (click)="create()">
+    Create
+  </button>
+  <button mat-button (click)="closeDialog()">
+    Cancel
+  </button>
+</mat-dialog-actions>

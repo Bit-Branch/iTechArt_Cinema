@@ -1,10 +1,11 @@
+import { Favor } from '@core/models/favor';
+import { TicketPrice } from '@core/models/ticket-price';
+
 export interface MovieSession {
   id?: number,
-  movie: string,
-  cinema: string,
-  hall: string,
-  showDateTime: Date,
-  seatTypes: string[],
-  services: string[],
-  ticketPrice: number
+  movieId: number,
+  hallId: number,
+  showTime: Date,
+  ticketPrices: TicketPrice[],
+  favors?: Favor[]
 }

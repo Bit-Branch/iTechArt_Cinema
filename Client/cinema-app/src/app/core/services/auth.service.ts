@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Token } from '@core/models/token';
-
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environment/environment';
 import { AuthResponse } from '@core/models/auth-response';
@@ -22,8 +21,12 @@ export class AuthService {
   ) {
   }
 
-  register(email: string, password: string): Observable<string> {
-    return this.http.post(`${environment.hostUrl}/api/users/register`, { email, password }, { responseType: 'text' });
+  register(email: string, password: string, confirmPassword: string): Observable<string> {
+    return this.http.post(
+      `${environment.hostUrl}/api/users/register`,
+      { email, password, confirmPassword },
+      { responseType: 'text' }
+    );
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
@@ -47,9 +50,9 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    if(this.isLoggedIn()) {
-      const decodedToken: Token = this.jwtHelper.decodeToken(this.getToken() as string);
-      return decodedToken.role === 'Admin'; // need to be in CurrentRole variable
+    if (this.isLoggedIn()) {
+      const decodedToken = this.jwtHelper.decodeToken<{ role: string }>(this.getToken() as string);
+      return decodedToken.role === 'Admin';
     }
     return false;
   }

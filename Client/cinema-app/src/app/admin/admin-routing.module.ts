@@ -3,32 +3,31 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 //Local
-import { AdminAuthGuard } from '@core/guards/admin-auth.guard';
-import { CreateCinemaComponent } from '@admin/pages/create-cinema/create-cinema.component';
-import { CreateMovieSessionComponent } from '@admin/pages/create-movie-session/create-movie-session.component';
-import { CreateMovieComponent } from '@admin/pages/create-movie/create-movie.component';
-import { CreateFavorComponent } from '@admin/pages/create-favor/create-favor.component';
+import { CinemasComponent } from '@admin/pages/cinemas/cinemas.component';
+import { FavorsComponent } from '@admin/pages/favors/favors.component';
+import { MovieSessionsComponent } from '@admin/pages/movie-sessions/movie-sessions.component';
+import { MoviesComponent } from '@admin/pages/movies/movies.component';
 
 const routes: Routes = [
   {
-    path: 'create-movie',
-    component: CreateMovieComponent,
-    canActivate: [AdminAuthGuard]
+    path: 'movies',
+    component: MoviesComponent
   },
   {
-    path: 'create-favor',
-    component: CreateFavorComponent,
-    canActivate: [AdminAuthGuard]
+    path: 'favors',
+    component: FavorsComponent
   },
   {
-    path: 'create-cinema',
-    component: CreateCinemaComponent,
-    canActivate: [AdminAuthGuard]
+    path: 'cinemas',
+    component: CinemasComponent
   },
   {
-    path: 'create-movie-session',
-    component: CreateMovieSessionComponent,
-    canActivate: [AdminAuthGuard]
+    path: 'movie-sessions',
+    component: MovieSessionsComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/home'
   }
 ];
 

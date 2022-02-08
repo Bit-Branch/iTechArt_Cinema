@@ -1,9 +1,9 @@
 export interface Movie {
   id?: number
   title: string,
-  cover?: Uint8Array,
+  cover: File,
   description: string,
-  genre: string,
+  genreId: number,
   startDate: Date,
   endDate: Date,
   durationInMinutes: number
