@@ -1,33 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using CinemaApplication.Application.DTO;
-using CinemaApplication.Application.Interfaces;
-using CinemaApplication.Domain.Constants;
+using CinemaApp.Domain.Constants;
+using CinemaApp.Application.DTOs.Movie;
+using CinemaApp.Application.Interfaces;
 
-namespace CinemaApplication.Controllers
+namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IImageService _imageService;
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, IImageService imageService)
         {
             _movieService = movieService;
+            _imageService = imageService;
+        }
+
+        [HttpPost("Create-image")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> CreateMovieImage([FromForm] CreateMovieImageDto createImageDto)
+        {
+            return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles=Roles.Admin)]
-        public async Task<IActionResult> CreateMovie([FromForm] CreateMovieDto movie)
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto movie)
         {
             return Ok(await _movieService.CreateMovieAsync(movie));
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetMovie(int id)
+        public IActionResult GetMovie(int id)
         {
-            var movie = await _movieService.GetMovieByIdAsync(id);
+            var movie = _movieService.GetMovieById(id);
 
             if (movie == null)
             {
@@ -36,11 +46,13 @@ namespace CinemaApplication.Controllers
 
             return Ok(movie);
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetMovies()
+        public async Task<IActionResult> GetMovies([Optional] [FromQuery] string term)
         {
-            var movies = await _movieService.GetAllAsync();
+            var movies = term != null
+                ? await _movieService.FindAllByTermAsync(term)
+                : await _movieService.GetAllAsync();
 
             if (movies == null)
             {

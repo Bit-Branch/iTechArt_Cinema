@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using CinemaApplication.Application.DTO;
-using CinemaApplication.Application.Interfaces;
-using CinemaApplication.Domain.Constants;
+using System.Runtime.InteropServices;
+using CinemaApp.Domain.Constants;
+using CinemaApp.Application.DTOs.City;
+using CinemaApp.Application.Interfaces;
 
-namespace CinemaApplication.Controllers
+namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -18,16 +19,23 @@ namespace CinemaApplication.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles=Roles.Admin)]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> CreateCity([FromBody] CreateCityDto cityDto)
         {
-            return Ok(await _cityService.CreateCityAsync(cityDto));
+            if (!_cityService.CheckForDuplicates(cityDto))
+            {
+                return Ok(await _cityService.CreateCityAsync(cityDto));
+            }
+
+            return BadRequest("City with such name is already exists.");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCities()
+        public async Task<IActionResult> GetCities([Optional] [FromQuery] string term)
         {
-            var cities = await _cityService.GetAllAsync();
+            var cities = term != null
+                ? await _cityService.FindAllByTermAsync(term)
+                : await _cityService.GetAllAsync();
 
             if (cities == null)
             {

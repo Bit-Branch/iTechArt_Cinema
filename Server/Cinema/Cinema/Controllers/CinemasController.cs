@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using CinemaApplication.Application.DTO;
-using CinemaApplication.Application.Interfaces;
-using CinemaApplication.Domain.Constants;
+using CinemaApp.Domain.Constants;
+using CinemaApp.Application.DTOs.Cinema;
+using CinemaApp.Application.Interfaces;
 
-namespace CinemaApplication.Controllers
+namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -25,9 +26,9 @@ namespace CinemaApplication.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetCinema(int id)
+        public IActionResult GetCinema(int id)
         {
-            var cinema = await _cinemaService.GetCinemaByIdAsync(id);
+            var cinema = _cinemaService.GetCinemaById(id);
 
             if (cinema == null)
             {
@@ -36,11 +37,13 @@ namespace CinemaApplication.Controllers
 
             return Ok(cinema);
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetCinemas()
+        public async Task<IActionResult> GetCinemas([Optional] [FromQuery] string term)
         {
-            var cinemas = await _cinemaService.GetAllAsync();
+            var cinemas = term != null
+                ? await _cinemaService.FindAllByTermAsync(term)
+                : await _cinemaService.GetAllAsync();
 
             if (cinemas == null)
             {
