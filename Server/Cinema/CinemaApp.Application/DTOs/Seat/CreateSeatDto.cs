@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaApplication.Application.DTO
+namespace CinemaApp.Application.DTOs.Seat
 {
     public class CreateSeatDto
     {
         [Required]
-        public byte SeatTypeId { get; set; }
+        public int SeatTypeId { get; set; }
     }
 }
