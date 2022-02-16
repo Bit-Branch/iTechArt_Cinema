@@ -7,8 +7,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 //Local components
 import { AuthService } from '@core/services/auth.service';
 import { SnackbarService } from '@core/services/snackbar.service';
-import { noWhitespaceValidator } from '@shared/validators/no-whitespace-validator';
-import { passwordsMatchValidator } from '@shared/validators/passwords-match-validator';
+import { noWhitespaceValidator } from '@shared/../core/validators/no-whitespace-validator';
+import { passwordsMatchValidator } from '@shared/../core/validators/passwords-match-validator';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { animations } from './login-animations';
 import { loginPageMessages, LoginPageKeys, LoginPageObject } from './login-page-messages';
@@ -39,8 +39,8 @@ export class LoginComponent {
   ) {
     this.form = this.formBuilder.group(
       {
-        email: ['', [Validators.required, Validators.email]],
-        password: [
+        [emailControl]: ['', [Validators.required, Validators.email]],
+        [passwordControl]: [
           '',
           [
             Validators.required,
@@ -49,7 +49,7 @@ export class LoginComponent {
             Validators.pattern(ValidationPatterns.PASSWORD_PATTERN)
           ]
         ],
-        confirmPassword: [
+        [confirmPasswordControl]: [
           '',
           [
             Validators.required,
@@ -74,29 +74,29 @@ export class LoginComponent {
 
   switchPage(page: LoginPageKeys): void {
     switch (this.page = page) {
-      case registerPage:
-        this.form.get(confirmPasswordControl)?.enable();
-        break;
+    case registerPage:
+      this.form.get(confirmPasswordControl)?.enable();
+      break;
 
-      case loginPage:
-        this.form.get(confirmPasswordControl)?.disable();
-        break;
+    case loginPage:
+      this.form.get(confirmPasswordControl)?.disable();
+      break;
     }
   }
 
   activate(action: LoginPageKeys): void {
     switch (action) {
-      case loginPage:
-        this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
-        break;
+    case loginPage:
+      this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
+      break;
 
-      case registerPage:
-        this.register(
-          this.form.get(emailControl)?.value,
-          this.form.get(passwordControl)?.value,
-          this.form.get(confirmPasswordControl)?.value
-        );
-        break;
+    case registerPage:
+      this.register(
+        this.form.get(emailControl)?.value,
+        this.form.get(passwordControl)?.value,
+        this.form.get(confirmPasswordControl)?.value
+      );
+      break;
     }
   }
 

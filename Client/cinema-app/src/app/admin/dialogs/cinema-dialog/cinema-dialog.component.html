@@ -7,7 +7,12 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Name" formControlName="{{ nameControl }}">
+            <input
+              matInput
+              placeholder="Name"
+              [formControlName]="nameControl"
+              [maxlength]="cinemaNameMaxLength"
+            >
             <mat-error *ngIf="cinemaForm.get(nameControl)?.getError('required')">
               Cinema name is <strong>required</strong>
             </mat-error>
@@ -18,16 +23,15 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select placeholder="City" formControlName="{{ cityControl }}">
+            <mat-select placeholder="City" [formControlName]="cityControl">
               <mat-option>
-                <input
-                  #citySearch
-                  matInput
-                  (click)="$event.stopPropagation()"
-                  placeholder="Type city name here"
+                <ngx-mat-select-search
+                  placeholderLabel="Type city name here..."
+                  noEntriesFoundLabel="No cities found"
+                  (keyup)="onSearchCities($event)"
                 >
+                </ngx-mat-select-search>
               </mat-option>
-              <mat-divider></mat-divider>
               <mat-option *ngFor="let city of cities" [value]="city.id">
                 {{ city.name }}
               </mat-option>
@@ -39,16 +43,31 @@
               </div>
             </mat-select>
             <mat-error *ngIf="cinemaForm.get(cityControl)?.getError('required')">
-              City is <strong>required</strong>
+              City is required
             </mat-error>
           </mat-form-field>
+        </div>
+
+        <div class="col">
+          <div>
+            <button mat-button type="button" (click)="openCreateCityDialog()">
+              <mat-icon>add</mat-icon>
+              Create new city
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address" formControlName="{{ addressControl }}"></textarea>
+            <textarea
+              matInput
+              placeholder="Address"
+              [formControlName]="addressControl"
+              [maxlength]="cinemaAddressMaxLength"
+            >
+            </textarea>
             <mat-error *ngIf="cinemaForm.get(addressControl)?.getError('required')">
               Address is <strong>required</strong>
             </mat-error>
@@ -69,7 +88,7 @@
         </button>
       </div>
 
-      <div class="row" style="overflow-y: scroll; height: 150px;">
+      <div class="row row-overflow">
         <mat-nav-list>
           <mat-list-item *ngFor="let hall of halls; let i = index" role="listitem">
             <span matLine>
@@ -101,24 +120,22 @@
       <ng-container *ngFor="let favorForm of favorForms; let i = index">
         <div [formGroup]="favorForm" class="row">
           <div class="col">
-            <mat-form-field class="full-width">
-              <mat-select formControlName="{{ favorControl }}" placeholder="Select favor">
-                <mat-option>
-                  <input matInput (click)="$event.stopPropagation()" placeholder="Type favor name here">
-                </mat-option>
-                <mat-divider></mat-divider>
-                <mat-option *ngFor="let favor of favors" [value]="favor.id">
-                  {{ favor.name }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="favorForm.get(favorControl)?.getError('required')">
-                You need to chose the favor
-              </mat-error>
-            </mat-form-field>
+            <app-search-select
+              class="full-width"
+              [formControlName]="favorControl"
+              [selectPlaceholder]="'Select favor'"
+              [searchInputPlaceholder]="'Type favor name here...'"
+              [searchFunction]="searchFavors.bind(this)"
+              [propertyToDisplayInOption]="'name'"
+            >
+            </app-search-select>
+            <mat-error *ngIf="favorForm.get(favorControl)?.getError('required')">
+              You need to chose the favor
+            </mat-error>
           </div>
           <div class="col">
             <mat-form-field class="full-width">
-              <input matInput formControlName="{{ favorPriceControl }}" placeholder="Enter price for this favor">
+              <input matInput placeholder="Enter price for this favor" [formControlName]="favorPriceControl">
               <mat-error *ngIf="favorForm.get(favorPriceControl)?.getError('required')">
                 Favor price is <strong>required</strong>
               </mat-error>
@@ -140,7 +157,7 @@
       Please fill all fields with data.
     </mat-error>
     <mat-card-actions>
-      <button mat-raised-button type="submit" [disabled]="cinemaForm.invalid">
+      <button mat-stroked-button type="submit" [disabled]="cinemaForm.invalid">
         Create
       </button>
       <button mat-raised-button type="button" (click)="closeDialog()">

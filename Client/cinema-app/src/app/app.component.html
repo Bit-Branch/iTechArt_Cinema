@@ -1,5 +1,3 @@
 <app-sidenav *ngIf="isAdmin()"></app-sidenav>
 <app-navbar *ngIf="!isAdmin()"></app-navbar>
-<router-outlet *ngIf="!isAdmin()"></router-outlet>
-
-
+<router-outlet></router-outlet>

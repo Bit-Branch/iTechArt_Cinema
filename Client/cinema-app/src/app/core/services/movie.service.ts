@@ -15,11 +15,15 @@ export class MovieService {
   ) {
   }
 
-  createMovie(movieForm: FormData): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/movies/create`, movieForm);
+  uploadImage(image: FormData): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/movies/create-image`, image);
   }
 
-  getAllMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies`);
+  createMovie(movie: Movie): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/movies/create`, movie);
+  }
+
+  findAllBySearchTerm(term: string): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies?term=${term}`);
   }
 }

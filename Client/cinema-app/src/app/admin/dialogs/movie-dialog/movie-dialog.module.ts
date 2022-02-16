@@ -21,12 +21,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MovieDialogComponent } from './movie-dialog.component';
 
 @NgModule({
-  declarations: [
-    MovieDialogComponent
-  ],
-  exports: [
-    MovieDialogComponent
-  ],
+  declarations: [MovieDialogComponent],
+  exports: [MovieDialogComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,

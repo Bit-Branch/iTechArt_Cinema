@@ -15,11 +15,15 @@ export class FavorService {
   ) {
   }
 
-  createFavor(favor: FormData): Observable<number> {
+  uploadImage(image: FormData): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/favors/create-image`, image);
+  }
+
+  createFavor(favor: Favor): Observable<number> {
     return this.http.post<number>(`${environment.hostUrl}/api/favors/create`, favor);
   }
 
-  getAllFavors(): Observable<Favor[]> {
-    return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors`);
+  findAllBySearchTerm(term?: string): Observable<Favor[]> {
+    return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors?term=${term}`);
   }
 }

@@ -15,7 +15,7 @@ export class MovieSessionService {
   ) {
   }
 
-  createMovie(movieSession: MovieSession): Observable<number> {
+  createMovieSession(movieSession: MovieSession): Observable<number> {
     return this.http.post<number>(`${environment.hostUrl}/api/movie-sessions/create`, movieSession);
   }
 }

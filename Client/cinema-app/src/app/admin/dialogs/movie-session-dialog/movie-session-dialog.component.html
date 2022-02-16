@@ -8,23 +8,25 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select formControlName="{{ movieControl }}" placeholder="Select movie">
+
+            <mat-select placeholder="Select movie" [formControlName]="movieControl">
               <mat-option>
-                <input
-                  #movieSearch
-                  matInput
-                  (click)="$event.stopPropagation()"
-                  placeholder="Type movie title here"
+                <ngx-mat-select-search
+                  placeholderLabel="Type movie title here..."
+                  noEntriesFoundLabel="No movies found"
+                  (keyup)="onSearchMovies($event)"
                 >
+                </ngx-mat-select-search>
               </mat-option>
-              <mat-divider></mat-divider>
               <mat-option *ngFor="let movie of movies" [value]="movie.id">
                 {{ movie.title }}
               </mat-option>
             </mat-select>
+
             <mat-error *ngIf="sessionForm.get(movieControl)?.getError('required')">
               You need to chose the movie
             </mat-error>
+
           </mat-form-field>
         </div>
       </div>
@@ -32,27 +34,29 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
+
             <mat-select
-              formControlName="{{ cinemaControl }}"
-              (selectionChange)="fillHalls()"
               placeholder="Select cinema"
+              [formControlName]="cinemaControl"
+              (selectionChange)="onCinemaSelected($event)"
             >
               <mat-option>
-                <input
-                  #cinemaSearch
-                  matInput
-                  (click)="$event.stopPropagation()"
-                  placeholder="Type cinema name here"
+                <ngx-mat-select-search
+                  placeholderLabel="Type cinema name here..."
+                  noEntriesFoundLabel="No cinemas found"
+                  (keyup)="onSearchCinemas($event)"
                 >
+                </ngx-mat-select-search>
               </mat-option>
-              <mat-divider></mat-divider>
-              <mat-option *ngFor="let cinema of cinemas" [value]="cinema">
+              <mat-option *ngFor="let cinema of cinemas" [value]="cinema.id">
                 {{ cinema.name }}
               </mat-option>
             </mat-select>
+
             <mat-error *ngIf="sessionForm.get(cinemaControl)?.getError('required')">
               You need to chose the cinema
             </mat-error>
+
           </mat-form-field>
         </div>
       </div>
@@ -60,26 +64,29 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
+
             <mat-select
-              formControlName="{{ hallControl }}"
-              (selectionChange)="fillSeatTypes()"
               placeholder="Select hall"
+              [formControlName]="hallControl"
+              (selectionChange)="onHallSelected($event)"
             >
               <mat-option>
-                <input
-                  matInput
-                  (click)="$event.stopPropagation()"
-                  placeholder="Type hall name here"
+                <ngx-mat-select-search
+                  placeholderLabel="Type hall name here..."
+                  noEntriesFoundLabel="No halls found"
                 >
+                </ngx-mat-select-search>
               </mat-option>
               <mat-divider></mat-divider>
-              <mat-option *ngFor="let hall of halls" [value]="hall">
+              <mat-option *ngFor="let hall of halls" [value]="hall.id">
                 {{ hall.name }}
               </mat-option>
             </mat-select>
+
             <mat-error *ngIf="sessionForm.get(hallControl)?.getError('required')">
               You need to chose the hall
             </mat-error>
+
           </mat-form-field>
         </div>
       </div>
@@ -90,8 +97,9 @@
             <input
               matInput
               [ngxTimepicker]="timePicker"
-              formControlName="{{ showTimeControl }}"
+              [formControlName]="showTimeControl"
               placeholder="Enter time for session"
+              [format]="24"
             >
             <ngx-material-timepicker #timePicker></ngx-material-timepicker>
             <mat-error *ngIf="sessionForm.get(showTimeControl)?.getError('required')">
@@ -100,6 +108,19 @@
           </mat-form-field>
         </div>
       </div>
+
+      <mat-form-field class="full-width">
+        <ngx-multiple-dates
+          placeholder="Choose dates for this session"
+          [formControlName]="datesControl"
+          [matDatepicker]="picker"
+          [min]="selectedMovie?.startDate"
+          [max]="selectedMovie?.endDate"
+        >
+        </ngx-multiple-dates>
+        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
       <h4>Available seat types:</h4>
       <div *ngFor="let seatType of seatTypes" class="row">
@@ -110,7 +131,7 @@
           <mat-form-field class="full-width">
             <input
               matInput
-              formControlName="{{ ticketPriceControl }}"
+              [formControlName]="ticketPriceControl"
               placeholder="Ticket price for this type of seat"
             >
             <mat-error *ngIf="sessionForm.get(ticketPriceControl)?.getError('required')">

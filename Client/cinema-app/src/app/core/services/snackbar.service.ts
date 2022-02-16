@@ -10,20 +10,28 @@ export class SnackbarService {
   }
 
   showSuccessSnackBar(message: string): void {
-    this.snackbar.open(message, '', {
-      duration: 3000,
-      panelClass: ['snackbar', 'success-snackbar'],
-      horizontalPosition: 'end',
-      verticalPosition: 'top'
-    });
+    this.snackbar.open(
+      message,
+      '',
+      {
+        duration: 3000,
+        panelClass: ['snackbar', 'success-snackbar'],
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      }
+    );
   }
 
   showDangerSnackBar(message: string): void {
-    this.snackbar.open(message, '', {
-      duration: 3000,
-      panelClass: ['snackbar', 'danger-snackbar'],
-      horizontalPosition: 'end',
-      verticalPosition: 'top'
-    });
+    this.snackbar.open(
+      message,
+      '',
+      {
+        duration: 3000,
+        panelClass: ['snackbar', 'danger-snackbar'],
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      }
+    );
   }
 }

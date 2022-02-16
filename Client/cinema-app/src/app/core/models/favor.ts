@@ -1,6 +1,6 @@
 export interface Favor {
   id?: number,
-  image?: File,
   name: string,
+  imageId: number,
   description: string
 }

@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput formControlName="{{ nameControl }}" placeholder="Name">
+            <input matInput placeholder="Name" [formControlName]="nameControl">
             <mat-error *ngIf="favorForm.get(nameControl)?.hasError('required')">
               Name is <strong>required</strong>
             </mat-error>
@@ -18,8 +18,14 @@
 
       <div class="row">
         <div class="col">
+          <img [src]="url" height="200">
           <mat-form-field class="full-width">
-            <ngx-mat-file-input accept="image/*" formControlName="{{ imageControl }}" placeholder="Upload image">
+            <ngx-mat-file-input
+              accept="image/jpeg, image/png"
+              placeholder="Upload image"
+              [formControlName]="imageControl"
+              (change)="onSelectFile($event)"
+            >
             </ngx-mat-file-input>
             <mat-icon matSuffix>attach_file</mat-icon>
           </mat-form-field>
@@ -29,7 +35,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <textarea matInput formControlName="{{ descriptionControl }}" placeholder="Description">
+            <textarea matInput placeholder="Description" [formControlName]="descriptionControl">
             </textarea>
             <mat-error *ngIf="favorForm.get(descriptionControl)?.hasError('required')">
               Description is <strong>required</strong>
@@ -38,14 +44,15 @@
         </div>
       </div>
     </mat-card-content>
+
     <mat-card-actions>
       <mat-error *ngIf="favorForm.invalid">
         Please fill all fields with data.
       </mat-error>
-      <button mat-raised-button type="submit" [disabled]="favorForm.invalid">
+      <button mat-stroked-button type="submit" [disabled]="favorForm.invalid">
         Create
       </button>
-      <button mat-raised-button (click)="closeDialog()">
+      <button mat-raised-button type="button" (click)="closeDialog()">
         Cancel
       </button>
     </mat-card-actions>

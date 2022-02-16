@@ -19,7 +19,7 @@ export class CityService {
     return this.http.post<number>(`${environment.hostUrl}/api/cities/create`, city);
   }
 
-  getAllCities(): Observable<City[]> {
-    return this.http.get<City[]>(`${environment.hostUrl}/api/cities`);
+  findAllBySearchTerm(term: string): Observable<City[]> {
+    return this.http.get<City[]>(`${environment.hostUrl}/api/cities?term=${term}`);
   }
 }

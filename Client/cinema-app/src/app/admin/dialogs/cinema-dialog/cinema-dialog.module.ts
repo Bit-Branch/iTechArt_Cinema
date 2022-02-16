@@ -1,3 +1,6 @@
+//External modules
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 //Angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,17 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 //Components
 import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialog.component';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
-  declarations: [
-    CinemaDialogComponent
-  ],
-  exports: [
-    CinemaDialogComponent
-  ],
+  declarations: [CinemaDialogComponent],
+  exports: [CinemaDialogComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -33,7 +34,10 @@ import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialo
     MatSelectModule,
     MatButtonModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    SharedModule,
+    MatAutocompleteModule,
+    NgxMatSelectSearchModule
   ]
 })
 export class CinemaDialogModule {

@@ -9,7 +9,7 @@
 
   <mat-form-field appearance="legacy" @inflate>
     <mat-label>Email</mat-label>
-    <input matInput formControlName="{{ emailControl }}">
+    <input matInput [formControlName]="emailControl">
     <mat-icon matSuffix></mat-icon>
     <mat-error *ngIf="form.get(emailControl)?.getError('required')">
       Please specify an email address.
@@ -21,7 +21,11 @@
 
   <mat-form-field appearance="legacy" @inflate>
     <mat-label>Password</mat-label>
-    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="{{ passwordControl }}">
+    <input
+      matInput
+      [type]="hidePassword ? passwordControl : 'text'"
+      [formControlName]="passwordControl"
+    >
     <mat-icon matSuffix (click)="hidePassword = !hidePassword">
       {{ hidePassword ? 'visibility_off' : 'visibility' }}
     </mat-icon>
@@ -41,7 +45,11 @@
 
   <mat-form-field appearance="legacy" *ngIf="page === registerPage" @inflate>
     <mat-label>Confirm password</mat-label>
-    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="{{ confirmPasswordControl }}">
+    <input
+      matInput
+      [type]="hidePassword ? passwordControl : 'text'"
+      [formControlName]="confirmPasswordControl"
+    >
     <mat-icon matSuffix (click)="hidePassword = !hidePassword">
       {{ hidePassword ? 'visibility_off' : 'visibility' }}
     </mat-icon>

@@ -9,7 +9,8 @@
   text-align: center;
 
   .btn {
-    margin-top: 23px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     min-height: 48px;
   }
 
@@ -31,6 +32,21 @@
 
   mat-error + mat-error {
     display: none;
+  }
+}
+
+mat-form-field.ng-invalid.ng-touched {
+  animation: example;
+  animation-duration: 0.3s;
+  margin-bottom: 20px;
+}
+
+@keyframes example {
+  from {
+    margin-bottom: 0;
+  }
+  to {
+    margin-bottom: 20px;
   }
 }
 

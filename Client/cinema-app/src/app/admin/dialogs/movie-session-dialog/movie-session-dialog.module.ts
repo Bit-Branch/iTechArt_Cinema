@@ -1,5 +1,7 @@
 //External modules
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { NgxMultipleDatesModule } from 'ngx-multiple-dates';
 
 //Angular modules
 import { NgModule } from '@angular/core';
@@ -14,17 +16,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 //Local
 import { MovieSessionDialogComponent } from '@admin/dialogs/movie-session-dialog/movie-session-dialog.component';
 
 @NgModule({
-  declarations: [
-    MovieSessionDialogComponent
-  ],
-  exports: [
-    MovieSessionDialogComponent
-  ],
+  declarations: [MovieSessionDialogComponent],
+  exports: [MovieSessionDialogComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -35,7 +35,11 @@ import { MovieSessionDialogComponent } from '@admin/dialogs/movie-session-dialog
     MatSelectModule,
     MatButtonModule,
     NgxMaterialTimepickerModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    NgxMultipleDatesModule,
+    NgxMatSelectSearchModule
   ]
 })
 export class MovieSessionDialogModule {

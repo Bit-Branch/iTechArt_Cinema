@@ -10,9 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MoviesComponent } from '@admin/pages/movies/movies.component';
 
 @NgModule({
-  declarations: [
-    MoviesComponent
-  ],
+  declarations: [MoviesComponent],
   imports: [
     CommonModule,
     MatCardModule,

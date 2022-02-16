@@ -1,11 +1,12 @@
 //Angular
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ValidationPatterns } from '@core/constants/validation-patterns';
 
 //Local
 import { Hall } from '@core/models/hall';
+import { ValidationPatterns } from '@core/constants/validation-patterns';
 
 const nameControl = 'name';
 const seatsCountControl = 'seatsCount';
@@ -24,8 +25,8 @@ export class HallDialogComponent {
     @Inject(MAT_DIALOG_DATA) private dialogData: Hall
   ) {
     this.hallForm = this.fb.group({
-      name: [null, Validators.required],
-      seatsCount: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
+      [nameControl]: [null, Validators.required],
+      [seatsCountControl]: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
     });
     this.hallForm.get(nameControl)?.setValue(dialogData?.name);
     this.hallForm.get(seatsCountControl)?.setValue(dialogData?.seats.length);

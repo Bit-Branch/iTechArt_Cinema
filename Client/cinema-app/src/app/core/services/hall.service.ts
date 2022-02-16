@@ -18,4 +18,8 @@ export class HallService {
   createHall(hall: Hall): Observable<number> {
     return this.http.post<number>(`${environment.hostUrl}/api/halls/create`, hall);
   }
+
+  findAllByCinemaId(id: number): Observable<Hall[]> {
+    return this.http.get<Hall[]>(`${environment.hostUrl}/api/halls?cinemaId=${id}`);
+  }
 }

@@ -22,4 +22,8 @@ export class CinemaService {
   getAllCinemas(): Observable<Cinema[]> {
     return this.http.get<Cinema[]>(`${environment.hostUrl}/api/cinemas`);
   }
+
+  findAllBySearchTerm(term: string): Observable<Cinema[]> {
+    return this.http.get<Cinema[]>(`${environment.hostUrl}/api/cinemas?term=${term}`);
+  }
 }

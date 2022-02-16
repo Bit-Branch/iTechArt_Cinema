@@ -12,7 +12,6 @@ import { AuthHeaderInterceptor } from '@core/interceptors/auth-header.intercepto
 const modules = [CommonModule, HttpClientModule];
 
 @NgModule({
-  declarations: [],
   imports: modules,
   exports: modules,
   providers: [

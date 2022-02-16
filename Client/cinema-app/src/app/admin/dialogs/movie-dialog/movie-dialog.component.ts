@@ -3,13 +3,14 @@ import { FileInput, FileValidator } from 'ngx-material-file-input';
 
 //Angular components
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
 import { Movie } from '@core/models/movie';
 import { Genre } from '@core/models/genre';
+import { ImageService } from '@core/services/image.service';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { GenreService } from '@core/services/genre.service';
 import { SnackbarService } from '@core/services/snackbar.service';
@@ -18,7 +19,7 @@ import { ReusableDialogComponent } from '@admin/dialogs/reusable-dialog/reusable
 
 /* 'size in mb' * 2 ** 20 */
 const imageMaxSizeInBytes = 0.5 * 2 ** 20;
-const coverControl = 'cover';
+const imageControl = 'image';
 const titleControl = 'title';
 const descriptionControl = 'description';
 const genreControl = 'genre';
@@ -26,13 +27,6 @@ const showtimeRangeControl = 'showtimeRange';
 const startControl = 'startDate';
 const endControl = 'endDate';
 const durationControl = 'durationInMinutes';
-const movieCoverProperty: keyof Movie = 'cover';
-const movieTitleProperty: keyof Movie = 'title';
-const movieDescriptionProperty: keyof Movie = 'description';
-const movieGenreIdProperty: keyof Movie = 'genreId';
-const movieStartDateProperty: keyof Movie = 'startDate';
-const movieEndDateProperty: keyof Movie = 'endDate';
-const movieDurationProperty: keyof Movie = 'durationInMinutes';
 
 @Component({
   selector: 'app-movie-dialog',
@@ -50,19 +44,20 @@ export class MovieDialogComponent {
     private readonly movieService: MovieService,
     private readonly genreService: GenreService,
     private readonly snackbarService: SnackbarService,
+    private readonly imageService: ImageService,
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<MovieDialogComponent>
   ) {
     this.movieForm = this.formBuilder.group({
-      cover: [null, [Validators.required, FileValidator.maxContentSize(imageMaxSizeInBytes)]],
-      title: [null, Validators.required],
-      description: [null, Validators.required],
-      genre: [null, Validators.required],
-      showtimeRange: this.formBuilder.group({
-        startDate: [null, Validators.required],
-        endDate: [null, Validators.required]
+      [imageControl]: [null, [Validators.required, FileValidator.maxContentSize(imageMaxSizeInBytes)]],
+      [titleControl]: [null, Validators.required],
+      [descriptionControl]: [null, Validators.required],
+      [genreControl]: [null, Validators.required],
+      [showtimeRangeControl]: this.formBuilder.group({
+        [startControl]: [null, Validators.required],
+        [endControl]: [null, Validators.required]
       }),
-      durationInMinutes: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
+      [durationControl]: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
     });
     this.getAllGenres();
   }
@@ -100,7 +95,7 @@ export class MovieDialogComponent {
   }
 
   get coverControl(): string {
-    return coverControl;
+    return imageControl;
   }
 
   openCreateGenreDialog(): void {
@@ -115,30 +110,36 @@ export class MovieDialogComponent {
   }
 
   onSubmit(): void {
-    const movieData = new FormData();
-    movieData.append(movieTitleProperty, this.movieForm.get(titleControl)?.value);
-    movieData.append(movieDescriptionProperty, this.movieForm.get(descriptionControl)?.value);
-    movieData.append(movieGenreIdProperty, this.movieForm.get(genreControl)?.value);
-    movieData.append(
-      movieStartDateProperty,
-      (this.movieForm.get(showtimeRangeControl)?.get(startControl)?.value as Date).toDateString()
-    );
-    movieData.append(
-      movieEndDateProperty,
-      (this.movieForm.get(showtimeRangeControl)?.get(endControl)?.value as Date).toDateString()
-    );
-    movieData.append(movieDurationProperty, this.movieForm.get(durationControl)?.value);
-    movieData.append(movieCoverProperty, (this.movieForm.get(coverControl)?.value as FileInput).files[0]);
-
-    this.movieService.createMovie(movieData)
+    const imageData = new FormData();
+    imageData.append('content', (this.movieForm.get(imageControl)?.value as FileInput).files[0]);
+    this.movieService.uploadImage(imageData)
       .subscribe(
         {
+          next: (imageId: number) => {
+            const movie: Movie = {
+              title: this.movieForm.get(titleControl)?.value,
+              description: this.movieForm.get(descriptionControl)?.value,
+              genreId: this.movieForm.get(genreControl)?.value,
+              imageId: imageId,
+              startDate: this.movieForm.get(showtimeRangeControl)?.get(startControl)?.value,
+              endDate: this.movieForm.get(showtimeRangeControl)?.get(endControl)?.value,
+              durationInMinutes: this.movieForm.get(durationControl)?.value
+            };
+            this.movieService.createMovie(movie)
+              .subscribe(
+                {
+                  error: (error: HttpErrorResponse) => {
+                    this.snackbarService.showDangerSnackBar(error.error);
+                  },
+                  complete: () => {
+                    this.snackbarService.showSuccessSnackBar('Movie successfully created');
+                    this.closeDialog();
+                  }
+                }
+              );
+          },
           error: (error: HttpErrorResponse) => {
             this.snackbarService.showDangerSnackBar(error.error);
-          },
-          complete: () => {
-            this.snackbarService.showSuccessSnackBar('Movie successfully created');
-            this.closeDialog();
           }
         }
       );
@@ -149,8 +150,14 @@ export class MovieDialogComponent {
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
-      reader.onload = (event) => {
+      reader.onload = (event: ProgressEvent<FileReader>) => {
         this.url = event.target?.result as string;
+        this.imageService.checkImageAspectRatio(
+          this.url,
+          this.movieForm.get(imageControl) as AbstractControl,
+          2,
+          3
+        );
       };
     }
   }

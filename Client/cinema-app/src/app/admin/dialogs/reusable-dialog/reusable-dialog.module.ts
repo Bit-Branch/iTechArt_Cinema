@@ -10,11 +10,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 //Components
+import { TitleCaseDirective } from '@core/directives/title-case.directive';
 import { ReusableDialogComponent } from '@admin/dialogs/reusable-dialog/reusable-dialog.component';
 
 @NgModule({
   declarations: [
-    ReusableDialogComponent
+    ReusableDialogComponent,
+    TitleCaseDirective
   ],
   imports: [
     CommonModule,

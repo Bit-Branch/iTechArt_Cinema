@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CityService } from '@core/services/city.service';
@@ -15,7 +16,8 @@ import {
 
 @Component({
   selector: 'app-reusable-dialog',
-  templateUrl: './reusable-dialog.component.html'
+  templateUrl: './reusable-dialog.component.html',
+  styleUrls: ['./reusable-dialog.component.scss']
 })
 export class ReusableDialogComponent {
   page: CreationPageKeys;
