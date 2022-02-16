@@ -49,6 +49,6 @@ export class HallDialogComponent {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.dialogData);
   }
 }

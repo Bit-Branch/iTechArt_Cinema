@@ -133,8 +133,7 @@ export class CinemaDialogComponent {
   }
 
   openCreateCityDialog(): void {
-    const ref = this.dialog.open(ReusableDialogComponent, { data: 'city' });
-    ref.afterClosed().subscribe();
+    this.dialog.open(ReusableDialogComponent, { data: 'city' });
   }
 
   openCreateHallDialog(): void {

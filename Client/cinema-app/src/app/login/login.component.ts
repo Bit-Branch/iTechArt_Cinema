@@ -74,29 +74,29 @@ export class LoginComponent {
 
   switchPage(page: LoginPageKeys): void {
     switch (this.page = page) {
-    case registerPage:
-      this.form.get(confirmPasswordControl)?.enable();
-      break;
+      case registerPage:
+        this.form.get(confirmPasswordControl)?.enable();
+        break;
 
-    case loginPage:
-      this.form.get(confirmPasswordControl)?.disable();
-      break;
+      case loginPage:
+        this.form.get(confirmPasswordControl)?.disable();
+        break;
     }
   }
 
   activate(action: LoginPageKeys): void {
     switch (action) {
-    case loginPage:
-      this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
-      break;
+      case loginPage:
+        this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
+        break;
 
-    case registerPage:
-      this.register(
-        this.form.get(emailControl)?.value,
-        this.form.get(passwordControl)?.value,
-        this.form.get(confirmPasswordControl)?.value
-      );
-      break;
+      case registerPage:
+        this.register(
+          this.form.get(emailControl)?.value,
+          this.form.get(passwordControl)?.value,
+          this.form.get(confirmPasswordControl)?.value
+        );
+        break;
     }
   }
 

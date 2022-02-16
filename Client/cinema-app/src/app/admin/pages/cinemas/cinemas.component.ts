@@ -8,7 +8,7 @@ import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialo
   selector: 'app-cinemas',
   templateUrl: './cinemas.component.html'
 })
-export class CinemasComponent{
+export class CinemasComponent {
   constructor(private readonly dialog: MatDialog) {
   }
 
