@@ -1,17 +1,21 @@
 //Angular components
 import { Component } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { MatDialogRef } from '@angular/material/dialog';
 
 //Local components
 import { AuthService } from '@core/services/auth.service';
 import { SnackbarService } from '@core/services/snackbar.service';
+import { AuthenticationRequest } from '@core/models/authentication/authentication-request';
+import { RegistrationRequest } from '@core/models/registration/registration-request';
+import { regexValidator } from '@core/validators/regex-validator';
 import { noWhitespaceValidator } from '@shared/../core/validators/no-whitespace-validator';
 import { passwordsMatchValidator } from '@shared/../core/validators/passwords-match-validator';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { animations } from './login-animations';
-import { loginPageMessages, LoginPageKeys, LoginPageObject } from './login-page-messages';
+import { loginPageMessages, LoginPageKeys, LoginPageElements } from './login-page-messages';
 
 const emailControl = 'email';
 const passwordControl = 'password';
@@ -26,16 +30,16 @@ const loginPage = 'login';
   animations: animations
 })
 export class LoginComponent {
-  error = '';
+  readonly form: FormGroup;
   hidePassword = true;
   page: LoginPageKeys = loginPage;
-  form: FormGroup;
+  error = '';
 
   constructor(
-    private readonly ref: MatDialogRef<LoginComponent>,
     private readonly authService: AuthService,
     private readonly formBuilder: FormBuilder,
-    private readonly snackbarService: SnackbarService
+    private readonly snackbarService: SnackbarService,
+    private readonly ref: MatDialogRef<LoginComponent>
   ) {
     this.form = this.formBuilder.group(
       {
@@ -46,7 +50,18 @@ export class LoginComponent {
             Validators.required,
             Validators.minLength(8),
             noWhitespaceValidator(),
-            Validators.pattern(ValidationPatterns.PASSWORD_PATTERN)
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_LOWERCASE_CHARACTERS_PATTERN,
+              { noLowerCase: true }
+            ),
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_UPPERCASE_CHARACTERS_PATTERN,
+              { noUpperCase: true }
+            ),
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_NUMBERS_PATTERN,
+              { noNumbers: true }
+            )
           ]
         ],
         [confirmPasswordControl]: [
@@ -55,7 +70,18 @@ export class LoginComponent {
             Validators.required,
             Validators.minLength(8),
             noWhitespaceValidator(),
-            Validators.pattern(ValidationPatterns.PASSWORD_PATTERN)
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_LOWERCASE_CHARACTERS_PATTERN,
+              { noLowerCase: true }
+            ),
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_UPPERCASE_CHARACTERS_PATTERN,
+              { noUpperCase: true }
+            ),
+            regexValidator(
+              ValidationPatterns.HAS_ONE_OR_MORE_NUMBERS_PATTERN,
+              { noNumbers: true }
+            )
           ]
         ]
       },
@@ -68,7 +94,7 @@ export class LoginComponent {
     this.switchPage(this.page);
   }
 
-  get currentPageContent(): LoginPageObject {
+  get currentPageContent(): LoginPageElements {
     return loginPageMessages[this.page];
   }
 
@@ -87,15 +113,11 @@ export class LoginComponent {
   activate(action: LoginPageKeys): void {
     switch (action) {
       case loginPage:
-        this.login(this.form.get(emailControl)?.value, this.form.get(passwordControl)?.value);
+        this.login(this.form.value as AuthenticationRequest);
         break;
 
       case registerPage:
-        this.register(
-          this.form.get(emailControl)?.value,
-          this.form.get(passwordControl)?.value,
-          this.form.get(confirmPasswordControl)?.value
-        );
+        this.register(this.form.value as RegistrationRequest);
         break;
     }
   }
@@ -120,8 +142,8 @@ export class LoginComponent {
     return confirmPasswordControl;
   }
 
-  private register(email: string, password: string, confirmPassword: string): void {
-    this.authService.register(email, password, confirmPassword)
+  private register(registrationRequest: RegistrationRequest): void {
+    this.authService.register(registrationRequest)
       .subscribe(
         {
           next: (response: string) => {
@@ -137,8 +159,8 @@ export class LoginComponent {
       );
   }
 
-  private login(email: string, password: string): void {
-    this.authService.login(email, password)
+  private login(authRequest: AuthenticationRequest): void {
+    this.authService.login(authRequest)
       .subscribe(
         {
           error: (error: HttpErrorResponse) => {

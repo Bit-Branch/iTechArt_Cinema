@@ -1,20 +1,19 @@
 //Angular
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { MatSelectChange } from '@angular/material/select';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 //Local
 import { ValidationPatterns } from '@core/constants/validation-patterns';
-import { Cinema } from '@core/models/cinema';
-import { Hall } from '@core/models/hall';
-import { Movie } from '@core/models/movie';
-import { MovieSession } from '@core/models/movie-session';
-import { MovieSessionDate } from '@core/models/movie-session-date';
-import { SeatType } from '@core/models/seat-type';
-import { TicketPrice } from '@core/models/ticket-price';
+import { Cinema } from '@core/models/cinema/cinema';
+import { Hall } from '@core/models/hall/hall';
+import { CreateMovieSession } from '@core/models/movie-session/create-movie-session';
+import { Movie } from '@core/models/movie/movie';
+import { SeatType } from '@core/models/seat-type/seat-type';
+import { TicketPrice } from '@core/models/ticket-price/ticket-price';
 import { CinemaService } from '@core/services/cinema.service';
 import { HallService } from '@core/services/hall.service';
 import { MovieSessionService } from '@core/services/movie-session.service';
@@ -26,7 +25,6 @@ const cinemaControl = 'cinema';
 const hallControl = 'hall';
 const movieControl = 'movie';
 const showTimeControl = 'showTime';
-const favorControl = 'favor';
 const seatPriceControl = 'seatPrice';
 const seatPricesControl = 'seatPrices';
 const datesControl = 'dates';
@@ -34,26 +32,25 @@ const datesControl = 'dates';
 @Component({
   selector: 'app-movie-dialog-session',
   templateUrl: './movie-session-dialog.component.html',
-  styleUrls: ['./movie-session-dialog.component.scss']
+  styleUrls: ['../dialogs-shared.scss']
 })
 export class MovieSessionDialogComponent {
+  readonly sessionForm: FormGroup;
   movies: Movie[] = [];
   cinemas: Cinema[] = [];
   halls: Hall[] = [];
   ticketPrices: TicketPrice[] = [];
   seatTypes: SeatType[] = [];
-  sessionForm: FormGroup;
 
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly dialogRef: MatDialogRef<MovieSessionDialogComponent>,
-    private readonly dialog: MatDialog,
     private readonly snackbarService: SnackbarService,
     private readonly cinemaService: CinemaService,
     private readonly hallService: HallService,
     private readonly movieSessionService: MovieSessionService,
     private readonly movieService: MovieService,
-    private readonly seatTypeService: SeatTypeService
+    private readonly seatTypeService: SeatTypeService,
+    private readonly dialogRef: MatDialogRef<MovieSessionDialogComponent>,
+    private readonly fb: FormBuilder
   ) {
     this.sessionForm = this.fb.group({
       [cinemaControl]: [null, Validators.required],
@@ -79,10 +76,6 @@ export class MovieSessionDialogComponent {
 
   get hallControl(): string {
     return hallControl;
-  }
-
-  get favorControl(): string {
-    return favorControl;
   }
 
   get showTimeControl(): string {
@@ -125,21 +118,29 @@ export class MovieSessionDialogComponent {
   }
 
   onSubmit(): void {
-    const session: MovieSession = {
-      movieId: this.sessionForm.get(movieControl)?.value,
-      hallId: this.sessionForm.get(hallControl)?.value,
-      ticketPrices: this.ticketPrices,
-      showTime: this.sessionForm.get(showTimeControl)?.value,
-      movieSessionDates: this.convertPickedDatesToMovieSessionDates()
-    };
-    this.movieSessionService.createMovieSession(session)
+    const movieSessions: CreateMovieSession[] = [];
+    const sessionFormValue = this.sessionForm.value;
+    sessionFormValue[datesControl].forEach(
+      (chosenShowDate: Date) => {
+        movieSessions.push(
+          {
+            movieId: sessionFormValue[movieControl],
+            hallId: sessionFormValue[hallControl],
+            showTime: sessionFormValue[showTimeControl],
+            ticketPrices: this.ticketPrices,
+            showDate: chosenShowDate
+          }
+        );
+      }
+    );
+    this.movieSessionService.createMovieSessions(movieSessions)
       .subscribe(
         {
           error: (error: HttpErrorResponse) => {
             this.snackbarService.showDangerSnackBar(error.error);
           },
           complete: () => {
-            this.snackbarService.showSuccessSnackBar('Movie session was successfully created');
+            this.snackbarService.showSuccessSnackBar('Movie sessions was successfully created');
             this.closeDialog();
           }
         }
@@ -174,17 +175,5 @@ export class MovieSessionDialogComponent {
         this.seatPrices.push(seatPriceForm);
       }
     );
-  }
-
-  private convertPickedDatesToMovieSessionDates(): MovieSessionDate[] {
-    const movieSessionDates: MovieSessionDate[] = [];
-    this.sessionForm.get(datesControl)?.value.forEach(
-      (value: Date) => {
-        const movieSessionDate: MovieSessionDate = {
-          showDate: value
-        };
-        movieSessionDates.push(movieSessionDate);
-      });
-    return movieSessionDates;
   }
 }

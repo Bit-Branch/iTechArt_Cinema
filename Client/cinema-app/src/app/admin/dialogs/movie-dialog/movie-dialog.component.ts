@@ -1,21 +1,25 @@
 //External components
 import { FileInput, FileValidator } from 'ngx-material-file-input';
 
+import { switchMap } from 'rxjs';
+
 //Angular components
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
-import { Movie } from '@core/models/movie';
-import { Genre } from '@core/models/genre';
-import { ImageService } from '@core/services/image.service';
+import { Genre } from '@core/models/genre/genre';
+import { CreateMovie } from '@core/models/movie/create-movie';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { GenreService } from '@core/services/genre.service';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { MovieService } from '@core/services/movie.service';
-import { ReusableDialogComponent } from '@admin/dialogs/reusable-dialog/reusable-dialog.component';
+import { ImageService } from '@core/services/image.service';
+import { aspectRatioValidator } from '@core/validators/aspect-ratio-validator';
+import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
 /* 'size in mb' * 2 ** 20 */
 const imageMaxSizeInBytes = 0.5 * 2 ** 20;
@@ -27,17 +31,19 @@ const showtimeRangeControl = 'showtimeRange';
 const startControl = 'startDate';
 const endControl = 'endDate';
 const durationControl = 'durationInMinutes';
+const defaultMovieImageUrl = 'assets/movie-cover-default-image.png';
+const defaultMovieImageName = 'movie-cover-default-image.png';
 
 @Component({
   selector: 'app-movie-dialog',
   templateUrl: './movie-dialog.component.html',
-  styleUrls: ['./movie-dialog.component.scss']
+  styleUrls: ['../dialogs-shared.scss']
 })
-export class MovieDialogComponent {
+export class MovieDialogComponent implements OnInit {
+  readonly movieForm: FormGroup;
   genres: Genre[] = [];
   filteredGenres: Genre[] = [];
-  movieForm: FormGroup;
-  url = '';
+  url = defaultMovieImageUrl;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -49,7 +55,7 @@ export class MovieDialogComponent {
     private readonly dialogRef: MatDialogRef<MovieDialogComponent>
   ) {
     this.movieForm = this.formBuilder.group({
-      [imageControl]: [null, [Validators.required, FileValidator.maxContentSize(imageMaxSizeInBytes)]],
+      [imageControl]: [null, FileValidator.maxContentSize(imageMaxSizeInBytes), aspectRatioValidator(2, 3)],
       [titleControl]: [null, Validators.required],
       [descriptionControl]: [null, Validators.required],
       [genreControl]: [null, Validators.required],
@@ -59,6 +65,9 @@ export class MovieDialogComponent {
       }),
       [durationControl]: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
     });
+  }
+
+  ngOnInit(): void {
     this.getAllGenres();
   }
 
@@ -99,47 +108,50 @@ export class MovieDialogComponent {
   }
 
   openCreateGenreDialog(): void {
-    const ref = this.dialog.open(ReusableDialogComponent, { data: 'genre' });
+    const ref = this.dialog.open(CreationDialogComponent, { data: 'genre' });
     ref.afterClosed().subscribe(
-      (data: number) => {
-        if (data) {
+      (result: { isCreated: boolean, createdEntityId: number }) => {
+        if (result.isCreated) {
           this.getAllGenres();
         }
       }
     );
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     const imageData = new FormData();
-    imageData.append('content', (this.movieForm.get(imageControl)?.value as FileInput).files[0]);
+    let imageFile = (this.movieForm.get(imageControl)?.value as FileInput)?.files[0];
+    //if image is not uploaded - using default image
+    if (!imageFile) {
+      imageFile = await this.imageService.getImageFileFromUrl(defaultMovieImageUrl, defaultMovieImageName);
+    }
+    imageData.append('content', imageFile);
     this.movieService.uploadImage(imageData)
+      .pipe(
+        switchMap(
+          (imageId: number) => {
+            const movieFormValue = this.movieForm.value;
+            const movie: CreateMovie = {
+              title: movieFormValue[titleControl],
+              description: movieFormValue[descriptionControl],
+              genreId: movieFormValue[genreControl],
+              imageId: imageId,
+              showInCinemasStartDate: movieFormValue[showtimeRangeControl][startControl],
+              showInCinemasEndDate: movieFormValue[showtimeRangeControl][endControl],
+              durationInMinutes: movieFormValue[durationControl]
+            };
+            return this.movieService.createMovie(movie);
+          }
+        )
+      )
       .subscribe(
         {
-          next: (imageId: number) => {
-            const movie: Movie = {
-              title: this.movieForm.get(titleControl)?.value,
-              description: this.movieForm.get(descriptionControl)?.value,
-              genreId: this.movieForm.get(genreControl)?.value,
-              imageId: imageId,
-              startDate: this.movieForm.get(showtimeRangeControl)?.get(startControl)?.value,
-              endDate: this.movieForm.get(showtimeRangeControl)?.get(endControl)?.value,
-              durationInMinutes: this.movieForm.get(durationControl)?.value
-            };
-            this.movieService.createMovie(movie)
-              .subscribe(
-                {
-                  error: (error: HttpErrorResponse) => {
-                    this.snackbarService.showDangerSnackBar(error.error);
-                  },
-                  complete: () => {
-                    this.snackbarService.showSuccessSnackBar('Movie successfully created');
-                    this.closeDialog();
-                  }
-                }
-              );
-          },
           error: (error: HttpErrorResponse) => {
             this.snackbarService.showDangerSnackBar(error.error);
+          },
+          complete: () => {
+            this.snackbarService.showSuccessSnackBar('Movie successfully created');
+            this.closeDialog();
           }
         }
       );
@@ -150,14 +162,8 @@ export class MovieDialogComponent {
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
-      reader.onload = (event: ProgressEvent<FileReader>) => {
+      reader.onload = async (event: ProgressEvent<FileReader>) => {
         this.url = event.target?.result as string;
-        this.imageService.checkImageAspectRatio(
-          this.url,
-          this.movieForm.get(imageControl) as AbstractControl,
-          2,
-          3
-        );
       };
     }
   }

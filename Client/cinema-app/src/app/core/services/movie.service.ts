@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Movie } from '@core/models/movie';
+import { Movie } from '@core/models/movie/movie';
+import { CreateMovie } from '@core/models/movie/create-movie';
 import { environment } from '@environment/environment';
 
 @Injectable({
@@ -16,14 +17,14 @@ export class MovieService {
   }
 
   uploadImage(image: FormData): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/movies/create-image`, image);
+    return this.http.post<number>(`${environment.hostUrl}/api/movies/image`, image);
   }
 
-  createMovie(movie: Movie): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/movies/create`, movie);
+  createMovie(movie: CreateMovie): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/movies`, movie);
   }
 
   findAllBySearchTerm(term: string): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies?term=${term}`);
+    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies`, { params: new HttpParams().set('term', term) });
   }
 }

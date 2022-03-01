@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Favor } from '@core/models/favor';
+import { Favor } from '@core/models/favor/favor';
+import { CreateFavor } from '@core/models/favor/create-favor';
 import { environment } from '@environment/environment';
 
 @Injectable({
@@ -16,14 +17,14 @@ export class FavorService {
   }
 
   uploadImage(image: FormData): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/favors/create-image`, image);
+    return this.http.post<number>(`${environment.hostUrl}/api/favors/image`, image);
   }
 
-  createFavor(favor: Favor): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/favors/create`, favor);
+  createFavor(favor: CreateFavor): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/favors`, favor);
   }
 
-  findAllBySearchTerm(term?: string): Observable<Favor[]> {
-    return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors?term=${term}`);
+  findAllBySearchTerm(term: string): Observable<Favor[]> {
+    return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors`, { params: new HttpParams().set('term', term) });
   }
 }

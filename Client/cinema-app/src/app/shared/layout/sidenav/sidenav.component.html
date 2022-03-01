@@ -3,8 +3,8 @@
     class="sidenav mat-drawer"
     mode="side"
     opened
-    (mouseenter)="mouseenter()"
-    (mouseleave)="mouseleave()"
+    (mouseenter)="showSidenav()"
+    (mouseleave)="hideSidenav()"
     [@onSideNavChange]="isShowing ? 'open' : 'close'"
   >
     <mat-nav-list>

@@ -1,3 +1,4 @@
+//External
 import { Observable } from 'rxjs';
 
 //Angular
@@ -8,39 +9,42 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
-import { Cinema } from '@core/models/cinema';
-import { CinemaFavor } from '@core/models/cinema-favor';
-import { City } from '@core/models/city';
-import { Favor } from '@core/models/favor';
-import { Hall } from '@core/models/hall';
+import { City } from '@core/models/city/city';
+import { Favor } from '@core/models/favor/favor';
+import { Hall } from '@core/models/hall/hall';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
+import { CreateCinema } from '@core/models/cinema/create-cinema';
 import { CinemaService } from '@core/services/cinema.service';
 import { CityService } from '@core/services/city.service';
 import { FavorService } from '@core/services/favor.service';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { dialogsConfig } from '@core/configuration/dialogs-config';
 import { HallDialogComponent } from '@admin/dialogs/hall-dialog/hall-dialog.component';
-import { ReusableDialogComponent } from '@admin/dialogs/reusable-dialog/reusable-dialog.component';
+import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
 const nameControl = 'name';
 const cityControl = 'city';
 const addressControl = 'address';
-const favorPricesControl = 'favorPrices';
+const cinemaFavorsControl = 'cinemaFavors';
 const favorControl = 'favor';
-const favorPriceControl = 'favorPrice';
+const favorPriceControl = 'price';
 const cinemaNameMaxLength = 50;
 const cinemaAddressMaxLength = 100;
 
 @Component({
   selector: 'app-cinema-dialog',
   templateUrl: './cinema-dialog.component.html',
-  styleUrls: ['./cinema-dialog.component.scss']
+  styleUrls: ['./cinema-dialog.component.scss', '../dialogs-shared.scss']
 })
 export class CinemaDialogComponent {
+  readonly cinemaForm: FormGroup;
   cities: City[] = [];
   halls: Hall[] = [];
   favors: Favor[] = [];
-  cinemaForm: FormGroup;
+
+  searchFavors = (term: string): Observable<Favor[]> => {
+    return this.favorService.findAllBySearchTerm(term);
+  };
 
   constructor(
     private readonly fb: FormBuilder,
@@ -49,22 +53,22 @@ export class CinemaDialogComponent {
     private readonly snackbarService: SnackbarService,
     private readonly cinemaService: CinemaService,
     private readonly favorService: FavorService,
-    private dialogRef: MatDialogRef<CinemaDialogComponent>
+    private readonly dialogRef: MatDialogRef<CinemaDialogComponent>
   ) {
     this.cinemaForm = this.fb.group({
       [nameControl]: [null, Validators.required],
       [cityControl]: [null, Validators.required],
       [addressControl]: [null, Validators.required],
-      [favorPricesControl]: this.fb.array([])
+      [cinemaFavorsControl]: this.fb.array([])
     });
   }
 
   get favorPrices(): FormArray {
-    return this.cinemaForm.get(favorPricesControl) as FormArray;
+    return this.cinemaForm.get(cinemaFavorsControl) as FormArray;
   }
 
   get favorForms(): FormGroup[] {
-    return (this.cinemaForm.get(favorPricesControl) as FormArray).controls as FormGroup[];
+    return (this.cinemaForm.get(cinemaFavorsControl) as FormArray).controls as FormGroup[];
   }
 
   get nameControl(): string {
@@ -96,12 +100,20 @@ export class CinemaDialogComponent {
   }
 
   onSubmit(): void {
-    const cinema: Cinema = {
-      name: this.cinemaForm.get(nameControl)?.value,
-      address: this.cinemaForm.get(addressControl)?.value,
-      cityId: this.cinemaForm.get(cityControl)?.value,
+    const cinemaFormValue = this.cinemaForm.value;
+    const cinema: CreateCinema = {
+      name: cinemaFormValue[nameControl],
+      address: cinemaFormValue[addressControl],
+      cityId: cinemaFormValue[cityControl],
       halls: this.halls,
-      cinemaFavors: this.convertFavorPricesFormArrayToCinemaFavors()
+      cinemaFavors: cinemaFormValue[cinemaFavorsControl].map(
+        (item: { [favorControl]: number, [favorPriceControl]: number }) => {
+          return {
+            favorId: item[favorControl],
+            price: item[favorPriceControl]
+          };
+        }
+      )
     };
     this.cinemaService.createCinema(cinema)
       .subscribe(
@@ -128,12 +140,8 @@ export class CinemaDialogComponent {
       );
   }
 
-  searchFavors(term: string): Observable<Favor[]> {
-    return this.favorService.findAllBySearchTerm(term);
-  }
-
   openCreateCityDialog(): void {
-    this.dialog.open(ReusableDialogComponent, { data: 'city' });
+    this.dialog.open(CreationDialogComponent, { data: 'city' });
   }
 
   openCreateHallDialog(): void {
@@ -172,18 +180,5 @@ export class CinemaDialogComponent {
 
   closeDialog(): void {
     this.dialogRef.close();
-  }
-
-  private convertFavorPricesFormArrayToCinemaFavors(): CinemaFavor[] {
-    const cinemaFavors: CinemaFavor[] = [];
-    this.favorForms.forEach(
-      (value: FormGroup) => {
-        const cinemaFavor: CinemaFavor = {
-          favorId: value.get(favorControl)?.value,
-          price: value.get(favorPriceControl)?.value
-        };
-        cinemaFavors.push(cinemaFavor);
-      });
-    return cinemaFavors;
   }
 }

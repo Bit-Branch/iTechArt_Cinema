@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Cinema } from '@core/models/cinema';
+import { Cinema } from '@core/models/cinema/cinema';
+import { CreateCinema } from '@core/models/cinema/create-cinema';
 import { environment } from '@environment/environment';
 
 @Injectable({
@@ -15,8 +16,8 @@ export class CinemaService {
   ) {
   }
 
-  createCinema(cinema: Cinema): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/cinemas/create`, cinema);
+  createCinema(cinema: CreateCinema): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/cinemas`, cinema);
   }
 
   getAllCinemas(): Observable<Cinema[]> {
@@ -24,6 +25,9 @@ export class CinemaService {
   }
 
   findAllBySearchTerm(term: string): Observable<Cinema[]> {
-    return this.http.get<Cinema[]>(`${environment.hostUrl}/api/cinemas?term=${term}`);
+    return this.http.get<Cinema[]>(
+      `${environment.hostUrl}/api/cinemas`,
+      { params: new HttpParams().set('term', term) }
+    );
   }
 }

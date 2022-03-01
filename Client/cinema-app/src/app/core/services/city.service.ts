@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { City } from '@core/models/city';
+import { City } from '@core/models/city/city';
+import { CreateCity } from '@core/models/city/create-city';
 import { environment } from '@environment/environment';
 
 @Injectable({
@@ -15,11 +16,11 @@ export class CityService {
   ) {
   }
 
-  createCity(city: City): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/cities/create`, city);
+  createCity(city: CreateCity): Observable<number> {
+    return this.http.post<number>(`${environment.hostUrl}/api/cities`, city);
   }
 
   findAllBySearchTerm(term: string): Observable<City[]> {
-    return this.http.get<City[]>(`${environment.hostUrl}/api/cities?term=${term}`);
+    return this.http.get<City[]>(`${environment.hostUrl}/api/cities`, { params: new HttpParams().set('term', term) });
   }
 }

@@ -5,23 +5,28 @@
     </mat-card-header>
 
     <mat-card-content>
+
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <input
               matInput
-              [formControlName]="titleControl"
               placeholder="Title"
+              [formControlName]="titleControl"
             >
+
             <mat-error *ngIf="movieForm.get(titleControl)?.getError('required')">
               Title is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <img [src]="url" height="200">
           <mat-form-field class="full-width">
             <br>
@@ -34,10 +39,6 @@
             </ngx-mat-file-input>
             <mat-icon matSuffix>attach_file</mat-icon>
 
-            <mat-error *ngIf="movieForm.get(coverControl)?.getError('required')">
-              You need to upload cover
-            </mat-error>
-
             <mat-error *ngIf="movieForm.get(coverControl)?.getError('maxContentSize')">
               The total size must not exceed
               {{ movieForm.get(coverControl)?.getError('maxContentSize').maxSize | byteFormat }}
@@ -48,11 +49,13 @@
               Image ratio need to be approximately 2:3 (width:height)
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <mat-select placeholder="Select genre" [formControlName]="genreControl">
               <mat-option>
@@ -69,15 +72,18 @@
                 </button>
               </div>
             </mat-select>
+
             <mat-error *ngIf="movieForm.get(genreControl)?.getError('required')">
               Genre is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <mat-label>Enter a date range</mat-label>
             <mat-date-range-input [formGroup]="showtimeRange" [rangePicker]="picker">
@@ -96,56 +102,70 @@
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
+
             <mat-error
-              *ngIf="showtimeRange.get(startControl)?.getError('required') ||
-              showtimeRange.get(endControl)?.getError('required')"
+              *ngIf="showtimeRange.get(startControl)?.getError('required')
+              || showtimeRange.get(endControl)?.getError('required')"
             >
               Please specify date range
             </mat-error>
+
             <mat-error *ngIf="showtimeRange.get(startControl)?.getError('matStartDateInvalid')">
               Invalid start date
             </mat-error>
+
             <mat-error *ngIf="showtimeRange.get(endControl)?.getError('matEndDateInvalid')">
               Invalid end date
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <input matInput placeholder="Enter movie duration (in minutes)" [formControlName]="durationControl">
+
             <mat-error *ngIf="movieForm.get(durationControl)?.getError('required')">
               Duration is <strong>required</strong>
             </mat-error>
+
             <mat-error *ngIf="movieForm.get(durationControl)?.getError('pattern')">
               Only nonnegative numbers is allowed
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <textarea matInput placeholder="Description" [formControlName]="descriptionControl">
             </textarea>
+
             <mat-error *ngIf="movieForm.get(descriptionControl)?.getError('required')">
               Description is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
     </mat-card-content>
+
     <mat-card-actions>
       <mat-error *ngIf="movieForm.invalid">
         Please fill all fields with data.
       </mat-error>
+
       <button mat-stroked-button type="submit" [disabled]="movieForm.invalid">
         Create
       </button>
+
       <button mat-raised-button type="button" (click)="closeDialog()">
         Cancel
       </button>

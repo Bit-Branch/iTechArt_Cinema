@@ -7,7 +7,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environment/environment';
-import { AuthResponse } from '@core/models/auth-response';
+import { Roles } from '@core/constants/roles';
+import { AuthenticationRequest } from '@core/models/authentication/authentication-request';
+import { RegistrationRequest } from '@core/models/registration/registration-request';
+import { AuthenticationResponse } from '@core/models/authentication/authentication-response';
 
 const tokenId = 'id_token';
 
@@ -21,18 +24,15 @@ export class AuthService {
   ) {
   }
 
-  register(email: string, password: string, confirmPassword: string): Observable<string> {
-    return this.http.post(
-      `${environment.hostUrl}/api/users/register`,
-      { email, password, confirmPassword },
-      { responseType: 'text' }
+  register(registrationRequest: RegistrationRequest): Observable<string> {
+    return this.http.post(`${environment.hostUrl}/api/users/register`, registrationRequest, { responseType: 'text' }
     );
   }
 
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.hostUrl}/api/users/authenticate`, { email, password })
+  login(authRequest: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${environment.hostUrl}/api/users/authenticate`, authRequest)
       .pipe(
-        tap((response: AuthResponse) => this.setSession(response.token))
+        tap((response: AuthenticationResponse) => this.setSession(response.token))
       );
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
   isAdmin(): boolean {
     if (this.isLoggedIn()) {
       const decodedToken = this.jwtHelper.decodeToken<{ role: string }>(this.getToken() as string);
-      return decodedToken.role === 'Admin';
+      return decodedToken.role === Roles.ADMIN;
     }
     return false;
   }

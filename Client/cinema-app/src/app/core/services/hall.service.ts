@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Hall } from '@core/models/hall';
+import { Hall } from '@core/models/hall/hall';
 import { environment } from '@environment/environment';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class HallService {
   }
 
   createHall(hall: Hall): Observable<number> {
-    return this.http.post<number>(`${environment.hostUrl}/api/halls/create`, hall);
+    return this.http.post<number>(`${environment.hostUrl}/api/halls`, hall);
   }
 
   findAllByCinemaId(id: number): Observable<Hall[]> {
-    return this.http.get<Hall[]>(`${environment.hostUrl}/api/halls?cinemaId=${id}`);
+    return this.http.get<Hall[]>(`${environment.hostUrl}/api/halls`, { params: new HttpParams().set('cinemaId', id) });
   }
 }

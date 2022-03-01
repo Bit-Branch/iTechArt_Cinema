@@ -1,7 +1,6 @@
-import { Observable } from 'rxjs';
-
 import { Injectable } from '@angular/core';
-import { CanLoad, Router, UrlTree } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
+
 import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '@core/services/auth.service';
@@ -18,7 +17,7 @@ export class AdminAuthGuard implements CanLoad {
   ) {
   }
 
-  canLoad(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canLoad(): boolean {
     if (this.authService.isAdmin()) {
       return true;
     } else {

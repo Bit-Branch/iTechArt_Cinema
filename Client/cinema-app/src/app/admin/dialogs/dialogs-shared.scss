@@ -1,0 +1,50 @@
+@import "src/colors";
+
+:host {
+  .full-width {
+    width: 100%;
+  }
+
+  .card {
+    min-width: 120px;
+  }
+
+  .mat-radio-button {
+    display: block;
+    margin: 5px 0;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .row-overflow {
+    overflow-y: scroll;
+    height: 150px;
+  }
+
+  .col {
+    flex: 1;
+    margin-right: 20px;
+
+    :last-child {
+      margin-right: 0;
+    }
+  }
+
+  ::ng-deep {
+    .mat-form-field.mat-focused .mat-form-field-label {
+      color: $blue;
+    }
+
+    .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+      background-color: $blue;
+    }
+  }
+
+  .mat-stroked-button:enabled {
+    background: linear-gradient(to right, $blue, $green);
+    color: rgb(27, 27, 27);
+  }
+}

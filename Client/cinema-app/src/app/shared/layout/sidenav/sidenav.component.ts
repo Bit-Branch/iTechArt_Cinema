@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { animations } from './sidenav-animations';
+import { animations, sidenavOpenAnimationTimeInMilliseconds } from './sidenav-animations';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,12 +12,13 @@ export class SidenavComponent {
   isShowing = false;
   linkText = false;
 
-  mouseenter() {
+  showSidenav() {
     this.isShowing = true;
-    setTimeout(() => this.linkText = this.isShowing, 200);
+    //show text of sidenav menu after open/close animation was played
+    setTimeout(() => this.linkText = this.isShowing, sidenavOpenAnimationTimeInMilliseconds + 50);
   }
 
-  mouseleave() {
+  hideSidenav() {
     this.isShowing = false;
     this.linkText = false;
   }

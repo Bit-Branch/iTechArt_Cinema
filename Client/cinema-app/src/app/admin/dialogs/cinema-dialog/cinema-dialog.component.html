@@ -3,9 +3,12 @@
     <mat-card-header>
       <mat-card-title>Create cinema</mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
+
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <input
               matInput
@@ -13,15 +16,18 @@
               [formControlName]="nameControl"
               [maxlength]="cinemaNameMaxLength"
             >
+
             <mat-error *ngIf="cinemaForm.get(nameControl)?.getError('required')">
               Cinema name is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <mat-select placeholder="City" [formControlName]="cityControl">
               <mat-option>
@@ -42,15 +48,18 @@
                 </button>
               </div>
             </mat-select>
+
             <mat-error *ngIf="cinemaForm.get(cityControl)?.getError('required')">
               City is required
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <textarea
               matInput
@@ -59,27 +68,34 @@
               [maxlength]="cinemaAddressMaxLength"
             >
             </textarea>
+
             <mat-error *ngIf="cinemaForm.get(addressControl)?.getError('required')">
               Address is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <h4>Current hall count: {{ halls.length }}</h4>
+
         </div>
       </div>
 
       <div class="row">
+
         <button mat-button type="button" (click)="openCreateHallDialog()">
           <mat-icon>add</mat-icon>
           Add new hall
         </button>
+
       </div>
 
       <div class="row row-overflow">
+
         <mat-nav-list>
           <mat-list-item *ngFor="let hall of halls; let i = index" role="listitem">
             <span matLine>
@@ -93,64 +109,84 @@
             </button>
           </mat-list-item>
         </mat-nav-list>
+
         <mat-error *ngIf="halls.length === 0">
           Please create at least one hall
         </mat-error>
+
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-label>Favors:</mat-label>
           <button mat-button type="button" (click)="addFavorPriceForm()">
             <mat-icon>add</mat-icon>
             Add
           </button>
+
         </div>
       </div>
 
       <ng-container *ngFor="let favorForm of favorForms; let i = index">
+
         <div [formGroup]="favorForm" class="row">
           <div class="col">
+
             <app-search-select
               class="full-width"
+              selectPlaceholder="Select favor"
+              searchInputPlaceholder="Type favor name here..."
+              bindValue="id"
+              bindLabel="name"
               [formControlName]="favorControl"
-              [selectPlaceholder]="'Select favor'"
-              [searchInputPlaceholder]="'Type favor name here...'"
-              [searchFunction]="searchFavors.bind(this)"
-              [propertyToDisplayInOption]="'name'"
+              [searchFunction]="searchFavors"
             >
             </app-search-select>
+
             <mat-error *ngIf="favorForm.get(favorControl)?.getError('required')">
               You need to chose the favor
             </mat-error>
           </div>
+
           <div class="col">
+
             <mat-form-field class="full-width">
               <input matInput placeholder="Enter price for this favor" [formControlName]="favorPriceControl">
+
               <mat-error *ngIf="favorForm.get(favorPriceControl)?.getError('required')">
                 Favor price is <strong>required</strong>
               </mat-error>
+
               <mat-error *ngIf="favorForm.get(favorPriceControl)?.getError('pattern')">
                 Only nonnegative numbers is allowed
               </mat-error>
             </mat-form-field>
+
           </div>
+
           <div class="col">
+
             <button mat-icon-button type="button" (click)="deleteFavorPriceForm(i)">
               <mat-icon>delete</mat-icon>
             </button>
+
           </div>
         </div>
+
       </ng-container>
 
     </mat-card-content>
+
     <mat-error *ngIf="cinemaForm.invalid">
       Please fill all fields with data.
     </mat-error>
+
     <mat-card-actions>
       <button mat-stroked-button type="submit" [disabled]="cinemaForm.invalid">
         Create
       </button>
+
       <button mat-raised-button type="button" (click)="closeDialog()">
         Cancel
       </button>

@@ -5,19 +5,24 @@
     </mat-card-header>
 
     <mat-card-content>
+
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <input matInput placeholder="Name" [formControlName]="nameControl">
+
             <mat-error *ngIf="favorForm.get(nameControl)?.hasError('required')">
               Name is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <img [src]="url" height="200">
           <mat-form-field class="full-width">
             <ngx-mat-file-input
@@ -28,30 +33,47 @@
             >
             </ngx-mat-file-input>
             <mat-icon matSuffix>attach_file</mat-icon>
+
+            <mat-error *ngIf="favorForm.get(imageControl)?.getError('maxContentSize')">
+              The total size must not exceed
+              {{ favorForm.get(imageControl)?.getError('maxContentSize').maxSize | byteFormat }}
+              ( {{ favorForm.get(imageControl)?.getError('maxContentSize').actualSize | byteFormat }} ).
+            </mat-error>
+
+            <mat-error *ngIf="favorForm.get(imageControl)?.getError('invalidAspectRatio')">
+              Image ratio need to be approximately 4:3 (width:height)
+            </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+
           <mat-form-field class="full-width">
             <textarea matInput placeholder="Description" [formControlName]="descriptionControl">
             </textarea>
+
             <mat-error *ngIf="favorForm.get(descriptionControl)?.hasError('required')">
               Description is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </div>
+
     </mat-card-content>
 
     <mat-card-actions>
       <mat-error *ngIf="favorForm.invalid">
         Please fill all fields with data.
       </mat-error>
+
       <button mat-stroked-button type="submit" [disabled]="favorForm.invalid">
         Create
       </button>
+
       <button mat-raised-button type="button" (click)="closeDialog()">
         Cancel
       </button>

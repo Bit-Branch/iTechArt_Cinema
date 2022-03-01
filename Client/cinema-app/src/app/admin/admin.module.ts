@@ -1,4 +1,5 @@
 //Angular modules
+import { AdminPagesModule } from '@admin/pages/admin-pages.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,11 +10,7 @@ import { HallDialogModule } from '@admin/dialogs/hall-dialog/hall-dialog.module'
 import { MovieSessionDialogModule } from '@admin/dialogs/movie-session-dialog/movie-session-dialog.module';
 import { MovieDialogModule } from '@admin/dialogs/movie-dialog/movie-dialog.module';
 import { FavorDialogModule } from '@admin/dialogs/favor-dialog/favor-dialog.module';
-import { ReusableDialogModule } from '@admin/dialogs/reusable-dialog/reusable-dialog.module';
-import { CinemasModule } from '@admin/pages/cinemas/cinemas.module';
-import { FavorsModule } from '@admin/pages/favors/favors.module';
-import { MovieSessionsModule } from '@admin/pages/movie-sessions/movie-sessions.module';
-import { MoviesModule } from '@admin/pages/movies/movies.module';
+import { CreationDialogModule } from '@admin/dialogs/creation-dialog/creation-dialog.module';
 
 @NgModule({
   imports: [
@@ -24,11 +21,8 @@ import { MoviesModule } from '@admin/pages/movies/movies.module';
     FavorDialogModule,
     HallDialogModule,
     AdminRoutingModule,
-    ReusableDialogModule,
-    MoviesModule,
-    CinemasModule,
-    FavorsModule,
-    MovieSessionsModule
+    CreationDialogModule,
+    AdminPagesModule
   ]
 })
 export class AdminModule {

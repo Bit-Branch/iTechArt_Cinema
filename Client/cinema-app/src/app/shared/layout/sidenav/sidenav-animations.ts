@@ -1,5 +1,8 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
+export const sidenavOpenAnimationTimeInMilliseconds = 150;
+export const sidenavCloseAnimationTimeInMilliseconds = 150;
+
 export const animations = [
   trigger(
     'onSideNavChange',
@@ -20,8 +23,8 @@ export const animations = [
           }
         )
       ),
-      transition('close => open', animate('150ms ease-in')),
-      transition('open => close', animate('150ms ease-in'))
+      transition('close => open', animate(`${sidenavOpenAnimationTimeInMilliseconds}ms ease-in`)),
+      transition('open => close', animate(`${sidenavCloseAnimationTimeInMilliseconds}ms ease-in`))
     ]
   ),
 
@@ -44,8 +47,8 @@ export const animations = [
           }
         )
       ),
-      transition('close => open', animate('150ms ease-in')),
-      transition('open => close', animate('150ms ease-in'))
+      transition('close => open', animate(`${sidenavOpenAnimationTimeInMilliseconds}ms ease-in`)),
+      transition('open => close', animate(`${sidenavCloseAnimationTimeInMilliseconds}ms ease-in`))
     ]
   ),
 
@@ -70,8 +73,8 @@ export const animations = [
           }
         )
       ),
-      transition('close => open', animate('150ms ease-in')),
-      transition('open => close', animate('150ms ease-out'))
+      transition('close => open', animate(`${sidenavOpenAnimationTimeInMilliseconds}ms ease-in`)),
+      transition('open => close', animate(`${sidenavCloseAnimationTimeInMilliseconds}ms ease-in`))
     ]
   )
 ];

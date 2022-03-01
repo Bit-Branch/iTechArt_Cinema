@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 //Components
 import { HallDialogComponent } from '@admin/dialogs/hall-dialog/hall-dialog.component';
@@ -33,10 +33,6 @@ import { HallDialogComponent } from '@admin/dialogs/hall-dialog/hall-dialog.comp
     MatListModule,
     DragDropModule,
     MatDialogModule
-  ],
-  providers: [
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }
   ]
 })
 export class HallDialogModule {

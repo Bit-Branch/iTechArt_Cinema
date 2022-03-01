@@ -2,11 +2,14 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
-import { Hall } from '@core/models/hall';
+import { Hall } from '@core/models/hall/hall';
+import { CreateHall } from '@core/models/hall/create-hall';
+import { SeatType } from '@core/models/seat-type/seat-type';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
+import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
 const nameControl = 'name';
 const seatsCountControl = 'seatsCount';
@@ -14,14 +17,16 @@ const seatsCountControl = 'seatsCount';
 @Component({
   selector: 'app-hall-dialog',
   templateUrl: './hall-dialog.component.html',
-  styleUrls: ['./hall-dialog.component.scss']
+  styleUrls: ['./hall-dialog.component.scss', '../dialogs-shared.scss']
 })
 export class HallDialogComponent {
-  hallForm: FormGroup;
+  readonly hallForm: FormGroup;
+  seatTypes: SeatType[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
-    private dialogRef: MatDialogRef<HallDialogComponent>,
+    private readonly dialog: MatDialog,
+    private readonly dialogRef: MatDialogRef<HallDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private dialogData: Hall
   ) {
     this.hallForm = this.fb.group({
@@ -40,10 +45,14 @@ export class HallDialogComponent {
     return seatsCountControl;
   }
 
+  openCreateSeatTypeDialog(): void {
+    this.dialog.open(CreationDialogComponent, { data: 'seatType' });
+  }
+
   onSubmit(): void {
-    const hall: Hall = {
+    const hall: CreateHall = {
       name: this.hallForm.get(nameControl)?.value,
-      seats: []
+      seats: [] //WIP implementing seating plan feature
     };
     this.dialogRef.close(hall);
   }
