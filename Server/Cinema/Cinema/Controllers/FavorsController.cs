@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Runtime.InteropServices;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Favor;
 using CinemaApp.Application.Interfaces;
@@ -8,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class FavorsController : ControllerBase
     {
@@ -20,31 +20,25 @@ namespace CinemaApp.WebApi.Controllers
             _imageService = imageService;
         }
 
-        [HttpPost("Create-image")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("image")]
         public async Task<IActionResult> CreateFavorImage([FromForm] CreateFavorImageDto createImageDto)
         {
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateFavor([FromBody] CreateFavorDto favorDto)
         {
             return Ok(await _favorService.CreateFavorAsync(favorDto));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFavors([Optional] [FromQuery] string term)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFavors([FromQuery] string? term)
         {
-            var favors = term != null
-                ? await _favorService.FindAllByTermAsync(term)
-                : await _favorService.GetAllAsync();
-
-            if (favors == null)
-            {
-                return NotFound();
-            }
+            var favors = term == null
+                ? await _favorService.GetAllAsync()
+                : await _favorService.FindAllByTermAsync(term);
 
             return Ok(favors);
         }

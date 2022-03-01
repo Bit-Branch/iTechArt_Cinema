@@ -7,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/seat-types")]
     public class SeatTypesController : ControllerBase
     {
@@ -17,22 +18,28 @@ namespace CinemaApp.WebApi.Controllers
             _seatTypeService = seatTypeService;
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateSeatType([FromBody] CreateSeatTypeDto seatTypeDto)
         {
             return Ok(await _seatTypeService.CreateSeatTypeAsync(seatTypeDto));
         }
-
+        
         [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSeatTypes([FromQuery] string? term)
+        {
+            var seatTypes = term == null
+                ? await _seatTypeService.GetAllAsync()
+                : await _seatTypeService.FindAllByTermAsync(term);
+
+            return Ok(seatTypes);
+        }
+
+        [HttpGet("Get-by-hall")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetSeatTypesByHallId([FromQuery] int hallId)
         {
             var seatTypes = await _seatTypeService.FindAllByHallIdAsync(hallId);
-
-            if (seatTypes == null)
-            {
-                return NotFound();
-            }
 
             return Ok(seatTypes);
         }

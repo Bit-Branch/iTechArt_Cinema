@@ -20,10 +20,10 @@ namespace CinemaApp.Application.DTOs.Movie
         public long ImageId { get; set; }
         
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateTime ShowInCinemasStartDate { get; set; }
         
         [Required]
-        public DateTime EndDate { get; set; }
+        public DateTime ShowInCinemasEndDate { get; set; }
         
         [Required]
         [Min(0)]

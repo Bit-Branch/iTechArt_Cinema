@@ -18,8 +18,8 @@ namespace CinemaApp.Application.DTOs.Cinema
         public int CityId { get; set; }
         
         [Required]
-        public ICollection<CreateHallDto> Halls { get; set; }
+        public IEnumerable<CreateHallDto> Halls { get; set; }
         
-        public ICollection<CreateCinemaFavorDto> CinemaFavors { get; set; }
+        public IEnumerable<CreateCinemaFavorDto> CinemaFavors { get; set; }
     }
 }

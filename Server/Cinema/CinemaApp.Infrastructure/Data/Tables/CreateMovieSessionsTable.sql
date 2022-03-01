@@ -2,6 +2,7 @@
 (
     Id       BIGINT IDENTITY (1,1) NOT NULL,
     ShowTime TIME(0)               NOT NULL,
+    ShowDate DATE                  NOT NULL,
     MovieId  INT                   NOT NULL,
     HallId   INT                   NOT NULL,
     CONSTRAINT PK_MovieSessions PRIMARY KEY CLUSTERED (Id ASC),

@@ -7,6 +7,6 @@ namespace CinemaApp.Application.Interfaces
         Task<int> CreateCityAsync(CreateCityDto createCityDto);
         Task<IEnumerable<CityDto>> GetAllAsync();
         Task<IEnumerable<CityDto>> FindAllByTermAsync(string term);
-        bool CheckForDuplicates(CreateCityDto createCityDto);
+        bool DuplicatesExists(CreateCityDto createCityDto);
     }
 }

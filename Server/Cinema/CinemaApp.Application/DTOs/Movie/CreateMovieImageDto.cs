@@ -6,7 +6,7 @@ namespace CinemaApp.Application.DTOs.Movie
 {
     public class CreateMovieImageDto
     {
-        [MaxFileSize(0.5 * 1024 * 1024)]
+        [MaxFileSizeInMegabytes(0.5)]
         [AllowedExtensions(new[] {ImageFileExtensions.JpegExtension, ImageFileExtensions.PngExtension})]
         [ExpectedImageAspectRatio(2, 3)]
         public IFormFile Content { get; set; }

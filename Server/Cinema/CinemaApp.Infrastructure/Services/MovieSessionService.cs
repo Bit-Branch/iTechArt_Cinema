@@ -17,15 +17,16 @@ namespace CinemaApp.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<long> CreateMovieSessionAsync(CreateMovieSessionDto createMovieSessionDto)
+        public async Task CreateMovieSessionsAsync(CreateMovieSessionDto[] movieSessionDtos)
         {
-            var movieSession = _mapper.Map<MovieSession>(createMovieSessionDto);
+            foreach (var movieSessionDto in movieSessionDtos)
+            {
+                var movieSession = _mapper.Map<MovieSession>(movieSessionDto);
 
-            await _context.MovieSessions.AddAsync(movieSession);
+                await _context.MovieSessions.AddAsync(movieSession);
+            }
 
             await _context.SaveChangesAsync();
-
-            return movieSession.Id;
         }
     }
 }

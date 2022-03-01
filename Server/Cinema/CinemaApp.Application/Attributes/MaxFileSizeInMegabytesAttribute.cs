@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CinemaApp.Application.Attributes
 {
-    public class MaxFileSizeAttribute : ValidationAttribute
+    public class MaxFileSizeInMegabytesAttribute : ValidationAttribute
     {
         private readonly double _maxFileSize;
 
-        public MaxFileSizeAttribute(double maxFileSize)
+        public MaxFileSizeInMegabytesAttribute(double maxFileSize)
         {
             _maxFileSize = maxFileSize;
         }
@@ -16,9 +16,10 @@ namespace CinemaApp.Application.Attributes
         {
             if (value is IFormFile file)
             {
-                if (file.Length > _maxFileSize)
+                //converting _maxFileSize from megabytes to bytes
+                if (file.Length > _maxFileSize * Math.Pow(1024, 2))
                 {
-                    return new ValidationResult($"Maximum allowed file size is {_maxFileSize} bytes.");
+                    return new ValidationResult($"Maximum allowed file size is {_maxFileSize} megabytes.");
                 }
 
                 return ValidationResult.Success;

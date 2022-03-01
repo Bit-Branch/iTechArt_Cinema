@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CinemaApp.Application.DTOs.MovieSessionDate;
 using CinemaApp.Application.DTOs.TicketPrice;
 
 namespace CinemaApp.Application.DTOs.MovieSession
@@ -16,9 +15,9 @@ namespace CinemaApp.Application.DTOs.MovieSession
         public int HallId { get; set; }
         
         [Required]
-        public ICollection<CreateTicketPriceDto> TicketPrices { get; set; }
+        public DateTime ShowDate { get; set; }
         
         [Required]
-        public ICollection<CreateMovieSessionDateDto> MovieSessionDates { get; set; }
+        public IEnumerable<CreateTicketPriceDto> TicketPrices { get; set; }
     }
 }

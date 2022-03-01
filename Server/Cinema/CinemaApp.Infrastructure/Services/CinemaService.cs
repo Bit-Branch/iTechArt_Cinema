@@ -30,7 +30,7 @@ namespace CinemaApp.Infrastructure.Services
             return cinema.Id;
         }
 
-        public async Task<CinemaDto?> GetCinemaById(int id)
+        public async Task<CinemaDto?> GetCinemaByIdAsync(int id)
         {
             var cinema = await _context.Cinemas
                 .Where(m => m.Id == id)

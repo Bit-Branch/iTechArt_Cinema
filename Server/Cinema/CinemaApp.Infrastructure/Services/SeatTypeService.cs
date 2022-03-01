@@ -29,6 +29,21 @@ namespace CinemaApp.Infrastructure.Services
 
             return seatType.Id;
         }
+        
+        public async Task<IEnumerable<SeatTypeDto>> GetAllAsync()
+        {
+            return await _context.SeatTypes
+                .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<SeatTypeDto>> FindAllByTermAsync(string term)
+        {
+            return await _context.SeatTypes
+                .Where(st => st.Name.StartsWith(term))
+                .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
 
         public async Task<IEnumerable<SeatTypeDto>> FindAllByHallIdAsync(int hallId)
         {

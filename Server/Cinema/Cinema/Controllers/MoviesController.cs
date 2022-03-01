@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Movie;
@@ -8,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
@@ -20,24 +20,23 @@ namespace CinemaApp.WebApi.Controllers
             _imageService = imageService;
         }
 
-        [HttpPost("Create-image")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("image")]
         public async Task<IActionResult> CreateMovieImage([FromForm] CreateMovieImageDto createImageDto)
         {
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto movie)
         {
             return Ok(await _movieService.CreateMovieAsync(movie));
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetMovie(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMovie(int id)
         {
-            var movie = _movieService.GetMovieById(id);
+            var movie = await _movieService.GetMovieByIdAsync(id);
 
             if (movie == null)
             {
@@ -48,16 +47,12 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMovies([Optional] [FromQuery] string term)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMovies([FromQuery] string? term)
         {
-            var movies = term != null
-                ? await _movieService.FindAllByTermAsync(term)
-                : await _movieService.GetAllAsync();
-
-            if (movies == null)
-            {
-                return NotFound();
-            }
+            var movies = term == null
+                ? await _movieService.GetAllAsync()
+                : await _movieService.FindAllByTermAsync(term);
 
             return Ok(movies);
         }

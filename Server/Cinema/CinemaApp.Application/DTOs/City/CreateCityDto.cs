@@ -7,7 +7,7 @@ namespace CinemaApp.Application.DTOs.City
     {
         [Required]
         [StringLength(189)]
-        [TitleCase]
+        [SentenceCase]
         public string Name { get; set; }
     }
 }

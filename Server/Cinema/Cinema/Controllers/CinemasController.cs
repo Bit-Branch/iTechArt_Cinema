@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Cinema;
@@ -8,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class CinemasController : ControllerBase
     {
@@ -18,17 +18,17 @@ namespace CinemaApp.WebApi.Controllers
             _cinemaService = cinemaService;
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateCinema([FromBody] CreateCinemaDto cinema)
         {
             return Ok(await _cinemaService.CreateCinemaAsync(cinema));
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetCinema(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCinema(int id)
         {
-            var cinema = _cinemaService.GetCinemaById(id);
+            var cinema = await _cinemaService.GetCinemaByIdAsync(id);
 
             if (cinema == null)
             {
@@ -39,16 +39,12 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCinemas([Optional] [FromQuery] string term)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCinemas([FromQuery] string? term)
         {
-            var cinemas = term != null
-                ? await _cinemaService.FindAllByTermAsync(term)
-                : await _cinemaService.GetAllAsync();
-
-            if (cinemas == null)
-            {
-                return NotFound();
-            }
+            var cinemas = term == null
+                ? await _cinemaService.GetAllAsync()
+                : await _cinemaService.FindAllByTermAsync(term);
 
             return Ok(cinemas);
         }

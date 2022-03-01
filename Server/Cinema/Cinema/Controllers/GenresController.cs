@@ -7,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class GenresController : ControllerBase
     {
@@ -17,23 +18,18 @@ namespace CinemaApp.WebApi.Controllers
             _genreService = genreService;
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateGenre([FromBody] CreateGenreDto genreDto)
         {
             return Ok(await _genreService.CreateGenreAsync(genreDto));
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetGenres()
         {
             var genres = await _genreService.GetAllAsync();
-
-            if (genres == null)
-            {
-                return NotFound();
-            }
-
+            
             return Ok(genres);
         }
     }

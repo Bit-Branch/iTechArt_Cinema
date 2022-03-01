@@ -1,6 +1,6 @@
 ﻿CREATE TABLE Cities
 (
     Id   INT IDENTITY (1,1) NOT NULL,
-    Name VARCHAR(189)       NOT NULL,
+    Name NVARCHAR(189)      NOT NULL,
     CONSTRAINT PK_Cities PRIMARY KEY CLUSTERED (Id ASC)
 );

@@ -5,6 +5,8 @@ namespace CinemaApp.Application.Interfaces
     public interface ISeatTypeService
     {
         Task<int> CreateSeatTypeAsync(CreateSeatTypeDto createSeatTypeDto);
+        Task<IEnumerable<SeatTypeDto>> GetAllAsync();
+        Task<IEnumerable<SeatTypeDto>> FindAllByTermAsync(string term);
         Task<IEnumerable<SeatTypeDto>> FindAllByHallIdAsync(int hallId);
     }
 }

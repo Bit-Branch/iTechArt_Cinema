@@ -7,6 +7,7 @@ using CinemaApp.Domain.Constants;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/movie-sessions")]
     public class MovieSessionsController : ControllerBase
     {
@@ -16,12 +17,12 @@ namespace CinemaApp.WebApi.Controllers
         {
             _movieSessionService = movieSessionService;
         }
-        
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> CreateMovieSession([FromBody] CreateMovieSessionDto movieSession)
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMovieSessions([FromBody] CreateMovieSessionDto[] movieSessions)
         {
-            return Ok(await _movieSessionService.CreateMovieSessionAsync(movieSession));
+            await _movieSessionService.CreateMovieSessionsAsync(movieSessions);
+            return Ok();
         }
     }
 }

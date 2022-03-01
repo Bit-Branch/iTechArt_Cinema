@@ -10,6 +10,6 @@ namespace CinemaApp.Application.DTOs.Hall
         public string Name { get; set; }
         
         [Required]
-        public ICollection<CreateSeatDto> Seats { get; set; }
+        public IEnumerable<CreateSeatDto> Seats { get; set; }
     }
 }

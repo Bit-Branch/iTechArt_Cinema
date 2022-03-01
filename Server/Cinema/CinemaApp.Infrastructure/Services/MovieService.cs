@@ -30,7 +30,7 @@ namespace CinemaApp.Infrastructure.Services
             return movie.Id;
         }
 
-        public async Task<MovieDto?> GetMovieById(int id)
+        public async Task<MovieDto?> GetMovieByIdAsync(int id)
         {
             var movie = await _context.Movies
                 .Where(m => m.Id == id)

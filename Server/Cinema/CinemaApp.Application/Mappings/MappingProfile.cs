@@ -8,7 +8,6 @@ using CinemaApp.Application.DTOs.Genre;
 using CinemaApp.Application.DTOs.Hall;
 using CinemaApp.Application.DTOs.Movie;
 using CinemaApp.Application.DTOs.MovieSession;
-using CinemaApp.Application.DTOs.MovieSessionDate;
 using CinemaApp.Application.DTOs.Seat;
 using CinemaApp.Application.DTOs.SeatType;
 using CinemaApp.Application.DTOs.TicketPrice;
@@ -44,11 +43,10 @@ namespace CinemaApp.Application.Mappings
             CreateMap<CreateSeatDto, Seat>();
 
             CreateMap<SeatType, SeatTypeDto>();
+            CreateMap<CreateSeatTypeDto, SeatType>();
 
             CreateMap<CreateTicketPriceDto, TicketPrice>();
             CreateMap<TicketPrice, TicketPriceDto>();
-
-            CreateMap<CreateMovieSessionDateDto, MovieSessionDate>();
 
             CreateMap<CreateMovieSessionDto, MovieSession>();
         }

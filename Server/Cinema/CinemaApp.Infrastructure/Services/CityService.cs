@@ -45,7 +45,7 @@ namespace CinemaApp.Infrastructure.Services
                 .ToListAsync();
         }
 
-        public bool CheckForDuplicates(CreateCityDto createCityDto)
+        public bool DuplicatesExists(CreateCityDto createCityDto)
         {
             return _context.Cities
                 .Any(c => c.Name.ToLower() == createCityDto.Name.ToLower());

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Runtime.InteropServices;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.City;
 using CinemaApp.Application.Interfaces;
@@ -8,6 +7,7 @@ using CinemaApp.Application.Interfaces;
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class CitiesController : ControllerBase
     {
@@ -18,30 +18,25 @@ namespace CinemaApp.WebApi.Controllers
             _cityService = cityService;
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
         public async Task<IActionResult> CreateCity([FromBody] CreateCityDto cityDto)
         {
-            if (!_cityService.CheckForDuplicates(cityDto))
+            if (_cityService.DuplicatesExists(cityDto))
             {
-                return Ok(await _cityService.CreateCityAsync(cityDto));
+                return BadRequest("City with such name is already exists.");
             }
 
-            return BadRequest("City with such name is already exists.");
+            return Ok(await _cityService.CreateCityAsync(cityDto));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCities([Optional] [FromQuery] string term)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCities([FromQuery] string? term)
         {
-            var cities = term != null
-                ? await _cityService.FindAllByTermAsync(term)
-                : await _cityService.GetAllAsync();
-
-            if (cities == null)
-            {
-                return NotFound();
-            }
-
+            var cities = term == null
+                ? await _cityService.GetAllAsync()
+                : await _cityService.FindAllByTermAsync(term);
+            
             return Ok(cities);
         }
     }

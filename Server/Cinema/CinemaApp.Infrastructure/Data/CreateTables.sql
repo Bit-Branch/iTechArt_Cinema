@@ -1,16 +1,16 @@
 ﻿CREATE TABLE Users
 (
     Id           INT IDENTITY (1,1) NOT NULL,
-    Email        VARCHAR(254)       NOT NULL,
+    Email        NVARCHAR(254)      NOT NULL,
     PasswordHash CHAR(60)           NOT NULL,
-    Role         VARCHAR(20)        NOT NULL,
+    Role         NVARCHAR(20)       NOT NULL,
     CONSTRAINT PK_Users PRIMARY KEY CLUSTERED (Id ASC)
 );
 
 CREATE TABLE Cities
 (
     Id   INT IDENTITY (1,1) NOT NULL,
-    Name VARCHAR(189)       NOT NULL,
+    Name NVARCHAR(189)      NOT NULL,
     CONSTRAINT PK_Cities PRIMARY KEY CLUSTERED (Id ASC)
 );
 
@@ -24,8 +24,8 @@ CREATE TABLE Images
 CREATE TABLE Favors
 (
     Id          INT IDENTITY (1,1) NOT NULL,
-    Name        VARCHAR(100)       NOT NULL,
-    Description VARCHAR(100)       NOT NULL,
+    Name        NVARCHAR(100)      NOT NULL,
+    Description NVARCHAR(100)      NOT NULL,
     ImageId     BIGINT             NOT NULL,
     CONSTRAINT PK_Favors PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Favors_Images FOREIGN KEY (ImageId) REFERENCES Images (Id)
@@ -34,22 +34,22 @@ CREATE TABLE Favors
 CREATE TABLE Genres
 (
     Id   INT IDENTITY (1,1) NOT NULL,
-    Name VARCHAR(30)        NOT NULL,
+    Name NVARCHAR(30)       NOT NULL,
     CONSTRAINT PK_Genres PRIMARY KEY CLUSTERED (Id ASC)
 );
 
 CREATE TABLE SeatTypes
 (
     Id   INT IDENTITY (1,1) NOT NULL,
-    Name VARCHAR(50)        NOT NULL,
+    Name NVARCHAR(50)       NOT NULL,
     CONSTRAINT PK_SeatTypes PRIMARY KEY CLUSTERED (Id ASC)
 );
 
 CREATE TABLE Cinemas
 (
     Id      INT IDENTITY (1,1) NOT NULL,
-    Name    VARCHAR(50)        NOT NULL,
-    Address VARCHAR(100)       NOT NULL,
+    Name    NVARCHAR(50)       NOT NULL,
+    Address NVARCHAR(100)      NOT NULL,
     CityId  INT                NOT NULL,
     CONSTRAINT PK_Cinemas PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Cinemas_Cities FOREIGN KEY (CityId) REFERENCES Cities (Id)
@@ -68,7 +68,7 @@ CREATE TABLE CinemaFavors
 CREATE TABLE Halls
 (
     Id       INT IDENTITY (1,1) NOT NULL,
-    Name     VARCHAR(100)       NOT NULL,
+    Name     NVARCHAR(100)      NOT NULL,
     CinemaId INT                NOT NULL,
     CONSTRAINT PK_Halls PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Halls_Cinemas FOREIGN KEY (CinemaId) REFERENCES Cinemas (Id)
@@ -79,6 +79,8 @@ CREATE TABLE Seats
     Id         BIGINT IDENTITY (1,1) NOT NULL,
     HallId     INT                   NOT NULL,
     SeatTypeId INT                   NOT NULL,
+    RowName    NVARCHAR(15)          NOT NULL,
+    SeatNo     SMALLINT              NOT NULL,
     CONSTRAINT PK_Seats PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Seats_Halls FOREIGN KEY (HallId) REFERENCES Halls (Id),
     CONSTRAINT FK_Seats_SeatTypes FOREIGN KEY (SeatTypeId) REFERENCES SeatTypes (Id)
@@ -86,14 +88,14 @@ CREATE TABLE Seats
 
 CREATE TABLE Movies
 (
-    Id                INT IDENTITY (1,1) NOT NULL,
-    Title             VARCHAR(100)       NOT NULL,
-    ImageId           BIGINT             NOT NULL,
-    Description       VARCHAR(1000)      NOT NULL,
-    StartDate         DATE               NOT NULL,
-    EndDate           DATE               NOT NULL,
-    DurationInMinutes SMALLINT           NOT NULL,
-    GenreId           INT                NOT NULL,
+    Id                     INT IDENTITY (1,1) NOT NULL,
+    Title                  NVARCHAR(100)      NOT NULL,
+    ImageId                BIGINT             NOT NULL,
+    Description            NVARCHAR(1000)     NOT NULL,
+    ShowInCinemasStartDate DATE               NOT NULL,
+    ShowInCinemasEndDate   DATE               NOT NULL,
+    DurationInMinutes      SMALLINT           NOT NULL,
+    GenreId                INT                NOT NULL,
     CONSTRAINT PK_Movies PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Movies_Genres FOREIGN KEY (GenreId) REFERENCES Genres (Id),
     CONSTRAINT FK_Movies_Images FOREIGN KEY (ImageId) REFERENCES Images (Id)
@@ -103,6 +105,7 @@ CREATE TABLE MovieSessions
 (
     Id       BIGINT IDENTITY (1,1) NOT NULL,
     ShowTime TIME(0)               NOT NULL,
+    ShowDate DATE                  NOT NULL,
     MovieId  INT                   NOT NULL,
     HallId   INT                   NOT NULL,
     CONSTRAINT PK_MovieSessions PRIMARY KEY CLUSTERED (Id ASC),
@@ -110,23 +113,15 @@ CREATE TABLE MovieSessions
     CONSTRAINT FK_MovieSessions_Halls FOREIGN KEY (HallId) REFERENCES Halls (Id)
 );
 
-CREATE TABLE MovieSessionDates
-(
-    Id             BIGINT IDENTITY (1,1) NOT NULL,
-    ShowDate       DATE                  NOT NULL,
-    MovieSessionId BIGINT                NOT NULL,
-    CONSTRAINT PK_MovieSessionDates PRIMARY KEY CLUSTERED (Id ASC),
-    CONSTRAINT FK_MovieSessionDates_MovieSessions FOREIGN KEY (MovieSessionId) REFERENCES MovieSessions (Id)
-);
 
 CREATE TABLE Tickets
 (
-    Id                 BIGINT IDENTITY (1,1) NOT NULL,
-    UserId             INT                   NOT NULL,
-    MovieSessionDateId BIGINT                NOT NULL,
+    Id             BIGINT IDENTITY (1,1) NOT NULL,
+    UserId         INT                   NOT NULL,
+    MovieSessionId BIGINT                NOT NULL,
     CONSTRAINT PK_Tickets PRIMARY KEY CLUSTERED (Id ASC),
     CONSTRAINT FK_Tickets_Users FOREIGN KEY (UserId) REFERENCES Users (Id),
-    CONSTRAINT FK_Tickets_MovieSessionDates FOREIGN KEY (MovieSessionDateId) REFERENCES MovieSessionDates (Id)
+    CONSTRAINT FK_Tickets_MovieSessions FOREIGN KEY (MovieSessionId) REFERENCES MovieSessions (Id)
 );
 
 CREATE TABLE TicketsSeats

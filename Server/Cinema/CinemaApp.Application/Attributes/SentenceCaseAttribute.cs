@@ -2,7 +2,7 @@
 
 namespace CinemaApp.Application.Attributes
 {
-    public class TitleCaseAttribute : ValidationAttribute
+    public class SentenceCaseAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
