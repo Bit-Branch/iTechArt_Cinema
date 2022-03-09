@@ -7,7 +7,7 @@ namespace CinemaApp.Application.DTOs.CinemaFavor
     {
         [Required]
         public int FavorId { get; set; }
-        
+
         [Required]
         [Min(0)]
         public decimal Price { get; set; }

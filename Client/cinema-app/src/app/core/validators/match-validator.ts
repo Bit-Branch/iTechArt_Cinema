@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export function passwordsMatchValidator(controlName: string, matchingControlName: string): ValidatorFn {
+export function matchValidator(controlName: string, matchingControlName: string): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const control = formGroup.get(controlName);
     if (!control) {
@@ -15,7 +15,7 @@ export function passwordsMatchValidator(controlName: string, matchingControlName
       );
     }
     if (matchingControl?.enabled && (control?.value !== matchingControl?.value)) {
-      return { passwordsIsNotMatch: true };
+      return { isNotMatch: true };
     }
     return null;
   };

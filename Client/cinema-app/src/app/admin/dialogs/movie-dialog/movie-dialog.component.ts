@@ -1,7 +1,7 @@
 //External components
 import { FileInput, FileValidator } from 'ngx-material-file-input';
 
-import { switchMap } from 'rxjs';
+import { iif, switchMap } from 'rxjs';
 
 //Angular components
 import { Component, OnInit } from '@angular/core';
@@ -17,7 +17,6 @@ import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { GenreService } from '@core/services/genre.service';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { MovieService } from '@core/services/movie.service';
-import { ImageService } from '@core/services/image.service';
 import { aspectRatioValidator } from '@core/validators/aspect-ratio-validator';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
@@ -31,8 +30,6 @@ const showtimeRangeControl = 'showtimeRange';
 const startControl = 'startDate';
 const endControl = 'endDate';
 const durationControl = 'durationInMinutes';
-const defaultMovieImageUrl = 'assets/movie-cover-default-image.png';
-const defaultMovieImageName = 'movie-cover-default-image.png';
 
 @Component({
   selector: 'app-movie-dialog',
@@ -43,14 +40,13 @@ export class MovieDialogComponent implements OnInit {
   readonly movieForm: FormGroup;
   genres: Genre[] = [];
   filteredGenres: Genre[] = [];
-  url = defaultMovieImageUrl;
+  url = '';
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly movieService: MovieService,
     private readonly genreService: GenreService,
     private readonly snackbarService: SnackbarService,
-    private readonly imageService: ImageService,
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<MovieDialogComponent>
   ) {
@@ -118,32 +114,34 @@ export class MovieDialogComponent implements OnInit {
     );
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
+    const movieFormValue = this.movieForm.value;
+    const movie: CreateMovie = {
+      title: movieFormValue[titleControl],
+      description: movieFormValue[descriptionControl],
+      genreId: movieFormValue[genreControl],
+      showInCinemasStartDate: movieFormValue[showtimeRangeControl][startControl],
+      showInCinemasEndDate: movieFormValue[showtimeRangeControl][endControl],
+      durationInMinutes: movieFormValue[durationControl]
+    };
+    const imageFile = (movieFormValue[imageControl] as FileInput)?.files[0];
     const imageData = new FormData();
-    let imageFile = (this.movieForm.get(imageControl)?.value as FileInput)?.files[0];
-    //if image is not uploaded - using default image
-    if (!imageFile) {
-      imageFile = await this.imageService.getImageFileFromUrl(defaultMovieImageUrl, defaultMovieImageName);
-    }
     imageData.append('content', imageFile);
-    this.movieService.uploadImage(imageData)
-      .pipe(
-        switchMap(
-          (imageId: number) => {
-            const movieFormValue = this.movieForm.value;
-            const movie: CreateMovie = {
-              title: movieFormValue[titleControl],
-              description: movieFormValue[descriptionControl],
-              genreId: movieFormValue[genreControl],
-              imageId: imageId,
-              showInCinemasStartDate: movieFormValue[showtimeRangeControl][startControl],
-              showInCinemasEndDate: movieFormValue[showtimeRangeControl][endControl],
-              durationInMinutes: movieFormValue[durationControl]
-            };
-            return this.movieService.createMovie(movie);
-          }
-        )
-      )
+    // if image was uploaded by user - save it and return an id and then save movie with this image id
+    // else - save movie without an image
+    iif(
+      () => imageFile !== undefined,
+      this.movieService.uploadImage(imageData)
+        .pipe(
+          switchMap(
+            (imageId: number) => {
+              movie.imageId = imageId;
+              return this.movieService.createMovie(movie);
+            }
+          )
+        ),
+      this.movieService.createMovie(movie)
+    )
       .subscribe(
         {
           error: (error: HttpErrorResponse) => {

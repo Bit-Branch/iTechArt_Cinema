@@ -1,7 +1,7 @@
 //Angular components
 import { Component } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -12,7 +12,7 @@ import { AuthenticationRequest } from '@core/models/authentication/authenticatio
 import { RegistrationRequest } from '@core/models/registration/registration-request';
 import { regexValidator } from '@core/validators/regex-validator';
 import { noWhitespaceValidator } from '@shared/../core/validators/no-whitespace-validator';
-import { passwordsMatchValidator } from '@shared/../core/validators/passwords-match-validator';
+import { matchValidator } from '@core/validators/match-validator';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { animations } from './login-animations';
 import { loginPageMessages, LoginPageKeys, LoginPageElements } from './login-page-messages';
@@ -87,7 +87,7 @@ export class LoginComponent {
       },
       {
         validators: [
-          passwordsMatchValidator(passwordControl, confirmPasswordControl)
+          matchValidator(passwordControl, confirmPasswordControl)
         ]
       }
     );

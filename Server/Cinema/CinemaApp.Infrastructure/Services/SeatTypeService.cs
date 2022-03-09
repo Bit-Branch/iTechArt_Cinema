@@ -29,7 +29,7 @@ namespace CinemaApp.Infrastructure.Services
 
             return seatType.Id;
         }
-        
+
         public async Task<IEnumerable<SeatTypeDto>> GetAllAsync()
         {
             return await _context.SeatTypes
@@ -41,17 +41,6 @@ namespace CinemaApp.Infrastructure.Services
         {
             return await _context.SeatTypes
                 .Where(st => st.Name.StartsWith(term))
-                .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<SeatTypeDto>> FindAllByHallIdAsync(int hallId)
-        {
-            return await _context.SeatTypes
-                .Where(st => st.Seats
-                    .Any(s => s.HallId == hallId)
-                )
-                .Distinct()
                 .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }

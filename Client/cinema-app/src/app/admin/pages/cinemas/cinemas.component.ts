@@ -7,14 +7,7 @@ import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialo
 
 @Component({
   selector: 'app-cinemas',
-  template:
-    `
-      <app-admin-edit-page title="Cinemas">
-        <button mat-stroked-button class="btn" (click)="openCreateCinemaDialog()">
-          Create new cinema
-        </button>
-      </app-admin-edit-page>
-    `
+  templateUrl: './cinemas.component.html'
 })
 export class CinemasComponent {
   constructor(private readonly dialog: MatDialog) {

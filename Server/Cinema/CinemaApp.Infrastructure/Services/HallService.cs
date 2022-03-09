@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using CinemaApp.Infrastructure.Contexts;
 using CinemaApp.Application.DTOs.Hall;
+using CinemaApp.Application.DTOs.SeatType;
 using CinemaApp.Application.Interfaces;
 
 namespace CinemaApp.Infrastructure.Services
@@ -23,6 +24,17 @@ namespace CinemaApp.Infrastructure.Services
             return await _context.Halls
                 .Where(h => h.CinemaId == cinemaId)
                 .ProjectTo<HallDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<SeatTypeDto>> FindSeatTypesByHallIdAsync(int hallId)
+        {
+            return await _context.SeatTypes
+                .Where(st => st.Seats
+                    .Any(s => s.HallId == hallId)
+                )
+                .Distinct()
+                .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
     }

@@ -7,14 +7,7 @@ import { FavorDialogComponent } from '@admin/dialogs/favor-dialog/favor-dialog.c
 
 @Component({
   selector: 'app-favors',
-  template:
-    `
-      <app-admin-edit-page title="Favors">
-        <button mat-stroked-button createButton class="btn" (click)="openCreateFavorDialog()">
-          Create new favor
-        </button>
-      </app-admin-edit-page>
-    `
+  templateUrl: './favors.component.html'
 })
 export class FavorsComponent {
   constructor(private readonly dialog: MatDialog) {

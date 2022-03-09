@@ -7,14 +7,7 @@ import { MovieSessionDialogComponent } from '@admin/dialogs/movie-session-dialog
 
 @Component({
   selector: 'app-movie-sessions',
-  template:
-    `
-      <app-admin-edit-page title="Movie sessions">
-        <button mat-stroked-button class="btn" (click)="openCreateMovieSessionDialog()">
-          Create new movie session
-        </button>
-      </app-admin-edit-page>
-    `
+  templateUrl: './movie-sessions.component.html'
 })
 export class MovieSessionsComponent {
   constructor(private readonly dialog: MatDialog) {

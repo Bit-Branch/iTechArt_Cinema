@@ -9,17 +9,17 @@ namespace CinemaApp.Application.DTOs.Cinema
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        
+
         [Required]
         [StringLength(100)]
         public string Address { get; set; }
-        
+
         [Required]
         public int CityId { get; set; }
-        
+
         [Required]
         public IEnumerable<CreateHallDto> Halls { get; set; }
-        
+
         public IEnumerable<CreateCinemaFavorDto> CinemaFavors { get; set; }
     }
 }

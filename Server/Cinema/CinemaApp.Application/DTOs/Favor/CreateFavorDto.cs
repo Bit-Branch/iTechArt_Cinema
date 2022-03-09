@@ -7,10 +7,9 @@ namespace CinemaApp.Application.DTOs.Favor
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
-        
-        [Required]
-        public int ImageId { get; set; }
-        
+
+        public long? ImageId { get; set; }
+
         [Required]
         [StringLength(100)]
         public string Description { get; set; }

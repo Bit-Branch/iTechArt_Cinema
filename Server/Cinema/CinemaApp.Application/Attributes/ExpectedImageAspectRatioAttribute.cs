@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CinemaApp.Application.Attributes
 {
-    public class ExpectedImageAspectRatio : ValidationAttribute
+    public class ExpectedImageAspectRatioAttribute : ValidationAttribute
     {
         private readonly int _expectedRatioX;
         private readonly int _expectedRatioY;
 
-        public ExpectedImageAspectRatio(int expectedRatioX, int expectedRatioY)
+        public ExpectedImageAspectRatioAttribute(int expectedRatioX, int expectedRatioY)
         {
             _expectedRatioX = expectedRatioX;
             _expectedRatioY = expectedRatioY;

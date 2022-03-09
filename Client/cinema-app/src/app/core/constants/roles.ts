@@ -1,4 +1,4 @@
-export class Roles {
-  static readonly USER = 'User';
-  static readonly ADMIN = 'Admin';
+export enum Roles {
+  User = 'User',
+  Admin = 'Admin'
 }
