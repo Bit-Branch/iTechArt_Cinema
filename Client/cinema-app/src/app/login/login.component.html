@@ -9,31 +9,49 @@
 
   <mat-form-field appearance="legacy" @inflate>
     <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
+    <input matInput [formControlName]="emailControl">
     <mat-icon matSuffix></mat-icon>
+
     <mat-error *ngIf="form.get(emailControl)?.getError('required')">
       Please specify an email address.
     </mat-error>
-    <mat-error *ngIf="form.get(emailControl)?.getError(emailControl)">
+
+    <mat-error *ngIf="form.get(emailControl)?.getError('email')">
       Ooops! it looks like this is not a valid email.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="legacy" @inflate>
     <mat-label>Password</mat-label>
-    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="password">
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      [formControlName]="passwordControl"
+    >
     <mat-icon matSuffix (click)="hidePassword = !hidePassword">
       {{ hidePassword ? 'visibility_off' : 'visibility' }}
     </mat-icon>
+
     <mat-error *ngIf="form.get(passwordControl)?.getError('required')">
       Please specify the password.
     </mat-error>
-    <mat-error *ngIf="form.get(passwordControl)?.getError('pattern')">
-      Password should contain at least: one number,one uppercase character,one lowercase character.
+
+    <mat-error *ngIf="form.get(passwordControl)?.getError('noNumbers')">
+      Password should contain at least one number.
     </mat-error>
+
+    <mat-error *ngIf="form.get(passwordControl)?.getError('noLowerCase')">
+      Password should contain at least one lower case character.
+    </mat-error>
+
+    <mat-error *ngIf="form.get(passwordControl)?.getError('noUpperCase')">
+      Password should contain at least one upper case character.
+    </mat-error>
+
     <mat-error *ngIf="form.get(passwordControl)?.getError('minlength')">
       Password must be at least 8 characters long.
     </mat-error>
+
     <mat-error *ngIf="form.get(passwordControl)?.getError('noWhiteSpace')">
       Password can't contain whitespaces.
     </mat-error>
@@ -41,19 +59,35 @@
 
   <mat-form-field appearance="legacy" *ngIf="page === registerPage" @inflate>
     <mat-label>Confirm password</mat-label>
-    <input matInput [type]="hidePassword ? passwordControl : 'text'" formControlName="confirmPassword">
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      [formControlName]="confirmPasswordControl"
+    >
     <mat-icon matSuffix (click)="hidePassword = !hidePassword">
       {{ hidePassword ? 'visibility_off' : 'visibility' }}
     </mat-icon>
+
     <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('required')">
-      Please specify the confirmation password.
+      Please specify the password.
     </mat-error>
+
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('noNumbers')">
+      Password should contain at least one number.
+    </mat-error>
+
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('noLowerCase')">
+      Password should contain at least one lower case character.
+    </mat-error>
+
+    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('noUpperCase')">
+      Password should contain at least one upper case character.
+    </mat-error>
+
     <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('minlength')">
       Password must be at least 8 characters long.
     </mat-error>
-    <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('pattern')">
-      Password should contain at least: one number,one uppercase character,one lowercase character.
-    </mat-error>
+
     <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('noWhiteSpace')">
       Password can't contain whitespaces.
     </mat-error>
@@ -68,7 +102,8 @@
   >
     {{ currentPageContent.caption }}
   </button>
-  <mat-error *ngIf="form.get(confirmPasswordControl)?.getError('passwordsIsNotMatch')">
+
+  <mat-error *ngIf="form.getError('isNotMatch')">
     Passwords are not equal.
   </mat-error>
 </form>

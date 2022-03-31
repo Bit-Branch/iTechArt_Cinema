@@ -1,0 +1,27 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <div class="row">
+      <div class="col">
+
+        <ng-container ngProjectAs="[createButton]"></ng-container>
+
+      </div>
+    </div>
+
+    <!-- WIP table for editing cinemas/movies/sessions etc.-->
+    <div class="row">
+      <div class="col">
+
+        <ng-content ngProjectAs="[elementsTable]"></ng-content>
+
+      </div>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>

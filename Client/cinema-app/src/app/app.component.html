@@ -1,2 +1,8 @@
-<app-navbar></app-navbar>
+<app-sidenav *ngIf="isAdmin(); else regularNavbar">
+</app-sidenav>
+
+<ng-template #regularNavbar>
+  <app-navbar></app-navbar>
+</ng-template>
+
 <router-outlet></router-outlet>

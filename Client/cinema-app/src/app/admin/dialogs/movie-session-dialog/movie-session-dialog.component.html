@@ -1,0 +1,176 @@
+<form [formGroup]="sessionForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Create movie session</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Select movie" [formControlName]="movieControl">
+              <mat-option>
+                <ngx-mat-select-search
+                  placeholderLabel="Type movie title here..."
+                  noEntriesFoundLabel="No movies found"
+                  (keyup)="onSearchMovies($event)"
+                >
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let movie of movies" [value]="movie.id">
+                {{ movie.title }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="sessionForm.get(movieControl)?.getError('required')">
+              You need to chose the movie
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Select cinema"
+              [formControlName]="cinemaControl"
+              (selectionChange)="onCinemaSelected($event)"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  placeholderLabel="Type cinema name here..."
+                  noEntriesFoundLabel="No cinemas found"
+                  (keyup)="onSearchCinemas($event)"
+                >
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let cinema of cinemas" [value]="cinema.id">
+                {{ cinema.name }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="sessionForm.get(cinemaControl)?.getError('required')">
+              You need to chose the cinema
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Select hall"
+              [formControlName]="hallControl"
+              (selectionChange)="onHallSelected($event)"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  placeholderLabel="Type hall name here..."
+                  noEntriesFoundLabel="No halls found"
+                >
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngFor="let hall of halls" [value]="hall.id">
+                {{ hall.name }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="sessionForm.get(hallControl)?.getError('required')">
+              You need to chose the hall
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Enter time for session"
+              [ngxTimepicker]="timePicker"
+              [formControlName]="showTimeControl"
+              [format]="24"
+            >
+            <ngx-material-timepicker #timePicker></ngx-material-timepicker>
+
+            <mat-error *ngIf="sessionForm.get(showTimeControl)?.getError('required')">
+              Time is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <ngx-multiple-dates
+              placeholder="Choose dates for this session"
+              [formControlName]="datesControl"
+              [matDatepicker]="picker"
+              [min]="selectedMovie?.showInCinemasStartDate"
+              [max]="selectedMovie?.showInCinemasEndDate"
+            >
+            </ngx-multiple-dates>
+            <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <h4>Available seat types:</h4>
+      <div *ngFor="let seatType of seatTypes" class="row">
+        <div class="col">
+
+          <h4>{{ seatType.name }}</h4>
+
+        </div>
+
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Ticket price for this type of seat"
+              [formControlName]="ticketPriceControl"
+            >
+
+            <mat-error *ngIf="sessionForm.get(ticketPriceControl)?.getError('required')">
+              Ticket price is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+    </mat-card-content>
+
+    <mat-error *ngIf="sessionForm.invalid">
+      Please fill all fields with data.
+    </mat-error>
+
+    <mat-card-actions>
+      <button mat-raised-button type="submit" [disabled]="sessionForm.invalid">
+        Create
+      </button>
+
+      <button mat-raised-button type="button" (click)="closeDialog()">
+        Cancel
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,7 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import "ngx-drag-to-select";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .snackbar {
   border-left: 4px solid;
@@ -15,4 +22,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .danger-snackbar {
   border-left-color: #E60965;
   color: #E60965;
+}
+
+.timepicker-overlay,
+.timepicker-backdrop-overlay {
+  /*
+  timepicker doesn't work correctly with dialog windows (it displays behind them)
+  the reason is that z-index of mat-dialog is 1000 while z-index of timepicker is 999
+  to fix that we need to modify z-index
+  https://github.com/Agranom/ngx-material-timepicker/issues/244
+  */
+  z-index: 1100 !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.card {
+  height: 100%;
 }

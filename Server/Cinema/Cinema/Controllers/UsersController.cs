@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Cinema.Application.DTO;
-using Cinema.Application.Interfaces;
-using Cinema.Infrastructure.Services;
+using CinemaApp.Infrastructure.Services;
+using CinemaApp.Application.DTOs.Authentication;
+using CinemaApp.Application.Interfaces;
 
-namespace Cinema.Controllers
+namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

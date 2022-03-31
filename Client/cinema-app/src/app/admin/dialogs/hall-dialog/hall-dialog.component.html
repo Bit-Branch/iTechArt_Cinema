@@ -1,0 +1,61 @@
+<form [formGroup]="hallForm" novalidate (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Create hall</h1>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <div class="col">
+
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            placeholder="Name"
+            [formControlName]="nameControl"
+          >
+
+          <mat-error *ngIf="hallForm.get(nameControl)?.getError('required')">
+            Hall name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            placeholder="Count of seats"
+            [formControlName]="seatsCountControl"
+          >
+
+          <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('required')">
+            Seats count need to be <strong>one or more</strong>
+          </mat-error>
+
+          <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('pattern')">
+            Only nonnegative numbers is allowed
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </div>
+
+  <mat-error *ngIf="hallForm.invalid">
+    Please fill all fields with data.
+  </mat-error>
+
+  <mat-dialog-actions>
+    <button mat-raised-button type="submit" [disabled]="hallForm.invalid">
+      Create
+    </button>
+
+    <button mat-raised-button type="button" (click)="closeDialog()">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -4,7 +4,7 @@
 
     <span class="spacer"></span>
 
-    <button (click)="openLoginDialog()" *ngIf="!isLoggedIn()" mat-icon-button>
+    <button *ngIf="!isLoggedIn()" (click)="openLoginDialog()" mat-icon-button>
       <mat-icon>input</mat-icon>
     </button>
 

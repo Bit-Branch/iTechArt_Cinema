@@ -1,12 +1,12 @@
-export type LoginPages = 'register' | 'login';
+export type LoginPageKeys = 'register' | 'login';
 
-interface LoginPageMessages {
+export interface LoginPageElements {
   title: string,
   message: string,
   caption: string
 }
 
-export const loginPageMessages: Record<LoginPages, LoginPageMessages> = {
+export const loginPageMessages: Record<LoginPageKeys, LoginPageElements> = {
   register: {
     title: 'Register',
     message: 'Welcome!',

@@ -1,0 +1,43 @@
+<mat-sidenav-container class="container" autosize>
+  <mat-sidenav
+    class="sidenav mat-drawer"
+    mode="side"
+    opened
+    (mouseenter)="showSidenav()"
+    (mouseleave)="hideSidenav()"
+    [@onSideNavChange]="isShowing ? 'open' : 'close'"
+  >
+    <mat-nav-list>
+      <mat-list-item routerLink="/home" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Home</span>
+        <mat-icon mat-list-icon>home</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/movies" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Movies</span>
+        <mat-icon mat-list-icon>local_movies</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/cinemas" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Cinemas</span>
+        <mat-icon mat-list-icon>add_business</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/movie-sessions" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Sessions</span>
+        <mat-icon mat-list-icon>access_time</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/favors" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Favors</span>
+        <mat-icon mat-list-icon>fastfood</mat-icon>
+      </mat-list-item>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content [@onMainContentChange]="isShowing ? 'open': 'close'">
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

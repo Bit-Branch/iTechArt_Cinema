@@ -2,16 +2,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Cinema.Application.Interfaces;
-using Cinema.Domain.Settings;
-using Cinema.Infrastructure.Contexts;
-using Cinema.Infrastructure.Services;
+using CinemaApp.Domain.Settings;
+using CinemaApp.Infrastructure.Contexts;
+using CinemaApp.Infrastructure.Services;
+using CinemaApp.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddCors();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -34,7 +36,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]))
+        IssuerSigningKey =
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]))
     };
 });
 
@@ -43,6 +46,22 @@ builder.Services.AddScoped(typeof(JwtService));
 builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IGenreService, GenreService>();
+
+builder.Services.AddScoped<ICityService, CityService>();
+
+builder.Services.AddScoped<IFavorService, FavorService>();
+
+builder.Services.AddScoped<ICinemaService, CinemaService>();
+
+builder.Services.AddScoped<IHallService, HallService>();
+
+builder.Services.AddScoped<IImageService, ImageService>();
+
+builder.Services.AddScoped<ISeatTypeService, SeatTypeService>();
+
+builder.Services.AddScoped<IMovieSessionService, MovieSessionService>();
 
 var app = builder.Build();
 

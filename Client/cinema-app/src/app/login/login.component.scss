@@ -1,3 +1,5 @@
+@import "src/colors";
+
 :host {
   position: relative;
   display: flex;
@@ -10,6 +12,7 @@
 
   .btn {
     margin-top: 10px;
+    margin-bottom: 10px;
     min-height: 48px;
   }
 
@@ -17,16 +20,41 @@
     font-size: 1.5em;
   }
 
-  ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
-    color: #78ffd6;
+  ::ng-deep {
+    .mat-form-field.mat-focused .mat-form-field-label {
+      color: $blue;
+    }
+
+    .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+      background-color: $blue;
+    }
   }
 
-  ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
-    background-color: #78ffd6;
+  .mat-small {
+    margin-top: 10px;
+  }
+
+  mat-error + mat-error {
+    display: none;
+  }
+}
+
+mat-form-field.ng-invalid.ng-touched {
+  animation: example;
+  animation-duration: 0.3s;
+  margin-bottom: 20px;
+}
+
+@keyframes example {
+  from {
+    margin-bottom: 0;
+  }
+  to {
+    margin-bottom: 20px;
   }
 }
 
 .mat-stroked-button:enabled {
-  background: linear-gradient(to right, #78ffd6, #a8ff78);
+  background: linear-gradient(to right, $blue, $green);
   color: rgb(27, 27, 27);
 }

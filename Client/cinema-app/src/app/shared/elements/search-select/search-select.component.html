@@ -1,0 +1,22 @@
+<mat-form-field class="full-width">
+  <mat-select
+    [placeholder]="selectPlaceholder"
+    [formControl]="selectControl"
+    (selectionChange)="selectNewValue()"
+  >
+    <mat-option>
+      <mat-form-field floatLabel="never">
+        <input
+          matInput
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+          (keyup)="onSearch($event)"
+          [placeholder]="searchInputPlaceholder"
+        >
+      </mat-form-field>
+    </mat-option>
+    <mat-option *ngFor="let value of values" [value]="bindValue ? value[bindValue] : value">
+      {{ value[bindLabel] }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
