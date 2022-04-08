@@ -26,6 +26,19 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
+        [HttpGet("image")]
+        public async Task<IActionResult> GetMovieImage([FromQuery] long imageId)
+        {
+            var image = await _imageService.GetImageAsync(imageId);
+
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(image);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto movie)
         {
@@ -55,6 +68,19 @@ namespace CinemaApp.WebApi.Controllers
                 : await _movieService.FindAllByTermAsync(term);
 
             return Ok(movies);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            var deletedMovieId = await _movieService.DeleteMovieAsync(id);
+
+            if (deletedMovieId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(deletedMovieId);
         }
     }
 }

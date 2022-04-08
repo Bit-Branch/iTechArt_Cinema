@@ -8,7 +8,10 @@ namespace CinemaApp.Application.DTOs.Hall
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
-        
+
+        [Required]
+        public string SeatingPlan { get; set; }
+
         [Required]
         public IEnumerable<CreateSeatDto> Seats { get; set; }
     }

@@ -7,6 +7,7 @@ namespace CinemaApp.Application.DTOs.Movie
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public long ImageId { get; set; }
         public DateTime ShowInCinemasStartDate { get; set; }
         public DateTime ShowInCinemasEndDate { get; set; }
         public short DurationInMinutes { get; set; }

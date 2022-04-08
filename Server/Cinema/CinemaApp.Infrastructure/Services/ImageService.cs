@@ -2,6 +2,7 @@
 using CinemaApp.Application.Interfaces;
 using CinemaApp.Domain.Entities;
 using CinemaApp.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Infrastructure.Services
 {
@@ -30,6 +31,13 @@ namespace CinemaApp.Infrastructure.Services
             await _context.SaveChangesAsync();
 
             return image.Id;
+        }
+
+        public async Task<Image?> GetImageAsync(long id)
+        {
+            return await _context.Images
+                .Where(img => img.Id == id)
+                .FirstOrDefaultAsync();
         }
     }
 }

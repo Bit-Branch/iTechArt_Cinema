@@ -23,7 +23,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             return Ok(await _seatTypeService.CreateSeatTypeAsync(seatTypeDto));
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetSeatTypes([FromQuery] string? term)
@@ -35,7 +35,7 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(seatTypes);
         }
 
-        [HttpGet("Get-by-hall")]
+        [HttpGet("halls/id")]
         [AllowAnonymous]
         public async Task<IActionResult> GetSeatTypesByHallId([FromQuery] int hallId)
         {

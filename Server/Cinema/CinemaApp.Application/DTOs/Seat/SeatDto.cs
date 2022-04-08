@@ -4,7 +4,11 @@ namespace CinemaApp.Application.DTOs.Seat
 {
     public class SeatDto
     {
-        //WIP implementing seat plan system
-        public SeatTypeDto SeatType { get; set; }
+        public int Id { get; set; }
+        public int HallId { get; set; }
+        public int SeatTypeId { get; set; }
+        public int SeatGroupId { get; set; }
+        public string RowName { get; set; }
+        public int SeatNo { get; set; }
     }
 }
