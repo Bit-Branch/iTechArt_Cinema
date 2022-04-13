@@ -2,7 +2,7 @@
 {
     public class Seat
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public int HallId { get; set; }
         public Hall Hall { get; set; }
         public int SeatTypeId { get; set; }

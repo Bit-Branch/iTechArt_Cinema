@@ -45,9 +45,10 @@ namespace CinemaApp.Application.Mappings
             CreateMap<SeatType, SeatTypeDto>();
             CreateMap<CreateSeatTypeDto, SeatType>();
 
-            CreateMap<CreateTicketPriceDto, TicketPrice>();
             CreateMap<TicketPrice, TicketPriceDto>();
+            CreateMap<CreateTicketPriceDto, TicketPrice>();
 
+            CreateMap<MovieSession, MovieSessionDto>();
             CreateMap<CreateMovieSessionDto, MovieSession>();
         }
     }

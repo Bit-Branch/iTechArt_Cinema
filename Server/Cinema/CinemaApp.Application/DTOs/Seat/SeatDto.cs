@@ -8,6 +8,6 @@
         public int SeatGroupId { get; set; }
         public int IndexInsideSeatGroup { get; set; }
         public string RowName { get; set; }
-        public int SeatNo { get; set; }
+        public short SeatNo { get; set; }
     }
 }

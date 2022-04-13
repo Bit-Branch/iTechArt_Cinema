@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using CinemaApp.Application.DTOs.MovieSession;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using CinemaApp.Domain.Entities;
 using CinemaApp.Infrastructure.Contexts;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Application.DTOs.MovieSession;
 
 namespace CinemaApp.Infrastructure.Services
 {
@@ -27,6 +29,20 @@ namespace CinemaApp.Infrastructure.Services
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<MovieSessionDto>> GetAllAsync()
+        {
+            return await _context.MovieSessions
+                .ProjectTo<MovieSessionDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<long> DeleteMovieSessionAsync(long id)
+        {
+            var movieSession = _context.MovieSessions.Remove(_context.MovieSessions.Single(m => m.Id == id));
+            await _context.SaveChangesAsync();
+            return movieSession.Entity.Id;
         }
     }
 }

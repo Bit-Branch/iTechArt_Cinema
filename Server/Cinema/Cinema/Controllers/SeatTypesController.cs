@@ -35,14 +35,5 @@ namespace CinemaApp.WebApi.Controllers
 
             return Ok(seatTypes);
         }
-
-        [HttpGet("halls/id")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetSeatTypesByHallId([FromQuery] int hallId)
-        {
-            var seatTypes = await _seatTypeService.FindAllByHallIdAsync(hallId);
-
-            return Ok(seatTypes);
-        }
     }
 }

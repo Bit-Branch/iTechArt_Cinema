@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.MovieSession;
 using CinemaApp.Application.Interfaces;
-using CinemaApp.Domain.Constants;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -23,6 +23,15 @@ namespace CinemaApp.WebApi.Controllers
         {
             await _movieSessionService.CreateMovieSessionsAsync(movieSessions);
             return Ok();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMovieSessions()
+        {
+            var movieSessions = await _movieSessionService.GetAllAsync();
+
+            return Ok(movieSessions);
         }
     }
 }
