@@ -60,15 +60,11 @@ export class FavorDialogComponent {
     return imageControl;
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     const favorFormValue = this.favorForm.value;
     const imageData = new FormData();
-    let imageFile = (favorFormValue[imageControl] as FileInput)?.files[0];
-    //if image is not uploaded - using default image
-    if (!imageFile) {
-      imageFile = await this.imageService.getImageFileFromUrl(defaultFavorImageUrl, defaultFavorImageName);
-    }
-    imageData.append('content', imageFile);
+    const imageFile = (favorFormValue[imageControl] as FileInput)?.files[0];
+    imageData.append('content', imageFile ? imageFile : 'null');
     this.favorService.uploadImage(imageData)
       .pipe(
         switchMap(

@@ -22,9 +22,13 @@ export class SearchSelectComponent<T extends availableTypes> implements ControlV
   @Input() values: T[] = [];
   @Input() selectPlaceholder = 'Select...';
   @Input() searchInputPlaceholder = 'Type value here...';
-  // Object property to use for selected model.
+  /**
+   * Object property to use for selected model.
+   */
   @Input() bindValue: keyof T = 'id';
-  // Object property to use for label.
+  /**
+   * Object property to use for label.
+   */
   @Input() bindLabel: keyof T = 'id';
   @Input() searchFunction!: ((term: string) => Observable<T[]>);
   onChange!: (value: unknown) => void;

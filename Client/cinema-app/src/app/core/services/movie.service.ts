@@ -20,11 +20,26 @@ export class MovieService {
     return this.http.post<number>(`${environment.hostUrl}/api/movies/image`, image);
   }
 
+  getMovieCover(imageId: number): Observable<{ id: number, content: string }> {
+    return this.http.get<{ id: number, content: string }>(
+      `${environment.hostUrl}/api/movies/image`,
+      { params: new HttpParams().set('imageId', imageId) }
+    );
+  }
+
   createMovie(movie: CreateMovie): Observable<number> {
     return this.http.post<number>(`${environment.hostUrl}/api/movies`, movie);
   }
 
   findAllBySearchTerm(term: string): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies`, { params: new HttpParams().set('term', term) });
+  }
+
+  getAllMovies(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies`);
+  }
+
+  deleteMovie(id: number): Observable<number> {
+    return this.http.delete<number>(`${environment.hostUrl}/api/movies/${id}`);
   }
 }

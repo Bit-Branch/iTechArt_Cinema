@@ -51,8 +51,8 @@ export class AuthService {
 
   isAdmin(): boolean {
     if (this.isLoggedIn()) {
-      const decodedToken = this.jwtHelper.decodeToken<{ role: string }>(this.getToken() as string);
-      return decodedToken.role === Roles.ADMIN;
+      const decodedToken = this.jwtHelper.decodeToken<{ role: Roles }>(this.getToken() as string);
+      return decodedToken.role === Roles.Admin;
     }
     return false;
   }

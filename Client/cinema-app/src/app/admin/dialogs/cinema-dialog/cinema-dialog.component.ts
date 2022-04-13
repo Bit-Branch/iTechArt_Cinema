@@ -9,9 +9,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
+import { CreateHall } from '@core/models/hall/create-hall';
 import { City } from '@core/models/city/city';
 import { Favor } from '@core/models/favor/favor';
-import { Hall } from '@core/models/hall/hall';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
 import { CreateCinema } from '@core/models/cinema/create-cinema';
 import { CinemaService } from '@core/services/cinema.service';
@@ -39,7 +39,7 @@ const cinemaAddressMaxLength = 100;
 export class CinemaDialogComponent {
   readonly cinemaForm: FormGroup;
   cities: City[] = [];
-  halls: Hall[] = [];
+  halls: CreateHall[] = [];
   favors: Favor[] = [];
 
   searchFavors = (term: string): Observable<Favor[]> => {
@@ -147,7 +147,7 @@ export class CinemaDialogComponent {
   openCreateHallDialog(): void {
     const ref = this.dialog.open(HallDialogComponent, dialogsConfig);
     ref.afterClosed().subscribe(
-      (hall: Hall) => {
+      (hall: CreateHall) => {
         if (hall.name) {
           this.halls.push(hall);
         }
@@ -158,7 +158,7 @@ export class CinemaDialogComponent {
   editHall(index: number): void {
     const ref = this.dialog.open(HallDialogComponent, { ...dialogsConfig, data: this.halls[index] });
     ref.afterClosed().subscribe(
-      (data: Hall) => this.halls[index] = data
+      (data: CreateHall) => this.halls[index] = data
     );
   }
 
