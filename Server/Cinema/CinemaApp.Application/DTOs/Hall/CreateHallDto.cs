@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CinemaApp.Application.DTOs.Seat;
 
 namespace CinemaApp.Application.DTOs.Hall

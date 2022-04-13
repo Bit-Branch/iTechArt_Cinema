@@ -2,7 +2,7 @@
 (
     Id                     INT IDENTITY (1,1) NOT NULL,
     Title                  NVARCHAR(100)      NOT NULL,
-    ImageId                BIGINT             NOT NULL,
+    ImageId                BIGINT                 NULL,
     Description            NVARCHAR(1000)     NOT NULL,
     ShowInCinemasStartDate DATE               NOT NULL,
     ShowInCinemasEndDate   DATE               NOT NULL,

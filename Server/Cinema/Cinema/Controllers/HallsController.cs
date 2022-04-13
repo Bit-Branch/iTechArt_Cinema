@@ -22,8 +22,17 @@ namespace CinemaApp.WebApi.Controllers
         public async Task<IActionResult> GetHallsByCinemaId([FromQuery] int cinemaId)
         {
             var halls = await _hallService.FindAllByCinemaIdAsync(cinemaId);
-            
+
             return Ok(halls);
+        }
+
+        [HttpGet("{id:int}/seat-types")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllSeatTypesInHall(int id)
+        {
+            var seatTypes = await _hallService.FindSeatTypesByHallIdAsync(id);
+
+            return Ok(seatTypes);
         }
     }
 }

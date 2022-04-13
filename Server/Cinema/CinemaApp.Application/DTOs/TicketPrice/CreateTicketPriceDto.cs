@@ -7,10 +7,10 @@ namespace CinemaApp.Application.DTOs.TicketPrice
     {
         [Required]
         public long MovieSessionId { get; set; }
-        
+
         [Required]
         public int SeatTypeId { get; set; }
-        
+
         [Required]
         [Min(0)]
         public decimal Price { get; set; }

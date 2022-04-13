@@ -22,10 +22,7 @@ export class SeatTypeService {
   }
 
   findAllByHallId(id: number): Observable<SeatType[]> {
-    return this.http.get<Hall[]>(
-      `${environment.hostUrl}/api/seat-types/get-by-hall`,
-      { params: new HttpParams().set('hallId', id) }
-    );
+    return this.http.get<Hall[]>(`${environment.hostUrl}/api/halls/${id}/seat-types`);
   }
 
   findAllBySearchTerm(term: string): Observable<SeatType[]> {

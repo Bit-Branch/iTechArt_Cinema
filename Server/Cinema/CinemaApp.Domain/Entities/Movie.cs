@@ -10,7 +10,7 @@
         public short DurationInMinutes { get; set; }
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
-        public long ImageId { get; set; }
+        public long? ImageId { get; set; }
         public Image Image { get; set; }
         public ICollection<MovieSession> MovieSessions { get; set; }
     }

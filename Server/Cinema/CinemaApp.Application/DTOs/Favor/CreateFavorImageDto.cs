@@ -8,7 +8,7 @@ namespace CinemaApp.Application.DTOs.Favor
     {
         [MaxFileSizeInMegabytes(0.3)]
         [AllowedExtensions(new[] {ImageFileExtensions.JpegExtension, ImageFileExtensions.PngExtension})]
-        [ExpectedImageAspectRatio(4, 3)]
-        public IFormFile? Content { get; set; }
+        [ExpectedImageAspectRatio(5, 3)]
+        public IFormFile Content { get; set; }
     }
 }

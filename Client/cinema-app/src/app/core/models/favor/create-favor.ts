@@ -1,5 +1,5 @@
 export interface CreateFavor {
   name: string,
-  imageId: number,
+  imageId?: number,
   description: string
 }

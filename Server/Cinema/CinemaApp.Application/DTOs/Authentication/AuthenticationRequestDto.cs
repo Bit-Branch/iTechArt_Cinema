@@ -9,7 +9,7 @@ namespace CinemaApp.Application.DTOs.Authentication
         [EmailAddress]
         [StringLength(254)]
         public string Email { get; set; }
-        
+
         [Required]
         [RegularExpression(ValidationPatterns.PasswordValidationPattern)]
         public string Password { get; set; }
