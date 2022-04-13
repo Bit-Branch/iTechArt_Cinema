@@ -5,9 +5,6 @@ namespace CinemaApp.Application.DTOs.Seat
     public class CreateSeatDto
     {
         [Required]
-        public int Id { get; set; }
-
-        [Required]
         public string RowName { get; set; }
 
         [Required]
@@ -15,6 +12,9 @@ namespace CinemaApp.Application.DTOs.Seat
 
         [Required]
         public int SeatGroupId { get; set; }
+
+        [Required]
+        public int IndexInsideSeatGroup { get; set; }
 
         [Required]
         public int HallId { get; set; }

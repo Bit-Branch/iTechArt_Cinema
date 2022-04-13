@@ -1,6 +1,4 @@
-﻿using CinemaApp.Application.DTOs.SeatType;
-
-namespace CinemaApp.Application.DTOs.Seat
+﻿namespace CinemaApp.Application.DTOs.Seat
 {
     public class SeatDto
     {
@@ -8,6 +6,7 @@ namespace CinemaApp.Application.DTOs.Seat
         public int HallId { get; set; }
         public int SeatTypeId { get; set; }
         public int SeatGroupId { get; set; }
+        public int IndexInsideSeatGroup { get; set; }
         public string RowName { get; set; }
         public int SeatNo { get; set; }
     }
