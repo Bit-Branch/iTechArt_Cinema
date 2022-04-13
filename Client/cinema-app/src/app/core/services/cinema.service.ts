@@ -30,4 +30,8 @@ export class CinemaService {
       { params: new HttpParams().set('term', term) }
     );
   }
+
+  deleteCinema(id: number): Observable<number> {
+    return this.http.delete<number>(`${environment.hostUrl}/api/cinemas/${id}`);
+  }
 }

@@ -12,7 +12,7 @@ import { FavorsComponent } from '@admin/pages/favors/favors.component';
 import { MovieSessionsComponent } from '@admin/pages/movie-sessions/movie-sessions.component';
 import { MoviesComponent } from '@admin/pages/movies/movies.component';
 import { AdminEditPageComponent } from '@admin/pages/admin-edit-page/admin-edit-page.component';
-
+import { EditableTableModule } from '@shared/elements/editable-table/editable-table.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { AdminEditPageComponent } from '@admin/pages/admin-edit-page/admin-edit-
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    EditableTableModule
   ]
 })
 export class AdminPagesModule {

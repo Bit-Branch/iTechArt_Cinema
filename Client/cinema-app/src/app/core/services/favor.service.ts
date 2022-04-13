@@ -24,7 +24,15 @@ export class FavorService {
     return this.http.post<number>(`${environment.hostUrl}/api/favors`, favor);
   }
 
+  getAllFavors(): Observable<Favor[]> {
+    return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors`);
+  }
+
   findAllBySearchTerm(term: string): Observable<Favor[]> {
     return this.http.get<Favor[]>(`${environment.hostUrl}/api/favors`, { params: new HttpParams().set('term', term) });
+  }
+
+  deleteFavor(id: number): Observable<number> {
+    return this.http.delete<number>(`${environment.hostUrl}/api/favors/${id}`);
   }
 }

@@ -39,6 +39,8 @@ const durationControl = 'durationInMinutes';
 })
 export class MovieDialogComponent implements OnInit {
   readonly movieForm: FormGroup;
+  dialogTitle = 'Create movie';
+  actionButtonLabel = 'Create';
   genres: Genre[] = [];
   filteredGenres: Genre[] = [];
   url = '';
@@ -63,10 +65,27 @@ export class MovieDialogComponent implements OnInit {
       }),
       [durationControl]: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
     });
+    if (dialogData) {
+      this.dialogTitle = 'Edit movie';
+      this.actionButtonLabel = 'Apply changes';
+    }
   }
 
   ngOnInit(): void {
     this.getAllGenres();
+    if (this.dialogData) {
+      this.movieService.getMovieCover(this.dialogData.imageId)
+        .subscribe(
+          // set new url, so we can see an image preview in opened window
+          (data: { id: number, content: string }) => this.url = `data:image/jpg;base64,${data.content}`
+        );
+      this.movieForm.get(genreControl)?.setValue(this.dialogData.genre.id);
+      this.movieForm.get(titleControl)?.setValue(this.dialogData.title);
+      this.movieForm.get(descriptionControl)?.setValue(this.dialogData.description);
+      this.movieForm.get(durationControl)?.setValue(this.dialogData.durationInMinutes);
+      this.movieForm.get(showtimeRangeControl)?.get(startControl)?.setValue(this.dialogData.showInCinemasStartDate);
+      this.movieForm.get(showtimeRangeControl)?.get(endControl)?.setValue(this.dialogData.showInCinemasEndDate);
+    }
   }
 
   get showtimeRange(): FormGroup {
@@ -126,6 +145,8 @@ export class MovieDialogComponent implements OnInit {
       showInCinemasEndDate: movieFormValue[showtimeRangeControl][endControl],
       durationInMinutes: movieFormValue[durationControl]
     };
+    // TODO if image file was not uploaded,
+    //  but we are in edit page version - just use image from dialogData, otherwise - obtain from imageControl
     const imageFile = (movieFormValue[imageControl] as FileInput)?.files[0];
     const imageData = new FormData();
     imageData.append('content', imageFile);
@@ -175,9 +196,7 @@ export class MovieDialogComponent implements OnInit {
   private getAllGenres(): void {
     this.genreService.getAllGenres()
       .subscribe(
-        (genres: Genre[]) => {
-          this.genres = genres;
-        }
+        (genres: Genre[]) => this.genres = genres
       );
   }
 }

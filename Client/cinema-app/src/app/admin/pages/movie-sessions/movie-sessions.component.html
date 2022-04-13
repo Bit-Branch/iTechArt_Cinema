@@ -2,4 +2,17 @@
   <button mat-stroked-button class="btn" (click)="openCreateMovieSessionDialog()">
     Create new movie session
   </button>
+
+  <app-editable-table
+    [tableData]="movieSessions"
+    [tableColumns]="moviesSessionsTableColumns"
+    [isFilterable]="true"
+    [isPageable]="true"
+    [isEditable]="true"
+    [paginationSizes]="[10,50,100]"
+    [defaultPageSize]="10"
+    (editAction)="editMovieSession($event)"
+    (deleteAction)="deleteMovieSession($event)"
+  >
+  </app-editable-table>
 </app-admin-edit-page>

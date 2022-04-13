@@ -1,8 +1,10 @@
+import { Genre } from '@core/models/genre/genre';
+
 export interface Movie {
   id: number
   title: string,
   description: string,
-  genreId: number,
+  genre: Genre,
   imageId: number,
   showInCinemasStartDate: Date,
   showInCinemasEndDate: Date,

@@ -1,11 +1,12 @@
 import { CinemaFavor } from '@core/models/cinema-favor/cinema-favor';
+import { City } from '@core/models/city/city';
 import { CreateHall } from '@core/models/hall/create-hall';
 
 export interface Cinema {
   id: number,
   name: string,
   address: string,
-  cityId: number,
+  city: City,
   halls: CreateHall[],
   cinemaFavors: CinemaFavor[]
 }
