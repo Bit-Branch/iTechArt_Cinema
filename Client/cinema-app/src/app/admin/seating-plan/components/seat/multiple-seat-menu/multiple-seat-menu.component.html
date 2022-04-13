@@ -1,0 +1,53 @@
+<div class="mat-menu-form">
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Change row name for all..."
+      appClickStopPropagation
+      (keydown)="$event.stopPropagation()"
+      (keyup)="changeRowNameForAll($event)"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Change seat number for all..."
+      appClickStopPropagation
+      (keydown)="$event.stopPropagation()"
+      (keyup)="changeSeatNumberForAll($event)"
+    >
+  </mat-form-field>
+
+  <mat-form-field appClickStopPropagation>
+    <mat-select
+      placeholder="Change seat type for all..."
+    >
+      <mat-option
+        *ngFor="let availableSeatType of availableSeatTypes$ | async"
+        [value]="availableSeatType"
+        (onSelectionChange)="changeSeatTypesForAll($event)"
+      >
+        {{ availableSeatType.seatType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-icon-button
+    appClickStopPropagation
+    (click)="enableAll()"
+  >
+    <mat-icon>play_arrow</mat-icon>
+    <span>Enable all</span>
+  </button>
+
+  <button
+    mat-icon-button
+    appClickStopPropagation
+    (click)="disableAll()"
+  >
+    <mat-icon>do_disturb</mat-icon>
+    <span>Disable all</span>
+  </button>
+</div>

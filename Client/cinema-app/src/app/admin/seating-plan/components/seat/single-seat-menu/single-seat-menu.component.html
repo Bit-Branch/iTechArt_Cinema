@@ -1,0 +1,57 @@
+<div class="mat-menu-form">
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Type row name here..."
+      appClickStopPropagation
+      [value]="selectedSeat ? selectedSeat.seat.rowName : ''"
+      (keydown)="$event.stopPropagation()"
+      (keyup)="changeRowName($event)"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Type seat number here..."
+      appClickStopPropagation
+      [value]="selectedSeat ? selectedSeat.seat.seatNo.toString() : ''"
+      (keydown)="$event.stopPropagation()"
+      (keyup)="changeSeatNo($event)"
+    >
+  </mat-form-field>
+
+  <mat-form-field appClickStopPropagation>
+    <mat-select
+      placeholder="Select seat type..."
+    >
+      <mat-option
+        *ngFor="let availableSeatType of availableSeatTypes$ | async"
+        [value]="availableSeatType"
+        (onSelectionChange)="onChangeSeatType($event)"
+      >
+        {{ availableSeatType.seatType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-icon-button
+    appClickStopPropagation
+    [disabled]="selectedSeat && !selectedSeat.isDisabled"
+    (click)="enableSeat()"
+  >
+    <mat-icon>play_arrow</mat-icon>
+    <span>Enable seat</span>
+  </button>
+
+  <button
+    mat-icon-button
+    appClickStopPropagation
+    [disabled]="selectedSeat && selectedSeat.isDisabled"
+    (click)="disableSeat()"
+  >
+    <mat-icon>do_disturb</mat-icon>
+    <span>Disable seat</span>
+  </button>
+</div>
