@@ -26,6 +26,10 @@ export interface TableColumn {
    */
   isSortable?: boolean,
   /**
+   * Is it contains image url or image base64 data, so we can display this column value as image inside column
+   */
+  containsImageUrlOrBase64Data?: boolean,
+  /**
    * Pipe that need to be applied for this column (pipe and it's parameters, if needed)
    */
   pipe?: { pipe: Type<PipeTransform>, pipeArguments?: unknown[] }

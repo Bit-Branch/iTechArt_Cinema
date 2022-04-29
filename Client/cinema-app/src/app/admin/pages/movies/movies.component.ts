@@ -6,9 +6,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { dialogsConfig } from '@core/configuration/dialogs-config';
+import { ImageUrls } from '@core/constants/image-urls';
 import { MovieDialogComponent } from '@admin/dialogs/movie-dialog/movie-dialog.component';
 import { Movie } from '@core/models/movie/movie';
 import { MovieService } from '@core/services/movie.service';
+import { ImageBase64UrlPipe } from '@core/pipes/image-base64-url.pipe';
+import { PaginationResult } from '@core/models/pagination-result/pagination-result';
+import { TableCurrentState } from '@shared/elements/editable-table/interfaces/table-current-state';
 import { TableColumn } from '@shared/elements/editable-table/interfaces/table-column';
 import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-dialog.component';
 
@@ -17,7 +21,7 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
   templateUrl: './movies.component.html'
 })
 export class MoviesComponent implements OnInit {
-  movies: Movie[] = [];
+  movies: PaginationResult<Movie> = { totalCountInDatabase: 0, items: [] };
   moviesTableColumns: TableColumn[] = [];
 
   constructor(
@@ -28,7 +32,6 @@ export class MoviesComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeColumns();
-    this.getAllMovies();
   }
 
   openCreateMovieDialog(): void {
@@ -39,7 +42,13 @@ export class MoviesComponent implements OnInit {
     const ref = this.dialog.open(MovieDialogComponent, { ...dialogsConfig, data: $event });
     ref.afterClosed()
       .subscribe(
-        (data: Movie) => this.getAllMovies()
+        (data: Movie) => {
+          this.movies =
+            {
+              totalCountInDatabase: this.movies.totalCountInDatabase,
+              items: this.movies.items.map(item => item.id === data.id ? { ...item, ...data } : item)
+            };
+        }
       );
   }
 
@@ -62,14 +71,20 @@ export class MoviesComponent implements OnInit {
         )
       )
       .subscribe(
-        (id: number) => this.getAllMovies()
+        (id: number) => {
+          this.movies =
+            {
+              totalCountInDatabase: --this.movies.totalCountInDatabase,
+              items: this.movies.items.filter(item => item.id !== id)
+            }
+        }
       );
   }
 
-  private getAllMovies(): void {
-    this.movieService.getAllMovies()
+  getAllMovies(tableCurrentState: TableCurrentState): void {
+    this.movieService.getAllMoviesPaged(tableCurrentState)
       .subscribe(
-        movies => this.movies = movies
+        (value: PaginationResult<Movie>) => this.movies = value
       );
   }
 
@@ -78,6 +93,20 @@ export class MoviesComponent implements OnInit {
       {
         name: 'Movie title',
         dataKey: 'title',
+        position: 'left',
+        isSortable: true
+      },
+      {
+        name: 'Cover',
+        dataKey: 'image.content',
+        position: 'left',
+        isNestedKey: true,
+        containsImageUrlOrBase64Data: true,
+        pipe: { pipe: ImageBase64UrlPipe, pipeArguments: [ImageUrls.DEFAULT_MOVIE_IMAGE_URL] }
+      },
+      {
+        name: 'Year of issue',
+        dataKey: 'yearOfIssue',
         position: 'left',
         isSortable: true
       },

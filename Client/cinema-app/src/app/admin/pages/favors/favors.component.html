@@ -9,10 +9,9 @@
     [isFilterable]="true"
     [isPageable]="true"
     [isEditable]="true"
-    [paginationSizes]="[10,50,100]"
-    [defaultPageSize]="10"
-    (editAction)="editFavor($event)"
-    (deleteAction)="deleteFavor($event)"
+    (editingAction)="editFavor($event)"
+    (deletingAction)="deleteFavor($event)"
+    (getDataFromServerFunction)="getAllFavors($event)"
   >
   </app-editable-table>
 </app-admin-edit-page>

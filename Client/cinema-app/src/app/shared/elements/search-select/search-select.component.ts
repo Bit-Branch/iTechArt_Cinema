@@ -62,8 +62,13 @@ export class SearchSelectComponent<T extends availableTypes> implements ControlV
     }
   }
 
-  writeValue(value: unknown): void {
-    this.selectControl.setValue(value);
+  writeValue(value: T): void {
+    if (value) {
+      if (!this.values.includes(value)) {
+        this.values.push(value);
+      }
+      this.selectControl.setValue(value.id);
+    }
   }
 
   registerOnChange(fn: (value: unknown) => void): void {

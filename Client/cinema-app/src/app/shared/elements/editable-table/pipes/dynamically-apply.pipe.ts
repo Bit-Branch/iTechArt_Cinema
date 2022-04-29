@@ -10,7 +10,7 @@ export class DynamicallyApplyPipe implements PipeTransform {
   constructor(private injector: Injector) {
   }
 
-  transform(value: unknown, applyingPipe?: Type<PipeTransform>, pipeArgs?: unknown[]): unknown {
+  transform(value: unknown, applyingPipe?: Type<PipeTransform>, pipeArgs: unknown[] = []): unknown {
     // if pipe for transforming has been provided
     // (is it has been declared as a 'pipe' field of TableColumn definition for current value)
     if (applyingPipe) {
@@ -24,7 +24,7 @@ export class DynamicallyApplyPipe implements PipeTransform {
       });
       const pipe = injector.get(applyingPipe);
       // use created instance to transform value
-      return pipe.transform(value, pipeArgs);
+      return pipe.transform(value, ...pipeArgs);
     }
     // else just return initial value
     return value;

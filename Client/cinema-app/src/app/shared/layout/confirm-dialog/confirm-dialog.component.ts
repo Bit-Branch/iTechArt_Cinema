@@ -9,12 +9,12 @@ import { ConfirmDialogData } from '@shared/layout/confirm-dialog/interfaces/conf
   templateUrl: './confirm-dialog.component.html'
 })
 export class ConfirmDialogComponent {
-  title = '';
-  message = '';
+  private title = '';
+  private message = '';
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
+    private readonly dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: ConfirmDialogData
   ) {
     this.title = data.title;
     this.message = data.message;

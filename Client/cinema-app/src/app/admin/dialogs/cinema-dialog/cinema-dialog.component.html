@@ -1,7 +1,7 @@
 <form [formGroup]="cinemaForm" (ngSubmit)="onSubmit()">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>Create cinema</mat-card-title>
+      <mat-card-title>{{ dialogTitle }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -184,7 +184,7 @@
 
     <mat-card-actions>
       <button mat-stroked-button type="submit" [disabled]="cinemaForm.invalid">
-        Create
+        {{ actionButtonLabel }}
       </button>
 
       <button mat-raised-button type="button" (click)="closeDialog()">

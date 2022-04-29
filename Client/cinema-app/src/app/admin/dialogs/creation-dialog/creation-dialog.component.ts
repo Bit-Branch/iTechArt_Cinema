@@ -11,7 +11,7 @@ import { GenreService } from '@core/services/genre.service';
 import { SeatTypeService } from '@core/services/seat-type.service';
 import { SnackbarService } from '@core/services/snackbar.service';
 import {
-  CreationPageKeys, creationPageMessages, CreationPageElements
+  CreationPageKeys, creationPageMessages, CreationPageElements, CreationPageDialogData
 } from '@admin/dialogs/creation-dialog/creation-dialog-messages';
 
 @Component({
@@ -20,8 +20,9 @@ import {
   styleUrls: ['../dialogs-shared.scss']
 })
 export class CreationDialogComponent {
+  isInEditMode = false;
   readonly nameControl: FormControl;
-  page: CreationPageKeys;
+  private page: CreationPageKeys;
 
   constructor(
     private readonly genreService: GenreService,
@@ -29,43 +30,72 @@ export class CreationDialogComponent {
     private readonly seatTypeService: SeatTypeService,
     private readonly snackbarService: SnackbarService,
     private readonly ref: MatDialogRef<CreationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private pageKey: CreationPageKeys
+    @Inject(MAT_DIALOG_DATA) private dialogData: CreationPageDialogData
   ) {
     this.nameControl = new FormControl(null, [Validators.required]);
-    this.page = pageKey;
+    this.page = this.dialogData.action;
+    if (this.dialogData.object) {
+      this.nameControl.setValue(this.dialogData.object.name);
+    }
   }
 
   get currentPageContent(): CreationPageElements {
     return creationPageMessages[this.page];
   }
 
-  create(): void {
-    let action: Observable<number>;
-    switch (this.page) {
-      case 'city':
-        action = this.cityService.createCity({ name: this.nameControl.value });
-        break;
-      case 'genre':
-        action = this.genreService.createGenre({ name: this.nameControl.value });
-        break;
-      case 'seatType':
-        action = this.seatTypeService.createSeatType({ name: this.nameControl.value });
-        break;
-    }
-    action.subscribe(
-      {
-        next: (createdEntityId: number) => {
-          this.snackbarService.showSuccessSnackBar(this.currentPageContent.successMessage);
-          this.ref.close({ isCreated: true, createdEntityId: createdEntityId });
-        },
-        error: (error: HttpErrorResponse) => {
-          this.snackbarService.showDangerSnackBar(error.error);
+  onSaveButtonClicked(): void {
+    this.getActionByKey(this.page)
+      .subscribe(
+        {
+          next: (savedEntityId: number) => {
+            this.snackbarService.showSuccessSnackBar(this.currentPageContent.successMessage);
+            this.ref.close(
+              {
+                isSaved: true,
+                savedEntity: {
+                  id: savedEntityId,
+                  name: this.nameControl.value
+                }
+              }
+            );
+          },
+          error: (error: HttpErrorResponse) => {
+            this.snackbarService.showDangerSnackBar(error.error);
+          }
         }
-      }
-    );
+      );
   }
 
   closeDialog(): void {
-    this.ref.close({ isCreated: false });
+    this.ref.close({ isSaved: false });
+  }
+
+  private getActionByKey(key: CreationPageKeys): Observable<number> {
+    let action: Observable<number>;
+    const dataForSaving = {
+      id: this.dialogData.object?.id ?? 0,
+      name: this.nameControl.value
+    }
+    switch (key) {
+      case 'createCity':
+        action = this.cityService.createCity(dataForSaving);
+        break;
+      case 'createGenre':
+        action = this.genreService.createGenre(dataForSaving);
+        break;
+      case 'createSeatType':
+        action = this.seatTypeService.createSeatType(dataForSaving);
+        break;
+      case 'updateCity':
+        action = this.cityService.updateCity(dataForSaving);
+        break;
+      case 'updateGenre':
+        action = this.genreService.updateGenre(dataForSaving);
+        break;
+      case 'updateSeatType':
+        action = this.seatTypeService.updateSeatType(dataForSaving);
+        break;
+    }
+    return action;
   }
 }

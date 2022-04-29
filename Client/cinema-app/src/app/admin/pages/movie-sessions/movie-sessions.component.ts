@@ -1,5 +1,6 @@
 import { EMPTY, switchMap } from 'rxjs';
 
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { dialogsConfig } from '@core/configuration/dialogs-config';
 import { MovieSession } from '@core/models/movie-session/movie-session';
 import { MovieSessionService } from '@core/services/movie-session.service';
+import { PaginationResult } from '@core/models/pagination-result/pagination-result';
+import { DisplayMovieSession } from '@core/models/movie-session/display-movie-session';
 import { MovieSessionDialogComponent } from '@admin/dialogs/movie-session-dialog/movie-session-dialog.component';
+import { TableCurrentState } from '@shared/elements/editable-table/interfaces/table-current-state';
 import { TableColumn } from '@shared/elements/editable-table/interfaces/table-column';
 import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-dialog.component';
 
@@ -16,7 +20,7 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
   templateUrl: './movie-sessions.component.html'
 })
 export class MovieSessionsComponent implements OnInit {
-  movieSessions: MovieSession[] = [];
+  movieSessions: PaginationResult<DisplayMovieSession> = { totalCountInDatabase: 0, items: [] };
   moviesSessionsTableColumns: TableColumn[] = [];
 
   constructor(
@@ -27,7 +31,6 @@ export class MovieSessionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeColumns();
-    this.getAllMovieSessions();
   }
 
   openCreateMovieSessionDialog(): void {
@@ -38,7 +41,13 @@ export class MovieSessionsComponent implements OnInit {
     const ref = this.dialog.open(MovieSessionDialogComponent, { ...dialogsConfig, data: $event });
     ref.afterClosed()
       .subscribe(
-        (data: MovieSession) => this.getAllMovieSessions()
+        (data: MovieSession[]) => {
+          this.movieSessions =
+            {
+              totalCountInDatabase: this.movieSessions.totalCountInDatabase,
+              items: this.movieSessions.items.map(item => item.id === data[0].id ? { ...item, ...data[0] } : item)
+            };
+        }
       );
   }
 
@@ -61,14 +70,20 @@ export class MovieSessionsComponent implements OnInit {
         )
       )
       .subscribe(
-        (id: number) => this.getAllMovieSessions()
+        (id: number) => {
+          this.movieSessions =
+            {
+              totalCountInDatabase: --this.movieSessions.totalCountInDatabase,
+              items: this.movieSessions.items.filter(item => item.id !== id)
+            }
+        }
       );
   }
 
-  private getAllMovieSessions(): void {
-    this.movieSessionService.getAllMovieSessions()
+  getAllMovieSessions(tableCurrentState: TableCurrentState): void {
+    this.movieSessionService.getAllMovieSessionsPaged(tableCurrentState)
       .subscribe(
-        movieSessions => this.movieSessions = movieSessions
+        (value: PaginationResult<DisplayMovieSession>) => this.movieSessions = value
       );
   }
 
@@ -76,15 +91,19 @@ export class MovieSessionsComponent implements OnInit {
     this.moviesSessionsTableColumns = [
       {
         name: 'Movie',
-        dataKey: 'movie.title',
-        isNestedKey: true,
+        dataKey: 'movieName',
         position: 'left',
         isSortable: true
       },
       {
         name: 'Cinema',
-        dataKey: 'hall.cinema.name',
-        isNestedKey: true,
+        dataKey: 'cinemaName',
+        position: 'left',
+        isSortable: true
+      },
+      {
+        name: 'Hall',
+        dataKey: 'hallName',
         position: 'left',
         isSortable: true
       },
@@ -98,7 +117,8 @@ export class MovieSessionsComponent implements OnInit {
         name: 'Show date',
         dataKey: 'showDate',
         position: 'left',
-        isSortable: true
+        isSortable: true,
+        pipe: { pipe: DatePipe }
       }
     ];
   }

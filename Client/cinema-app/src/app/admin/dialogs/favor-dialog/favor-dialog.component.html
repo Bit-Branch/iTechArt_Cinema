@@ -1,7 +1,7 @@
 <form [formGroup]="favorForm" novalidate (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>Create favor</mat-card-title>
+      <mat-card-title>{{ dialogTitle }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -23,7 +23,7 @@
       <div class="row">
         <div class="col">
 
-          <img [src]="url" height="200">
+          <img [src]="url | imageBase64Url" height="200">
           <mat-form-field class="full-width">
             <ngx-mat-file-input
               accept="image/jpeg, image/png"
@@ -41,7 +41,10 @@
             </mat-error>
 
             <mat-error *ngIf="favorForm.get(imageControl)?.getError('invalidAspectRatio')">
-              Image ratio need to be approximately 5:3 (width:height)
+              Image ratio need to be approximately
+              {{ favorForm.get(imageControl)?.getError('invalidAspectRatio').expectedAspectRatioX }}
+              :{{ favorForm.get(imageControl)?.getError('invalidAspectRatio').expectedAspectRatioY }}
+              (width:height)
             </mat-error>
           </mat-form-field>
 
@@ -71,7 +74,7 @@
       </mat-error>
 
       <button mat-stroked-button type="submit" [disabled]="favorForm.invalid">
-        Create
+        {{ actionButtonLabel }}
       </button>
 
       <button mat-raised-button type="button" (click)="closeDialog()">

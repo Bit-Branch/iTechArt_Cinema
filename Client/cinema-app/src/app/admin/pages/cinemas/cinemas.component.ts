@@ -1,23 +1,26 @@
-import { EMPTY, switchMap } from 'rxjs';
+import { EMPTY, forkJoin, switchMap } from 'rxjs';
 
-import { SlicePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
 import { dialogsConfig } from '@core/configuration/dialogs-config';
 import { Cinema } from '@core/models/cinema/cinema';
+import { DisplayCinema } from '@core/models/cinema/display-cinema';
 import { CinemaService } from '@core/services/cinema.service';
-import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialog.component';
+import { PaginationResult } from '@core/models/pagination-result/pagination-result';
+import { TableCurrentState } from '@shared/elements/editable-table/interfaces/table-current-state';
+import { TruncatePipe } from '@shared/elements/editable-table/pipes/truncate.pipe';
 import { TableColumn } from '@shared/elements/editable-table/interfaces/table-column';
 import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-dialog.component';
+import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialog.component';
 
 @Component({
   selector: 'app-cinemas',
   templateUrl: './cinemas.component.html'
 })
 export class CinemasComponent implements OnInit {
-  cinemas: Cinema[] = [];
+  cinemas: PaginationResult<DisplayCinema> = { totalCountInDatabase: 0, items: [] };
   cinemasTableColumns: TableColumn[] = [];
 
   constructor(
@@ -28,22 +31,51 @@ export class CinemasComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeColumns();
-    this.getAllCinemas();
   }
 
   openCreateCinemaDialog(): void {
     this.dialog.open(CinemaDialogComponent, dialogsConfig);
   }
 
-  editCinema($event: Cinema): void {
-    const ref = this.dialog.open(CinemaDialogComponent, { ...dialogsConfig, data: $event });
-    ref.afterClosed()
+  editCinema($event: DisplayCinema): void {
+    // run two http requests in parallel to get halls and favors in edited cinema
+    forkJoin(
+      [
+        this.cinemaService.getAllHallsByCinemaId($event.id),
+        this.cinemaService.getAllCinemaFavorsByCinemaId($event.id)
+      ]
+    )
+      .pipe(
+        // when both requests returned values
+        switchMap(
+          ([halls, cinemaFavors]) => {
+            // create cinema object for editing
+            const cinemaForEditing: Cinema = {
+              ...$event,
+              halls,
+              cinemaFavors
+            };
+            // open editing dialog
+            const ref = this.dialog.open(CinemaDialogComponent, { ...dialogsConfig, data: cinemaForEditing });
+            // listen for closing opened dialog
+            return ref.afterClosed()
+          }
+        )
+      )
       .subscribe(
-        (data: Cinema) => this.getAllCinemas()
+        // if closed dialog returned updated cinema info
+        (data: DisplayCinema) => {
+          // update cinemas list
+          this.cinemas =
+            {
+              totalCountInDatabase: this.cinemas.totalCountInDatabase,
+              items: this.cinemas.items.map(item => item.id === data.id ? { ...item, ...data } : item)
+            };
+        }
       );
   }
 
-  deleteCinema($event: Cinema): void {
+  deleteCinema($event: DisplayCinema): void {
     const dialogRef = this.dialog.open(
       ConfirmDialogComponent,
       {
@@ -62,14 +94,20 @@ export class CinemasComponent implements OnInit {
         )
       )
       .subscribe(
-        (id: number) => this.getAllCinemas()
+        (id: number) => {
+          this.cinemas =
+            {
+              totalCountInDatabase: --this.cinemas.totalCountInDatabase,
+              items: this.cinemas.items.filter(item => item.id !== id)
+            }
+        }
       );
   }
 
-  private getAllCinemas(): void {
-    this.cinemaService.getAllCinemas()
+  getAllCinemas($event: TableCurrentState): void {
+    this.cinemaService.getAllCinemasPaged($event)
       .subscribe(
-        cinemas => this.cinemas = cinemas
+        (value: PaginationResult<DisplayCinema>) => this.cinemas = value
       );
   }
 
@@ -86,8 +124,7 @@ export class CinemasComponent implements OnInit {
         dataKey: 'address',
         position: 'left',
         isSortable: false,
-        // TODO truncate pipe
-        pipe: { pipe: SlicePipe, pipeArguments: [0, 20] }
+        pipe: { pipe: TruncatePipe, pipeArguments: [0, 15] }
       },
       {
         name: 'City',

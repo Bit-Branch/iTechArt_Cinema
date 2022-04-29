@@ -1,10 +1,21 @@
 :host {
   table {
     width: 100%;
+    display: table;
   }
 
   th, td {
     padding: 10px !important;
+  }
+
+  td.mat-cell {
+    display: table-cell;
+    height: 8vh;
+    overflow: hidden;
+  }
+
+  img {
+    height: 100%;
   }
 
   mat-form-field {

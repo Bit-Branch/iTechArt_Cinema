@@ -19,7 +19,8 @@ export class RoundTableComponent extends SeatingPlanElement implements AfterView
     super(dialog);
   }
 
-  ngAfterViewInit(): void {
+  override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
     this.calculatePositionsOfSeats();
   }
 

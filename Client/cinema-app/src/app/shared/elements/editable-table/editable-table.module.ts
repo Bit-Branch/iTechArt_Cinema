@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { TruncatePipe } from '@shared/elements/editable-table/pipes/truncate.pipe';
 
 import { DynamicallyApplyPipe } from './pipes/dynamically-apply.pipe';
 import { EditableTableComponent } from './editable-table/editable-table.component';
@@ -15,7 +16,8 @@ import { EditableTableComponent } from './editable-table/editable-table.componen
 @NgModule({
   declarations: [
     EditableTableComponent,
-    DynamicallyApplyPipe
+    DynamicallyApplyPipe,
+    TruncatePipe
   ],
   exports: [
     EditableTableComponent

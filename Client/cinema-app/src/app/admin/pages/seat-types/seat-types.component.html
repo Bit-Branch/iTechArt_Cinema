@@ -1,0 +1,17 @@
+<app-admin-edit-page title="Seat types">
+  <button mat-stroked-button class="btn" (click)="openCreateSeatTypeDialog()">
+    Create new seat type
+  </button>
+
+  <app-editable-table
+    [tableData]="seatTypes"
+    [tableColumns]="seatTypesTableColumns"
+    [isFilterable]="true"
+    [isPageable]="true"
+    [isEditable]="true"
+    (editingAction)="editSeatType($event)"
+    (deletingAction)="deleteSeatType($event)"
+    (getDataFromServerFunction)="getAllSeatTypes($event)"
+  >
+  </app-editable-table>
+</app-admin-edit-page>

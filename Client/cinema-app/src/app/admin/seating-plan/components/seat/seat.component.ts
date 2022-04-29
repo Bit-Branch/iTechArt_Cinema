@@ -1,9 +1,16 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy,
-  OnInit, Output
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
 } from '@angular/core';
 
-import { MatOptionSelectionChange } from '@angular/material/core';
 
 import { Seat } from '@core/models/seat/seat';
 import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat-type';
@@ -76,11 +83,10 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
   /**
    *  change seat type for the current seat if new one was selected
    */
-  onChangeSeatType($event: MatOptionSelectionChange): void {
-    const eventValue = ($event.source.value as AvailableSeatType);
-    this.seat.seatTypeId = eventValue.seatType.id;
+  changeCurrentSeatType(availableSeatType: AvailableSeatType): void {
+    this.seat.seatTypeId = availableSeatType.seatType.id;
     // also change color of this seat component accordingly to the selected seat type
-    this.currentSeatColor = eventValue.color;
+    this.currentSeatColor = availableSeatType.color;
   }
 
   openEditMenu($event: MouseEvent): void {

@@ -33,6 +33,20 @@
         <mat-icon mat-list-icon>fastfood</mat-icon>
       </mat-list-item>
 
+      <mat-list-item routerLink="admin/genres" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Genres</span>
+        <mat-icon mat-list-icon>palette</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/seat-types" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Seat types</span>
+        <mat-icon mat-list-icon>event_seat</mat-icon>
+      </mat-list-item>
+
+      <mat-list-item routerLink="admin/cities" class="parent">
+        <span class="full-width" [@animateText]="linkText ? 'show' : 'hide'">Cities</span>
+        <mat-icon mat-list-icon>location_city</mat-icon>
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
