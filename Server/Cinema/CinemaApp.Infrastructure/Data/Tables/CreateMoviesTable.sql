@@ -4,6 +4,7 @@
     Title                  NVARCHAR(100)      NOT NULL,
     ImageId                BIGINT                 NULL,
     Description            NVARCHAR(1000)     NOT NULL,
+    YearOfIssue            INT                NOT NULL,
     ShowInCinemasStartDate DATE               NOT NULL,
     ShowInCinemasEndDate   DATE               NOT NULL,
     DurationInMinutes      SMALLINT           NOT NULL,

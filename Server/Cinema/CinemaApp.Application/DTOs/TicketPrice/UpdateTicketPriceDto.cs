@@ -1,10 +1,13 @@
-﻿using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExtensions;
 
 namespace CinemaApp.Application.DTOs.TicketPrice
 {
-    public class CreateTicketPriceDto
+    public class UpdateTicketPriceDto
     {
+        [Required]
+        public int MovieSessionId { get; set; }
+
         [Required]
         public int SeatTypeId { get; set; }
 

@@ -1,16 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using CinemaApp.Application.Attributes;
 using CinemaApp.Domain.Constants;
 
-namespace CinemaApp.Application.DTOs.Movie
+namespace CinemaApp.Application.DTOs.Favor
 {
-    public class CreateMovieImageDto
+    public class UpdateFavorImageDto
     {
         [Required]
-        [MaxFileSizeInMegabytes(0.5)]
+        public long Id { get; set; }
+
+        [Required]
+        [MaxFileSizeInMegabytes(0.3)]
         [AllowedExtensions(new[] {ImageFileExtensions.JpegExtension, ImageFileExtensions.PngExtension})]
-        [ExpectedImageAspectRatio(2, 3)]
+        [ExpectedImageAspectRatio(5, 3)]
         public IFormFile Content { get; set; }
     }
 }

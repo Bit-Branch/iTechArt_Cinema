@@ -1,4 +1,7 @@
 ﻿using CinemaApp.Application.DTOs.Cinema;
+using CinemaApp.Application.DTOs.CinemaFavor;
+using CinemaApp.Application.DTOs.Hall;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.Application.Interfaces
 {
@@ -8,5 +11,16 @@ namespace CinemaApp.Application.Interfaces
         Task<CinemaDto?> GetCinemaByIdAsync(int id);
         Task<IEnumerable<CinemaDto>> GetAllAsync();
         Task<IEnumerable<CinemaDto>> FindAllByTermAsync(string term);
+        Task<int?> UpdateCinemaAsync(UpdateCinemaDto cinema);
+        Task<int> DeleteCinemaAsync(int id);
+        Task<PaginationResult<DisplayCinemaDto>> GetPagedAsync(
+            int skip,
+            int take,
+            bool ascending,
+            string? columnNameForOrdering,
+            string? searchTerm
+        );
+        Task<IEnumerable<HallDto>> GetAllHallsByCinemaIdAsync(int cinemaId);
+        Task<IEnumerable<CinemaFavorDto>> GetAllCinemaFavorsByCinemaIdAsync(int id);
     }
 }

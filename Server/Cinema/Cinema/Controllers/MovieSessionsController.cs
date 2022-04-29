@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.MovieSession;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -25,6 +26,13 @@ namespace CinemaApp.WebApi.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovieSessions([FromBody] UpdateMovieSessionDto[] movieSessions)
+        {
+            await _movieSessionService.UpdateMovieSessionsAsync(movieSessions);
+            return Ok();
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetMovieSessions()
@@ -32,6 +40,34 @@ namespace CinemaApp.WebApi.Controllers
             var movieSessions = await _movieSessionService.GetAllAsync();
 
             return Ok(movieSessions);
+        }
+
+        [HttpGet("Paged")]
+        public async Task<IActionResult> GetPagedMovieSessions([FromQuery] PaginationRequest paginationRequest)
+        {
+            var paginatingResult = await _movieSessionService
+                .GetPagedAsync(
+                    paginationRequest.Page * paginationRequest.PageSize,
+                    paginationRequest.PageSize,
+                    paginationRequest.Ascending,
+                    paginationRequest.SortingColumn,
+                    paginationRequest.SearchTerm
+                );
+
+            return Ok(paginatingResult);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteMovieSession(int id)
+        {
+            var deletedMovieSessionId = await _movieSessionService.DeleteMovieSessionAsync(id);
+
+            if (deletedMovieSessionId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(deletedMovieSessionId);
         }
     }
 }

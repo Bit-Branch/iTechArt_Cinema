@@ -1,12 +1,14 @@
-﻿using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExtensions;
 
 namespace CinemaApp.Application.DTOs.CinemaFavor
 {
-    public class CreateCinemaFavorDto
+    public class UpdateCinemaFavorDto
     {
         [Required]
-        [Min(1)]
+        public int CinemaId { get; set; }
+
+        [Required]
         public int FavorId { get; set; }
 
         [Required]

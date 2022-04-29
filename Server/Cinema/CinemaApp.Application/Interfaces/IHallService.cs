@@ -6,7 +6,7 @@ namespace CinemaApp.Application.Interfaces
     public interface IHallService
     {
         Task<IEnumerable<HallDto>> FindAllByCinemaIdAsync(int cinemaId);
-
         Task<IEnumerable<SeatTypeDto>> FindSeatTypesByHallIdAsync(int hallId);
+        Task<HallDto?> GetHallByIdAsync(int id);
     }
 }

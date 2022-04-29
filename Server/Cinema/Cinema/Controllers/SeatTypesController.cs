@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.SeatType;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -25,6 +25,12 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _seatTypeService.CreateSeatTypeAsync(seatTypeDto));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateSeatType([FromBody] UpdateSeatTypeDto seatTypeDto)
+        {
+            return Ok(await _seatTypeService.UpdateSeatTypeAsync(seatTypeDto));
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetSeatTypes([FromQuery] string? term)
@@ -34,6 +40,34 @@ namespace CinemaApp.WebApi.Controllers
                 : await _seatTypeService.FindAllByTermAsync(term);
 
             return Ok(seatTypes);
+        }
+
+        [HttpGet("Paged")]
+        public async Task<IActionResult> GetPagedSeatTypes([FromQuery] PaginationRequest paginationRequest)
+        {
+            var paginatingResult = await _seatTypeService
+                .GetPagedAsync(
+                    paginationRequest.Page * paginationRequest.PageSize,
+                    paginationRequest.PageSize,
+                    paginationRequest.Ascending,
+                    paginationRequest.SortingColumn,
+                    paginationRequest.SearchTerm
+                );
+
+            return Ok(paginatingResult);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteSeatType(int id)
+        {
+            var deletedSeatTypeId = await _seatTypeService.DeleteSeatTypeAsync(id);
+
+            if (deletedSeatTypeId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(deletedSeatTypeId);
         }
     }
 }

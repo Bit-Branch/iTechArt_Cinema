@@ -3,7 +3,7 @@
     public class MovieSession
     {
         public long Id { get; set; }
-        public string ShowTime { get; set; }
+        public TimeSpan ShowTime { get; set; }
         public DateTime ShowDate { get; set; }
         public int MovieId { get; set; }
         public Movie Movie { get; set; }

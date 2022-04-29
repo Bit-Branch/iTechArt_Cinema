@@ -1,4 +1,5 @@
-﻿using CinemaApp.Application.DTOs.Seat;
+﻿using CinemaApp.Application.DTOs.Cinema;
+using CinemaApp.Application.DTOs.Seat;
 
 namespace CinemaApp.Application.DTOs.Hall
 {
@@ -6,6 +7,9 @@ namespace CinemaApp.Application.DTOs.Hall
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int CinemaId { get; set; }
+        public CinemaDto Cinema { get; set; }
+        public string SeatingPlan { get; set; }
         public IEnumerable<SeatDto> Seats { get; set; }
     }
 }

@@ -33,6 +33,25 @@ namespace CinemaApp.Infrastructure.Services
             return image.Id;
         }
 
+        public async Task<long> UpdateImageAsync(long id, IFormFile file)
+        {
+            var reader = new BinaryReader(file.OpenReadStream());
+
+            var imageBytes = reader.ReadBytes((int) file.Length);
+
+            var image = new Image
+            {
+                Id = id,
+                Content = imageBytes
+            };
+
+            _context.Update(image);
+
+            await _context.SaveChangesAsync();
+
+            return image.Id;
+        }
+
         public async Task<Image?> GetImageAsync(long id)
         {
             return await _context.Images

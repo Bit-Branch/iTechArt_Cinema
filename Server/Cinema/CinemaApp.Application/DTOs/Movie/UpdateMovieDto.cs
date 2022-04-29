@@ -1,12 +1,15 @@
-﻿using DataAnnotationsExtensions;
+using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
 using CinemaApp.Application.Attributes;
 using CinemaApp.Domain.Constants;
 
 namespace CinemaApp.Application.DTOs.Movie
 {
-    public class CreateMovieDto
+    public class UpdateMovieDto
     {
+        [Required]
+        public long Id { get; set; }
+
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
@@ -16,11 +19,11 @@ namespace CinemaApp.Application.DTOs.Movie
         public string Description { get; set; }
 
         [Required]
-        public int GenreId { get; set; }
-
-        [Required]
         [AllowedYearRange(MovieYearsOfIssue.minYear)]
         public int YearOfIssue { get; set; }
+
+        [Required]
+        public int GenreId { get; set; }
 
         public long? ImageId { get; set; }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Movie;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -26,6 +27,12 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
+        [HttpPut("image")]
+        public async Task<IActionResult> UpdateMovieImage([FromForm] UpdateMovieImageDto updateMovieImageDto)
+        {
+            return Ok(await _imageService.UpdateImageAsync(updateMovieImageDto.Id, updateMovieImageDto.Content));
+        }
+
         [HttpGet("image")]
         public async Task<IActionResult> GetMovieImage([FromQuery] long imageId)
         {
@@ -43,6 +50,12 @@ namespace CinemaApp.WebApi.Controllers
         public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto movie)
         {
             return Ok(await _movieService.CreateMovieAsync(movie));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovie([FromBody] UpdateMovieDto movie)
+        {
+            return Ok(await _movieService.UpdateMovieAsync(movie));
         }
 
         [HttpGet("{id:int}")]
@@ -68,6 +81,21 @@ namespace CinemaApp.WebApi.Controllers
                 : await _movieService.FindAllByTermAsync(term);
 
             return Ok(movies);
+        }
+
+        [HttpGet("Paged")]
+        public async Task<IActionResult> GetPagedMovies([FromQuery] PaginationRequest paginationRequest)
+        {
+            var paginatingResult = await _movieService
+                .GetPagedAsync(
+                    paginationRequest.Page * paginationRequest.PageSize,
+                    paginationRequest.PageSize,
+                    paginationRequest.Ascending,
+                    paginationRequest.SortingColumn,
+                    paginationRequest.SearchTerm
+                );
+
+            return Ok(paginatingResult);
         }
 
         [HttpDelete("{id:int}")]
