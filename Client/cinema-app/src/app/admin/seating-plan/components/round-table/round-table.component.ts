@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-element/seating-plan-element';
 
+const defaultSeatsCount = 3;
+
 @Component({
   selector: 'app-circle-seating-plan-element',
   templateUrl: './round-table.component.html',
@@ -11,7 +13,7 @@ import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoundTableComponent extends SeatingPlanElement implements AfterViewInit {
-  seatsCount = 3;
+  seatsCount = defaultSeatsCount;
   seatPositions: { top: number, left: number }[] = [];
   @ViewChild('table') table!: ElementRef;
 

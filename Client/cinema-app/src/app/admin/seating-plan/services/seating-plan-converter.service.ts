@@ -23,7 +23,7 @@ export class SeatingPlanConverterService {
     return JSON.parse(seatingPlanJson);
   }
 
-  // we don't need standard angular component props to be saved in database - so we just remove them
+  // removing standard angular component props to save only necessary ones in database
   private removeUnnecessaryPropertiesFromComponents(
     components: ComponentRef<SeatingPlanElement>[]
   ): JsonSeatingPlanElement[] {

@@ -53,7 +53,7 @@ export class SeatingPlanComponent {
    */
   @ViewChild('multiSeatMenuTrigger') multiSeatMenuTrigger!: MatMenuTrigger;
   /**
-   * when we create new component on canvas - we need to set id to it to connect seats with this component
+   * when this component is created on the canvas - there is a need to set an id to connect seats with this component
    */
   private lastGeneratedId = 0;
 

@@ -15,6 +15,7 @@ import { CreateHall } from '@core/models/hall/create-hall';
 import { SeatType } from '@core/models/seat-type/seat-type';
 import { SeatTypeService } from '@core/services/seat-type.service';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
+import { generateRandomHexColorString } from '@core/utils/generate-random-hex-color-string';
 import { SeatingPlanComponent } from '@admin/seating-plan/seating-plan.component';
 import { SeatingPlanSharedStateService } from '@admin/seating-plan/services/seating-plan-shared-state.service';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
@@ -40,7 +41,7 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
     private readonly fb: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly seatTypeService: SeatTypeService,
-    private readonly sharedStateService: SeatingPlanSharedStateService,
+    private readonly seatingPlanSharedStateService: SeatingPlanSharedStateService,
     private readonly dialogRef: MatDialogRef<HallDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private dialogData: Hall
   ) {
@@ -50,11 +51,11 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
     });
     this.hallForm.get(nameControl)?.setValue(dialogData?.name);
     this.hallForm.get(seatsCountControl)?.setValue(dialogData?.seats.length);
-    this.availableSeatTypes$ = this.sharedStateService.availableSeatTypes$;
+    this.availableSeatTypes$ = this.seatingPlanSharedStateService.availableSeatTypes$;
   }
 
   ngOnInit(): void {
-    combineLatest([this.sharedStateService.seats$, this.sharedStateService.seatingPlanJson$])
+    combineLatest([this.seatingPlanSharedStateService.seats$, this.seatingPlanSharedStateService.seatingPlanJson$])
       .subscribe(
         ([seats, seatingPlanJson]) => {
           this.seats = seats;
@@ -100,13 +101,13 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
   addAvailableSeatType($event: MatSelectChange): void {
     const availableSeatType: AvailableSeatType = {
       seatType: $event.source.value as SeatType,
-      color: this.generateRandomHexColorString()
+      color: generateRandomHexColorString()
     };
-    this.sharedStateService.addSeatTypeToSharedState(availableSeatType);
+    this.seatingPlanSharedStateService.addSeatTypeToSharedState(availableSeatType);
   }
 
   removeAvailableSeatType(availableSeatType: AvailableSeatType): void {
-    this.sharedStateService.removeSeatTypeFromSharedState(availableSeatType);
+    this.seatingPlanSharedStateService.removeSeatTypeFromSharedState(availableSeatType);
   }
 
   onSubmit(): void {
@@ -120,9 +121,5 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
 
   closeDialog(): void {
     this.dialogRef.close(this.dialogData);
-  }
-
-  private generateRandomHexColorString(): string {
-    return `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substring(1, 5)}`;
   }
 }

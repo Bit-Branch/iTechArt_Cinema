@@ -14,7 +14,7 @@ export class ConfirmDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
+    @Inject(MAT_DIALOG_DATA) private readonly data: ConfirmDialogData
   ) {
     this.title = data.title;
     this.message = data.message;

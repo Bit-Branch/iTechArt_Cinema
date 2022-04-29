@@ -24,7 +24,7 @@
       placeholder="Change seat type for all..."
     >
       <mat-option
-        *ngFor="let availableSeatType of availableSeatTypes$ | async"
+        *ngFor="let availableSeatType of (availableSeatTypes$ | async)"
         [value]="availableSeatType"
         (onSelectionChange)="changeSeatTypesForAll($event)"
       >

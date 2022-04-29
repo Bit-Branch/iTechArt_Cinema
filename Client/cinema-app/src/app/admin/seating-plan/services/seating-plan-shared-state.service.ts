@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -13,32 +13,38 @@ import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat
 })
 export class SeatingPlanSharedStateService {
   /**
+   * observable in which stored all seat types that have been selected in hall-dialog component
+   */
+  readonly availableSeatTypes$: Observable<AvailableSeatType[]>;
+  /**
+   * observable in which stored all seats that have been created in seating-plan component
+   */
+  readonly seats$: Observable<Seat[]>;
+  /**
+   * observable in which stored json string of saved seating plan
+   */
+  readonly seatingPlanJson$: Observable<string>;
+  /**
    * subject in which stored all seat types that have been selected in hall-dialog component
    * @private
    */
   private readonly availableSeatTypesSubject = new BehaviorSubject<AvailableSeatType[]>([]);
-  /**
-   * observable in which stored all seat types that have been selected in hall-dialog component
-   */
-  readonly availableSeatTypes$ = this.availableSeatTypesSubject.asObservable();
-  /**
-   * subject in which stored all seats that have been created in seating-plan component
-   * @private
-   */
-  private readonly seatsSubject = new BehaviorSubject<Seat[]>([]);
-  /**
-   * observable in which stored all seats that have been created in seating-plan component
-   */
-  readonly seats$ = this.seatsSubject.asObservable();
   /**
    * subject in which stored json string of saved seating plan
    * @private
    */
   private readonly seatingPlanJsonSubject = new BehaviorSubject<string>('');
   /**
-   * observable in which stored json string of saved seating plan
+   * subject in which stored all seats that have been created in seating-plan component
+   * @private
    */
-  readonly seatingPlanJson$ = this.seatingPlanJsonSubject.asObservable();
+  private readonly seatsSubject = new BehaviorSubject<Seat[]>([]);
+
+  constructor() {
+    this.availableSeatTypes$ = this.availableSeatTypesSubject.asObservable();
+    this.seats$ = this.seatsSubject.asObservable();
+    this.seatingPlanJson$ = this.seatingPlanJsonSubject.asObservable();
+  }
 
   private get availableSeatTypes(): AvailableSeatType[] {
     return this.availableSeatTypesSubject.getValue();
