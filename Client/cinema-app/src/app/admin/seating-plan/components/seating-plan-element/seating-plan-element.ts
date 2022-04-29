@@ -1,4 +1,6 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+
+import { AfterViewInit, EventEmitter, Injectable, Output } from '@angular/core';
 
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
@@ -13,7 +15,7 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
  * Base class for all dynamically created seating plan components
  */
 @Injectable()
-export abstract class SeatingPlanElement {
+export abstract class SeatingPlanElement implements AfterViewInit {
   /**
    * id of current component
    */
@@ -30,8 +32,17 @@ export abstract class SeatingPlanElement {
    * event for deleting current component
    */
   @Output() deleteComponentEvent = new EventEmitter();
+  /**
+   * Notifies when current component view is fully loaded
+   * @private
+   */
+  private componentViewInstantiated = new Subject<void>();
 
   protected constructor(private readonly dialog: MatDialog) {
+  }
+
+  ngAfterViewInit(): void {
+    this.componentViewInstantiated.next();
   }
 
   /**
@@ -63,15 +74,21 @@ export abstract class SeatingPlanElement {
   }
 
   loadValuesForSeatsComponents(seats: Seat[]): void {
-    for (let i = 0; i < this.seatComponents.length; i++) {
-      const currentSeatComponent = this.seatComponents[i];
-      const s = seats.find(seat => seat.indexInsideSeatGroup === i);
-      if (s) {
-        currentSeatComponent.seat = s;
-      } else {
-        currentSeatComponent.isDisabled = true;
+    this.componentViewInstantiated.subscribe(
+      () => {
+        for (let i = 0; i < this.seatComponents.length; i++) {
+          const currentSeatComponent = this.seatComponents[i];
+          const seatOfCurrentComponent = seats.find(seat => seat.indexInsideSeatGroup === i);
+          if (seatOfCurrentComponent) {
+            currentSeatComponent.seat = seatOfCurrentComponent;
+            // TODO i need to change seat color as well
+            // currentSeatComponent.currentSeatColor = ;
+          } else {
+            currentSeatComponent.isDisabled = true;
+          }
+        }
       }
-    }
+    )
   }
 
   /**

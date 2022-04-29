@@ -1,0 +1,17 @@
+<app-admin-edit-page title="Cities">
+  <button mat-stroked-button class="btn" (click)="openCreateCityDialog()">
+    Create new city
+  </button>
+
+  <app-editable-table
+    [tableData]="cities"
+    [tableColumns]="citiesTableColumns"
+    [isFilterable]="true"
+    [isPageable]="true"
+    [isEditable]="true"
+    (editingAction)="editCity($event)"
+    (deletingAction)="deleteCity($event)"
+    (getDataFromServerFunction)="getAllCities($event)"
+  >
+  </app-editable-table>
+</app-admin-edit-page>
