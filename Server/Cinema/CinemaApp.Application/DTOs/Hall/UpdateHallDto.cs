@@ -13,6 +13,9 @@ namespace CinemaApp.Application.DTOs.Hall
         public string Name { get; set; }
 
         [Required]
+        public int CinemaId { get; set; }
+
+        [Required]
         public string SeatingPlan { get; set; }
 
         [Required]

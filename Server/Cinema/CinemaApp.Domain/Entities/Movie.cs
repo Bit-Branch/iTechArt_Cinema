@@ -9,7 +9,7 @@
         public DateTime ShowInCinemasStartDate { get; set; }
         public DateTime ShowInCinemasEndDate { get; set; }
         public short DurationInMinutes { get; set; }
-        public int GenreId { get; set; }
+        public int? GenreId { get; set; }
         public Genre Genre { get; set; }
         public long? ImageId { get; set; }
         public Image Image { get; set; }

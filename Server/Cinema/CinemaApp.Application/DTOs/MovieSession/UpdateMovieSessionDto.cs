@@ -12,6 +12,9 @@ namespace CinemaApp.Application.DTOs.MovieSession
         public string ShowTime { get; set; }
 
         [Required]
+        public string EndShowTime { get; set; }
+
+        [Required]
         public int MovieId { get; set; }
 
         [Required]

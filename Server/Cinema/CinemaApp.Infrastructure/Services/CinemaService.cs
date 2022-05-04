@@ -40,6 +40,7 @@ namespace CinemaApp.Infrastructure.Services
             var existingCinema = _context.Cinemas
                 .Where(c => c.Id == cinemaDto.Id)
                 .Include(c => c.Halls)
+                .ThenInclude(h => h.Seats)
                 .Include(c => c.CinemaFavors)
                 .FirstOrDefault();
 
@@ -47,57 +48,25 @@ namespace CinemaApp.Infrastructure.Services
             {
                 _context.Entry(existingCinema).CurrentValues.SetValues(updatedCinema);
 
-                foreach (var existingCinemaFavor in existingCinema.CinemaFavors)
-                {
-                    if (!updatedCinema.CinemaFavors
-                            .Any(
-                                cf =>
-                                    cf.CinemaId == existingCinemaFavor.CinemaId
-                                    && cf.FavorId == existingCinemaFavor.FavorId
-                            )
-                       )
-                    {
-                        _context.CinemaFavors.Remove(existingCinemaFavor);
-                    }
-                }
+                existingCinema.CinemaFavors = updatedCinema.CinemaFavors;
 
-                foreach (var updatedCinemaFavor in updatedCinema.CinemaFavors)
-                {
-                    var existingCinemaFavor = existingCinema.CinemaFavors
-                        .SingleOrDefault(
-                            c =>
-                                c.CinemaId == updatedCinemaFavor.CinemaId
-                                && c.FavorId == updatedCinemaFavor.FavorId
-                        );
-
-                    if (existingCinemaFavor != null)
-                    {
-                        _context.Entry(existingCinemaFavor).CurrentValues.SetValues(updatedCinemaFavor);
-                    }
-                    else
-                    {
-                        var newCinemaFavor = new CinemaFavors
-                        {
-                            CinemaId = updatedCinemaFavor.CinemaId,
-                            FavorId = updatedCinemaFavor.FavorId,
-                            Price = updatedCinemaFavor.Price
-                        };
-                        existingCinema.CinemaFavors.Add(newCinemaFavor);
-                    }
-                }
-
-                await _context.SaveChangesAsync();
-
-                return existingCinema.Id;
+                existingCinema.Halls = updatedCinema.Halls;
             }
 
-            return null;
+            await _context.SaveChangesAsync();
+
+            return existingCinema.Id;
         }
 
         public async Task<CinemaDto?> GetCinemaByIdAsync(int id)
         {
             var cinema = await _context.Cinemas
-                .Where(m => m.Id == id)
+                .Where(c => c.Id == id)
+                .Include(c => c.City)
+                .Include(c => c.Halls)
+                .ThenInclude(h => h.Seats)
+                .Include(c => c.CinemaFavors)
+                .ThenInclude(cf => cf.Favor)
                 .FirstOrDefaultAsync();
 
             return cinema != null ? _mapper.Map<CinemaDto>(cinema) : null;

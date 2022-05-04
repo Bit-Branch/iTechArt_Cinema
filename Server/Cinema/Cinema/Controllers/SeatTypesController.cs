@@ -42,6 +42,20 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(seatTypes);
         }
 
+        [HttpGet("{id:int}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSeatType(int id)
+        {
+            var seatType = await _seatTypeService.GetSeatTypeByIdAsync(id);
+
+            if (seatType == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(seatType);
+        }
+
         [HttpGet("Paged")]
         public async Task<IActionResult> GetPagedSeatTypes([FromQuery] PaginationRequest paginationRequest)
         {

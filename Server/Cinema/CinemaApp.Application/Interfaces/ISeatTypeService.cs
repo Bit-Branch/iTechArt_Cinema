@@ -17,5 +17,6 @@ namespace CinemaApp.Application.Interfaces
             string? columnNameForOrdering,
             string? searchTerm
         );
+        Task<SeatTypeDto?> GetSeatTypeByIdAsync(int id);
     }
 }

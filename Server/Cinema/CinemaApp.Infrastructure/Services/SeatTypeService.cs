@@ -120,5 +120,14 @@ namespace CinemaApp.Infrastructure.Services
 
             return result;
         }
+
+        public async Task<SeatTypeDto?> GetSeatTypeByIdAsync(int id)
+        {
+            var seatType = await _context.SeatTypes
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+
+            return seatType != null ? _mapper.Map<SeatTypeDto>(seatType) : null;
+        }
     }
 }
