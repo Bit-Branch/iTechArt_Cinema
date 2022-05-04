@@ -5,6 +5,7 @@ export interface DisplayMovieSession {
   movieId: number,
   hallId: number,
   showTime: string,
+  endShowTime: string,
   movieName: string,
   cinemaName: string,
   hallName: string,

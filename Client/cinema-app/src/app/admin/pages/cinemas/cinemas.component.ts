@@ -1,4 +1,4 @@
-import { EMPTY, forkJoin, switchMap } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 
@@ -38,25 +38,12 @@ export class CinemasComponent implements OnInit {
   }
 
   editCinema($event: DisplayCinema): void {
-    // run two http requests in parallel to get halls and favors in edited cinema
-    forkJoin(
-      [
-        this.cinemaService.getAllHallsByCinemaId($event.id),
-        this.cinemaService.getAllCinemaFavorsByCinemaId($event.id)
-      ]
-    )
+    this.cinemaService.getCinemaById($event.id)
       .pipe(
-        // when both requests returned values
         switchMap(
-          ([halls, cinemaFavors]) => {
-            // create cinema object for editing
-            const cinemaForEditing: Cinema = {
-              ...$event,
-              halls,
-              cinemaFavors
-            };
+          (cinema: Cinema) => {
             // open editing dialog
-            const ref = this.dialog.open(CinemaDialogComponent, { ...dialogsConfig, data: cinemaForEditing });
+            const ref = this.dialog.open(CinemaDialogComponent, { ...dialogsConfig, data: cinema });
             // listen for closing opened dialog
             return ref.afterClosed()
           }
@@ -130,6 +117,7 @@ export class CinemasComponent implements OnInit {
         name: 'City',
         dataKey: 'city.name',
         isNestedKey: true,
+        defaultValue: 'City is not set',
         position: 'left',
         isSortable: true
       }

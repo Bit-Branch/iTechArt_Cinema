@@ -114,6 +114,7 @@ export class MoviesComponent implements OnInit {
         name: 'Genre',
         dataKey: 'genre.name',
         isNestedKey: true,
+        defaultValue: 'Genre is not set',
         position: 'left',
         isSortable: true
       },

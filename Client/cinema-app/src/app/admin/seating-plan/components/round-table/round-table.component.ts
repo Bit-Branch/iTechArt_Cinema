@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -7,8 +7,7 @@ import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-
 @Component({
   selector: 'app-circle-seating-plan-element',
   templateUrl: './round-table.component.html',
-  styleUrls: ['./round-table.component.scss', '../../shared.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./round-table.component.scss', '../../shared.css']
 })
 export class RoundTableComponent extends SeatingPlanElement implements AfterViewInit {
   seatsCount = 3;
@@ -19,8 +18,7 @@ export class RoundTableComponent extends SeatingPlanElement implements AfterView
     super(dialog);
   }
 
-  override ngAfterViewInit(): void {
-    super.ngAfterViewInit();
+  ngAfterViewInit(): void {
     this.calculatePositionsOfSeats();
   }
 

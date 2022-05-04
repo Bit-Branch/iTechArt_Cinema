@@ -10,7 +10,11 @@
         <div class="col">
 
           <mat-form-field class="full-width">
-            <mat-select placeholder="Select movie" [formControlName]="movieControl">
+            <mat-select
+              placeholder="Select movie"
+              [formControlName]="movieControl"
+              (selectionChange)="OnMovieSelected($event)"
+            >
               <mat-option>
                 <ngx-mat-select-search
                   placeholderLabel="Type movie title here..."
@@ -120,8 +124,8 @@
               placeholder="Choose dates for this session"
               [formControlName]="datesControl"
               [matDatepicker]="picker"
-              [min]="selectedMovie?.showInCinemasStartDate"
-              [max]="selectedMovie?.showInCinemasEndDate"
+              [min]="minShowDate"
+              [max]="maxShowDate"
             >
             </ngx-multiple-dates>
             <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>

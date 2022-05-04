@@ -1,8 +1,8 @@
 //External
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, from, Subscription, switchMap } from 'rxjs';
 
 //Angular
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatSelectChange } from '@angular/material/select';
@@ -31,16 +31,17 @@ const editActionButtonLabel = 'Apply changes';
   templateUrl: './hall-dialog.component.html',
   styleUrls: ['./hall-dialog.component.scss', '../dialogs-shared.scss']
 })
-export class HallDialogComponent implements OnInit, AfterViewInit {
+export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly hallForm: FormGroup;
-  readonly availableSeatTypes$: Observable<AvailableSeatType[]>;
   dialogTitle = createDialogTitle;
   actionButtonLabel = createActionButtonLabel;
   seatTypes: SeatType[] = [];
+  availableSeatTypes: AvailableSeatType[] = [];
   @ViewChild(SeatingPlanComponent, { static: true }) seatingPlan!: SeatingPlanComponent;
   private seatingPlanJson = '';
   private seats: Seat[] = [];
   private isInEditMode = false;
+  private sharedStateServiceSubscription!: Subscription;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -54,7 +55,6 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
       [nameControl]: [null, Validators.required],
       [seatsCountControl]: [null, [Validators.required, Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN)]]
     });
-    this.availableSeatTypes$ = this.sharedStateService.availableSeatTypes$;
     if (dialogData) {
       this.isInEditMode = true;
       this.dialogTitle = editDialogTitle;
@@ -63,19 +63,34 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.sharedStateService.seats$, this.sharedStateService.seatingPlanJson$])
-      .subscribe(
-        ([seats, seatingPlanJson]) => {
-          this.seats = seats;
-          this.seatingPlanJson = seatingPlanJson;
-        }
-      );
+    this.sharedStateServiceSubscription =
+      combineLatest(
+        [
+          this.sharedStateService.seats$,
+          this.sharedStateService.seatingPlanJson$,
+          this.sharedStateService.availableSeatTypes$
+        ]
+      )
+        .subscribe(
+          ([seats, seatingPlanJson, availableSeatTypes]) => {
+            this.seats = seats;
+            this.seatingPlanJson = seatingPlanJson;
+            this.availableSeatTypes = availableSeatTypes;
+          }
+        );
   }
 
   ngAfterViewInit(): void {
     if (this.isInEditMode) {
       this.fillFormWithData();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sharedStateServiceSubscription.unsubscribe();
+    this.sharedStateService.removeAllSeatTypesFromSharedState();
+    this.sharedStateService.removeAllSeatsFromSharedState();
+    this.sharedStateService.removeSeatingPlanJsonFromSharedState();
   }
 
   get nameControl(): string {
@@ -142,14 +157,32 @@ export class HallDialogComponent implements OnInit, AfterViewInit {
   private fillFormWithData(): void {
     this.hallForm.get(nameControl)?.setValue(this.dialogData?.name);
     this.hallForm.get(seatsCountControl)?.setValue(this.dialogData?.seats.length);
-    this.seatTypeService.findAllByHallId(this.dialogData.id)
-      .subscribe(
-        (seatTypes: SeatType[]) => seatTypes.map(seatType => this.addAvailableSeatType(seatType))
-      );
     this.seats = this.dialogData.seats;
     this.seatingPlanJson = this.dialogData.seatingPlan;
     this.seatingPlan.loadPlan(this.dialogData.seatingPlan);
-    this.seatingPlan.loadData(this.dialogData.seats);
+    if (this.dialogData.id) {
+      this.seatTypeService.findAllByHallId(this.dialogData.id)
+        .subscribe(
+          (seatTypes: SeatType[]) => {
+            seatTypes.map(seatType => this.addAvailableSeatType(seatType));
+            this.seatingPlan.loadData(this.dialogData.seats, this.availableSeatTypes);
+          }
+        );
+    } else {
+      const seatTypesIds = [...new Set(this.dialogData.seats.map(seat => seat.seatTypeId))];
+      from(seatTypesIds)
+        .pipe(
+          switchMap(
+            (id: number) => this.seatTypeService.getSeatTypeById(id)
+          )
+        )
+        .subscribe(
+          {
+            next: (seatType: SeatType) => this.addAvailableSeatType(seatType),
+            complete: () => this.seatingPlan.loadData(this.dialogData.seats, this.availableSeatTypes)
+          }
+        )
+    }
   }
 
   // adding available seat type for this form: all added seat types will be available in select menu of seat component

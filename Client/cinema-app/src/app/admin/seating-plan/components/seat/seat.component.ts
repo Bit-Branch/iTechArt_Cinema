@@ -33,10 +33,6 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
    */
   @Output() addSeatToParent = new EventEmitter();
   /**
-   * is seat was disabled by user
-   */
-  isDisabled = false;
-  /**
    * seat associated with this component
    */
   seat: Seat = { rowName: '', seatNo: -1, indexInsideSeatGroup: -1, seatGroupId: -1, seatTypeId: -1 };
@@ -48,6 +44,24 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
    * is seat was selected by user (shift+click or ctrl+click or just mouse click)
    */
   private selected = false;
+  /**
+   * is seat was disabled by user
+   */
+  private disabled = false;
+
+  get isDisabled(): boolean {
+    return this.disabled;
+  }
+
+  set isDisabled(isDisabled: boolean) {
+    if (isDisabled) {
+      this.sharedStateService.removeSeatFromSharedState(this.seat);
+      this.disabled = true;
+    } else {
+      this.sharedStateService.addSeatToSharedState(this.seat);
+      this.disabled = false;
+    }
+  }
 
   constructor(
     private readonly sharedStateService: SeatingPlanSharedStateService,
@@ -84,9 +98,9 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
    *  change seat type for the current seat if new one was selected
    */
   changeCurrentSeatType(availableSeatType: AvailableSeatType): void {
-    this.seat.seatTypeId = availableSeatType.seatType.id;
+    this.seat.seatTypeId = availableSeatType?.seatType.id;
     // also change color of this seat component accordingly to the selected seat type
-    this.currentSeatColor = availableSeatType.color;
+    this.currentSeatColor = availableSeatType?.color;
   }
 
   openEditMenu($event: MouseEvent): void {
@@ -94,6 +108,13 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
     this.multiSelectService.selectedCount > 1
       ? this.seatMenuManagerService.openMultipleSeatMenu($event)
       : this.seatMenuManagerService.openSingleSeatMenu($event);
+  }
+
+  /**
+   * mark seat to be checked by change detection
+   */
+  markForChangeDetectionCheck(): void {
+    this.changeDetectorRef.markForCheck();
   }
 
   // SelectableItem interface implementation

@@ -114,8 +114,15 @@ export class MovieSessionsComponent implements OnInit {
         isSortable: true
       },
       {
-        name: 'Show date',
+        name: 'Start date',
         dataKey: 'showDate',
+        position: 'left',
+        isSortable: true,
+        pipe: { pipe: DatePipe }
+      },
+      {
+        name: 'End date',
+        dataKey: 'endShowDate',
         position: 'left',
         isSortable: true,
         pipe: { pipe: DatePipe }

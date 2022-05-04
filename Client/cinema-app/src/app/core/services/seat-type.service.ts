@@ -42,6 +42,10 @@ export class SeatTypeService {
     );
   }
 
+  getSeatTypeById(id: number): Observable<SeatType> {
+    return this.http.get<SeatType>(`${environment.hostUrl}/api/seat-types/${id}`);
+  }
+
   getAllSeatTypes(): Observable<SeatType[]> {
     return this.http.get<SeatType[]>(`${environment.hostUrl}/api/seat-types`);
   }

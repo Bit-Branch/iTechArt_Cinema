@@ -5,6 +5,7 @@ export interface UpdateMovieSession {
   movieId: number,
   hallId: number,
   showTime: string,
+  endShowTime: string,
   showDate: Date
   ticketPrices: TicketPrice[]
 }

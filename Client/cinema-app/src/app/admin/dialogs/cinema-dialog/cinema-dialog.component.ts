@@ -180,14 +180,16 @@ export class CinemaDialogComponent implements OnInit {
     this.favorPrices.removeAt(index);
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  closeDialog(cinema?: UpdateCinema): void {
+    this.dialogRef.close(cinema);
   }
 
   private fillFormWithData(): void {
-    this.cities.push(this.dialogCinemaData.city);
+    if (this.dialogCinemaData.city) {
+      this.cities.push(this.dialogCinemaData.city);
+    }
     this.cinemaForm.get(nameControl)?.setValue(this.dialogCinemaData.name);
-    this.cinemaForm.get(cityControl)?.setValue(this.dialogCinemaData.city.id);
+    this.cinemaForm.get(cityControl)?.setValue(this.dialogCinemaData.city?.id);
     this.cinemaForm.get(addressControl)?.setValue(this.dialogCinemaData.address);
     this.fillFavorPricesWithData(this.dialogCinemaData.cinemaFavors);
     this.halls = this.dialogCinemaData.halls;
@@ -250,7 +252,7 @@ export class CinemaDialogComponent implements OnInit {
         (item: { [favorControl]: Favor, [favorPriceControl]: number }) => {
           return {
             cinemaId: this.dialogCinemaData.id,
-            favorId: item[favorControl].id,
+            favorId: item[favorControl].id ?? item[favorControl],
             price: item[favorPriceControl]
           };
         }
@@ -265,7 +267,7 @@ export class CinemaDialogComponent implements OnInit {
           complete: () => {
             this.snackbarService.showSuccessSnackBar('Cinema successfully updated');
             this.halls = [];
-            this.closeDialog();
+            this.closeDialog(cinema);
           }
         }
       );

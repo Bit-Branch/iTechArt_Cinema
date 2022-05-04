@@ -51,7 +51,7 @@
           <ng-template #textColumnContent>
             {{ (tableColumn.isNestedKey
             ? getNestedValue(element, tableColumn.dataKey)
-            : element[tableColumn.dataKey])
+            : element[tableColumn.dataKey]) ?? tableColumn.defaultValue
             | dynamicallyApply:tableColumn.pipe?.pipe:tableColumn.pipe?.pipeArguments }}
           </ng-template>
         </td>

@@ -85,7 +85,7 @@
 
         <mat-chip-list>
           <mat-chip
-            *ngFor="let availableSeatType of (availableSeatTypes$ | async)"
+            *ngFor="let availableSeatType of availableSeatTypes"
             [style.background]="availableSeatType.color"
             (removed)="removeAvailableSeatType(availableSeatType)"
           >

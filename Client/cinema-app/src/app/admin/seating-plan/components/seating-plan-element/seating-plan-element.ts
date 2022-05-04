@@ -1,6 +1,4 @@
-import { Subject } from 'rxjs';
-
-import { AfterViewInit, EventEmitter, Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
@@ -9,13 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Seat } from '@core/models/seat/seat';
 import { SeatComponent } from '@admin/seating-plan/components/seat/seat.component';
 import { PositionOnCanvas } from '@admin/seating-plan/intefraces/position-on-canvas';
+import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat-type';
 import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-dialog.component';
 
 /**
  * Base class for all dynamically created seating plan components
  */
 @Injectable()
-export abstract class SeatingPlanElement implements AfterViewInit {
+export abstract class SeatingPlanElement {
   /**
    * id of current component
    */
@@ -32,17 +31,10 @@ export abstract class SeatingPlanElement implements AfterViewInit {
    * event for deleting current component
    */
   @Output() deleteComponentEvent = new EventEmitter();
-  /**
-   * Notifies when current component view is fully loaded
-   * @private
-   */
-  private componentViewInstantiated = new Subject<void>();
 
-  protected constructor(private readonly dialog: MatDialog) {
-  }
-
-  ngAfterViewInit(): void {
-    this.componentViewInstantiated.next();
+  protected constructor(
+    private readonly dialog: MatDialog
+  ) {
   }
 
   /**
@@ -73,22 +65,20 @@ export abstract class SeatingPlanElement implements AfterViewInit {
     });
   }
 
-  loadValuesForSeatsComponents(seats: Seat[]): void {
-    this.componentViewInstantiated.subscribe(
-      () => {
-        for (let i = 0; i < this.seatComponents.length; i++) {
-          const currentSeatComponent = this.seatComponents[i];
-          const seatOfCurrentComponent = seats.find(seat => seat.indexInsideSeatGroup === i);
-          if (seatOfCurrentComponent) {
-            currentSeatComponent.seat = seatOfCurrentComponent;
-            // TODO i need to change seat color as well
-            // currentSeatComponent.currentSeatColor = ;
-          } else {
-            currentSeatComponent.isDisabled = true;
-          }
-        }
+  loadValuesForSeatsComponents(seats: Seat[], availableSeatTypes: AvailableSeatType[]): void {
+    for (let i = 0; i < this.seatComponents.length; i++) {
+      const currentSeatComponent = this.seatComponents[i];
+      const seatOfCurrentComponent = seats.find(seat => seat.indexInsideSeatGroup === i);
+      if (seatOfCurrentComponent) {
+        Object.assign(currentSeatComponent.seat, seatOfCurrentComponent);
+        currentSeatComponent.changeCurrentSeatType(
+          availableSeatTypes.find(available => available.seatType.id === seatOfCurrentComponent.seatTypeId)!
+        );
+      } else {
+        currentSeatComponent.isDisabled = true;
       }
-    )
+      currentSeatComponent.markForChangeDetectionCheck();
+    }
   }
 
   /**

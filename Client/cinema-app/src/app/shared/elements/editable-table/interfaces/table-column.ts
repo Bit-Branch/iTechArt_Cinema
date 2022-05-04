@@ -22,6 +22,10 @@ export interface TableColumn {
    */
   position?: 'right' | 'left',
   /**
+   * Default value to display if current column value is null
+   */
+  defaultValue?: string,
+  /**
    * Can a column be sorted
    */
   isSortable?: boolean,

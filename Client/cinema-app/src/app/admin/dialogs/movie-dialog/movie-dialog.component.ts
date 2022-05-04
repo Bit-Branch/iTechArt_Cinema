@@ -186,7 +186,7 @@ export class MovieDialogComponent implements OnInit {
           (data: { id: number, content: string }) => this.url = data.content
         );
     }
-    this.movieForm.get(genreControl)?.setValue(this.dialogData.genre.id);
+    this.movieForm.get(genreControl)?.setValue(this.dialogData.genre?.id);
     this.movieForm.get(titleControl)?.setValue(this.dialogData.title);
     this.movieForm.get(descriptionControl)?.setValue(this.dialogData.description);
     this.movieForm.get(yearOfIssueControl)?.setValue(this.dialogData.yearOfIssue);
