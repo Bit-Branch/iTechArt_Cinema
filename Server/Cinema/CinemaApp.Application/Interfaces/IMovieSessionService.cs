@@ -16,5 +16,6 @@ namespace CinemaApp.Application.Interfaces
             string? columnNameForOrdering,
             string? searchTerm
         );
+        Task<IEnumerable<MovieSessionDto>?> FindAllConflicted(CreateMovieSessionDto[] movieSessionDtos);
     }
 }

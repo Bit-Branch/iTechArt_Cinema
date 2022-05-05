@@ -57,6 +57,14 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(paginatingResult);
         }
 
+        [HttpGet("Showing")]
+        public async Task<IActionResult> FindAllConflicted([FromQuery] CreateMovieSessionDto[] movieSessions)
+        {
+            var conflicted = await _movieSessionService.FindAllConflicted(movieSessions);
+
+            return Ok(conflicted);
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteMovieSession(int id)
         {

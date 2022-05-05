@@ -3,9 +3,8 @@
     public class MovieSession
     {
         public long Id { get; set; }
-        public TimeSpan ShowTime { get; set; }
-        public TimeSpan EndShowTime { get; set; }
-        public DateTime ShowDate { get; set; }
+        public DateTime StartShowingTime { get; set; }
+        public DateTime EndShowingTime { get; set; }
         public int? MovieId { get; set; }
         public Movie Movie { get; set; }
         public int? HallId { get; set; }

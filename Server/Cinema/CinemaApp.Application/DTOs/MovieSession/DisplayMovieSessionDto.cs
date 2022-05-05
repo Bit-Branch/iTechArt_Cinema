@@ -5,9 +5,8 @@ namespace CinemaApp.Application.DTOs.MovieSession
     public class DisplayMovieSessionDto
     {
         public long Id { get; set; }
-        public TimeSpan ShowTime { get; set; }
-        public TimeSpan EndShowTime { get; set; }
-        public DateTime ShowDate { get; set; }
+        public DateTime StartShowingTime { get; set; }
+        public DateTime EndShowingTime { get; set; }
         public int MovieId { get; set; }
         public int HallId { get; set; }
         public string MovieName { get; set; }

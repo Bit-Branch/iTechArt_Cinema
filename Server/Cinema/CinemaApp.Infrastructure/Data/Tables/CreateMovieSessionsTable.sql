@@ -1,9 +1,8 @@
 ﻿CREATE TABLE MovieSessions
 (
     Id       BIGINT IDENTITY (1,1) NOT NULL,
-    ShowTime    TIME(0)            NOT NULL,
-    EndShowTime TIME(0)            NOT NULL,
-    ShowDate    DATE               NOT NULL,
+    StartShowingTime DATETIME2     NOT NULL,
+    EndShowingTime DATETIME2       NOT NULL,
     MovieId     INT                    NULL,
     HallId      INT                    NULL,
     CONSTRAINT PK_MovieSessions PRIMARY KEY CLUSTERED (Id ASC),
