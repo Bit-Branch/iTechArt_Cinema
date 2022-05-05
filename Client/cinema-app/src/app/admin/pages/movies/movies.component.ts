@@ -10,6 +10,7 @@ import { ImageUrls } from '@core/constants/image-urls';
 import { MovieDialogComponent } from '@admin/dialogs/movie-dialog/movie-dialog.component';
 import { Movie } from '@core/models/movie/movie';
 import { MovieService } from '@core/services/movie.service';
+import { MinutesPipe } from '@core/pipes/minutes.pipe';
 import { ImageBase64UrlPipe } from '@core/pipes/image-base64-url.pipe';
 import { PaginationResult } from '@core/models/pagination-result/pagination-result';
 import { TableCurrentState } from '@shared/elements/editable-table/interfaces/table-current-state';
@@ -136,7 +137,8 @@ export class MoviesComponent implements OnInit {
         name: 'Movie duration',
         dataKey: 'durationInMinutes',
         position: 'right',
-        isSortable: true
+        isSortable: true,
+        pipe: { pipe: MinutesPipe }
       }
     ];
   }

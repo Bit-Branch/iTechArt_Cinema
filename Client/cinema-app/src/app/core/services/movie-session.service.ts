@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { PaginationResult } from '@core/models/pagination-result/pagination-result';
 import { DisplayMovieSession } from '@core/models/movie-session/display-movie-session';
@@ -41,6 +41,17 @@ export class MovieSessionService {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<DisplayMovieSession>>(
       `${environment.hostUrl}/api/movie-sessions/paged`,
+      { params }
+    );
+  }
+
+  findAllConflicted(movieSessions: CreateMovieSession[]): Observable<DisplayMovieSession[]> {
+    let params = new HttpParams();
+    movieSessions.forEach(movieSession => {
+      params = params.append('movieSessions', JSON.stringify(movieSession));
+    })
+    return this.http.get<DisplayMovieSession[]>(
+      `${environment.hostUrl}/api/movie-sessions/showing`,
       { params }
     );
   }

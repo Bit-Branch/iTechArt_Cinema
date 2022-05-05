@@ -4,8 +4,7 @@ export interface MovieSession {
   id: number,
   movieId: number,
   hallId: number,
-  showTime: string,
-  endShowTime: string,
-  showDate: Date
+  startShowingTime: Date,
+  endShowingTime: Date,
   ticketPrices: TicketPrice[]
 }
