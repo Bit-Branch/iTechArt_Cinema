@@ -1,0 +1,46 @@
+<div
+  class="sofa-group draggable-block"
+  cdkDrag
+  cdkDragBoundary=".canvas"
+  [matMenuTriggerFor]="sofaMenu"
+  [cdkDragFreeDragPosition]="positionOnCanvas"
+  (cdkDragEnded)="rememberPositionWhenDragEnded($event)"
+>
+  <div class="sofa-handle back"></div>
+
+  <div class="sofa-handle left"></div>
+
+  <div class="sofa-handle right"></div>
+
+  <div class="example-handle" cdkDragHandle appClickStopPropagation>
+    <svg width="18px" fill="currentColor" viewBox="0 0 24 24">
+      <path
+        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+      </path>
+      <path d="M0 0h24v24H0z" fill="none"></path>
+    </svg>
+  </div>
+
+  <table>
+    <tr>
+      <td *ngFor="let column of [].constructor(seatsCount); let i = index">
+        <app-seat
+          appClickStopPropagation
+          [seatId]="i"
+          [seatGroupId]="currentComponentId"
+          (addSeatToParent)="addSeatToParent($event)"
+        >
+        </app-seat>
+      </td>
+    </tr>
+  </table>
+
+  <mat-menu #sofaMenu class="dynamic-menu">
+    <button
+      mat-icon-button
+      (click)="deleteComponent()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-menu>
+</div>

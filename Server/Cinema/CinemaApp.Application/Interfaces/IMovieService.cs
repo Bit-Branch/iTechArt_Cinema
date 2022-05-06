@@ -8,5 +8,6 @@ namespace CinemaApp.Application.Interfaces
         Task<MovieDto?> GetMovieByIdAsync(int id);
         Task<IEnumerable<MovieDto>> GetAllAsync();
         Task<IEnumerable<MovieDto>> FindAllByTermAsync(string term);
+        Task<int> DeleteMovieAsync(int id);
     }
 }

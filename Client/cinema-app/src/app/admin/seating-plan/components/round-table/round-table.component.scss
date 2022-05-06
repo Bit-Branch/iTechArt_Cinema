@@ -1,0 +1,20 @@
+.round-table {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50% !important;
+}
+
+.round-table-seat {
+  position: absolute;
+}
+
+.example-handle {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  color: #ccc;
+  cursor: move;
+  top: 3px;
+  right: 5px;
+}

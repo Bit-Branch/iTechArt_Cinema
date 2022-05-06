@@ -21,7 +21,7 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpPost("image")]
-        public async Task<IActionResult> CreateFavorImage([FromForm] CreateFavorImageDto createImageDto)
+        public async Task<IActionResult> CreateFavorImage([FromForm] CreateFavorImageDto? createImageDto)
         {
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }

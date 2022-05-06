@@ -43,14 +43,77 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="col">
+
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Seat type" (selectionChange)="addAvailableSeatType($event)">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Type seat type name here..."
+                noEntriesFoundLabel="No seat types found"
+                (keyup)="onSearchSeatTypes($event)"
+              >
+              </ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option *ngFor="let seatType of seatTypes" [value]="seatType">
+              {{ seatType.name }}
+            </mat-option>
+            <div>
+              <button mat-button type="button" (click)="openCreateSeatTypeDialog()">
+                <mat-icon>add</mat-icon>
+                Create new seat type
+              </button>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+
+        <p>Available seat types:</p>
+
+      </div>
+    </div>
+
+    <div class="row full-width" style="padding-bottom: 10px">
+      <div class="col">
+
+        <mat-chip-list>
+          <mat-chip
+            *ngFor="let availableSeatType of (availableSeatTypes$ | async)"
+            [style.background]="availableSeatType.color"
+            (removed)="removeAvailableSeatType(availableSeatType)"
+          >
+            {{ availableSeatType.seatType.name }}
+
+            <button matChipRemove type="button">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-list>
+
+      </div>
+    </div>
+
+    <app-seating-plan></app-seating-plan>
+
   </div>
 
   <mat-error *ngIf="hallForm.invalid">
     Please fill all fields with data.
   </mat-error>
 
+  <mat-error *ngIf="seatingPlanIsNotSaved">
+    Please save seating plan first and make sure that there is at least one seat created.
+  </mat-error>
+
   <mat-dialog-actions>
-    <button mat-raised-button type="submit" [disabled]="hallForm.invalid">
+    <button mat-raised-button type="submit" [disabled]="hallForm.invalid || seatingPlanIsNotSaved">
       Create
     </button>
 

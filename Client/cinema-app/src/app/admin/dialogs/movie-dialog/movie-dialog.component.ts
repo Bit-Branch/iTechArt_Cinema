@@ -4,13 +4,14 @@ import { FileInput, FileValidator } from 'ngx-material-file-input';
 import { iif, switchMap } from 'rxjs';
 
 //Angular components
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 //Local
+import { Movie } from '@core/models/movie/movie';
 import { Genre } from '@core/models/genre/genre';
 import { CreateMovie } from '@core/models/movie/create-movie';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
@@ -48,7 +49,8 @@ export class MovieDialogComponent implements OnInit {
     private readonly genreService: GenreService,
     private readonly snackbarService: SnackbarService,
     private readonly dialog: MatDialog,
-    private readonly dialogRef: MatDialogRef<MovieDialogComponent>
+    private readonly dialogRef: MatDialogRef<MovieDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private dialogData: Movie
   ) {
     this.movieForm = this.formBuilder.group({
       [imageControl]: [null, FileValidator.maxContentSize(imageMaxSizeInBytes), aspectRatioValidator(2, 3)],

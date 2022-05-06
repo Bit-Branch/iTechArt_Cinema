@@ -1,6 +1,7 @@
-import { CreateSeat } from '@core/models/seat/create-seat';
+import { Seat } from '@core/models/seat/seat';
 
 export interface CreateHall {
   name: string,
-  seats: CreateSeat[]
+  seats: Seat[],
+  seatingPlan: string
 }

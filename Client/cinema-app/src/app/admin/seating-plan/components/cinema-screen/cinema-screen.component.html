@@ -1,0 +1,19 @@
+<div
+  cdkDrag
+  class="draggable-block cinema-screen"
+  cdkDragBoundary=".canvas"
+  [matMenuTriggerFor]="screenMenu"
+  [cdkDragFreeDragPosition]="positionOnCanvas"
+>
+
+  <p class="screen-label">{{ screenLabel }}</p>
+
+  <mat-menu #screenMenu class="dynamic-menu">
+    <button
+      mat-icon-button
+      (click)="deleteComponent()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-menu>
+</div>

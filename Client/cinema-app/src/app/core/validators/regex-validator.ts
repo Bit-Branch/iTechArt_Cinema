@@ -12,6 +12,6 @@ export function regexValidator(regex: RegExp, error: ValidationErrors): Validato
   };
 }
 
-function isEmptyInputValue(value: any): boolean {
+function isEmptyInputValue(value: string): boolean {
   return value == null || value.length === 0;
 }

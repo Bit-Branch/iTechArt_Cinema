@@ -1,5 +1,4 @@
 //Angular modules
-import { AdminPagesModule } from '@admin/pages/admin-pages.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +10,7 @@ import { MovieSessionDialogModule } from '@admin/dialogs/movie-session-dialog/mo
 import { MovieDialogModule } from '@admin/dialogs/movie-dialog/movie-dialog.module';
 import { FavorDialogModule } from '@admin/dialogs/favor-dialog/favor-dialog.module';
 import { CreationDialogModule } from '@admin/dialogs/creation-dialog/creation-dialog.module';
+import { AdminPagesModule } from '@admin/pages/admin-pages.module';
 
 @NgModule({
   imports: [

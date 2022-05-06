@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.SeatType;
@@ -31,6 +32,15 @@ namespace CinemaApp.WebApi.Controllers
             var seatTypes = term == null
                 ? await _seatTypeService.GetAllAsync()
                 : await _seatTypeService.FindAllByTermAsync(term);
+
+            return Ok(seatTypes);
+        }
+
+        [HttpGet("halls/id")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSeatTypesByHallId([FromQuery] int hallId)
+        {
+            var seatTypes = await _seatTypeService.FindAllByHallIdAsync(hallId);
 
             return Ok(seatTypes);
         }

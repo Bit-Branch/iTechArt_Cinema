@@ -1,0 +1,58 @@
+.canvas {
+  border: #ccc 1px solid;
+  height: 10000px;
+  width: 10000px;
+}
+
+.canvas-drag-area {
+  height: 600px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.canvas-scrollable-area {
+  height: inherit;
+  overflow: auto;
+}
+
+.canvas-menu {
+  position: absolute;
+  top: 3px;
+  right: 14px;
+  z-index: 10;
+}
+
+mat-menu {
+  display: flex;
+}
+
+.mat-menu-form {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.drag-area {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+.scaling-buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 14px;
+  top: 40%;
+  z-index: 10;
+}
+
+.dynamic-menu {
+  position: absolute;
+}

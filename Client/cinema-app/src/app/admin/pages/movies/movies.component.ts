@@ -10,7 +10,9 @@ import { MovieDialogComponent } from '@admin/dialogs/movie-dialog/movie-dialog.c
   templateUrl: './movies.component.html'
 })
 export class MoviesComponent {
-  constructor(private readonly dialog: MatDialog) {
+  constructor(
+    private readonly dialog: MatDialog
+  ) {
   }
 
   openCreateMovieDialog(): void {

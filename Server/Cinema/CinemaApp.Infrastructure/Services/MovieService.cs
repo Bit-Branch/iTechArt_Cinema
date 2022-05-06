@@ -54,5 +54,12 @@ namespace CinemaApp.Infrastructure.Services
                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
+
+        public async Task<int> DeleteMovieAsync(int id)
+        {
+            var movie = _context.Movies.Remove(_context.Movies.Single(m => m.Id == id));
+            await _context.SaveChangesAsync();
+            return movie.Entity.Id;
+        }
     }
 }
