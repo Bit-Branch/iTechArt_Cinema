@@ -4,12 +4,27 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@login/*": ["src/app/login/*"],
-      "@admin/*": ["src/app/admin/*"],
-      "@pages/*": ["src/app/pages/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@environment/*": ["src/environments/*"]
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@login/*": [
+        "src/app/login/*"
+      ],
+      "@admin/*": [
+        "src/app/admin/*"
+      ],
+      "@pages/*": [
+        "src/app/pages/*"
+      ],
+      "@client-portal/*": [
+        "src/app/client-portal/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@environment/*": [
+        "src/environments/*"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

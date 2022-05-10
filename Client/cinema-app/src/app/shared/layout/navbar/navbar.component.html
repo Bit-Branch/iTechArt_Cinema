@@ -1,22 +1,42 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>Cinema</span>
+<mat-toolbar class="header">
+  <mat-toolbar-row class="navbar">
 
-    <span class="spacer"></span>
+    <div class="logo">
+      <a href="">
+        <h3>
+          CIN<span>EMA</span>
+        </h3>
+      </a>
+    </div>
 
-    <button *ngIf="!isLoggedIn()" (click)="openLoginDialog()" mat-icon-button>
-      <mat-icon>input</mat-icon>
+    <ul class="pages">
+      <li>
+        <a href="">Movies</a>
+      </li>
+      <li>
+        <a href="">Theaters</a>
+      </li>
+    </ul>
+
+    <app-navbar-search-input></app-navbar-search-input>
+
+    <button mat-icon-button *ngIf="!isLoggedIn()" (click)="openLoginDialog()">
+      <span>Sign in</span>
+      <mat-icon class="account-icon">input</mat-icon>
     </button>
 
-    <button *ngIf="isLoggedIn()" [matMenuTriggerFor]="menu" mat-icon-button>
-      <mat-icon>account_circle</mat-icon>
+    <button mat-icon-button *ngIf="isLoggedIn()" [matMenuTriggerFor]="menu">
+      <mat-icon class="account-icon">account_circle</mat-icon>
+
       <mat-menu #menu="matMenu">
-        <button (click)="listPurchases()" mat-menu-item>
+        <button mat-menu-item (click)="listPurchases()">
           <mat-icon>shopping_cart</mat-icon>
           <span>Purchases</span>
         </button>
+
         <mat-divider></mat-divider>
-        <button (click)="logout()" mat-menu-item>
+
+        <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
           <span>Logout</span>
         </button>

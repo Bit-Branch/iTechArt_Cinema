@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 //Components
 import { NavbarComponent } from '@shared/layout/navbar/navbar.component';
+import { NavbarSearchInputModule } from '@shared/layout/navbar/navbar-search-input/navbar-search-input.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NavbarComponent } from '@shared/layout/navbar/navbar.component';
     MatDividerModule,
     MatDialogModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NavbarSearchInputModule
   ]
 })
 export class NavbarModule {

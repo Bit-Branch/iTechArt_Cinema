@@ -6,6 +6,7 @@ import { LoadingService } from '@core/services/loading.service';
 
 type AvailableSpinnerColors = 'primary' | 'accent' | 'warn';
 type AvailableSpinnerModes = 'indeterminate' | 'determinate';
+const defaultSpinnerDiameter = 50;
 
 @Component({
   selector: 'app-loading-spinner',
@@ -13,12 +14,9 @@ type AvailableSpinnerModes = 'indeterminate' | 'determinate';
   styleUrls: ['./loading-spinner.component.scss']
 })
 export class LoadingSpinnerComponent {
-  color: AvailableSpinnerColors = 'accent';
+  color: AvailableSpinnerColors = 'primary';
   mode: AvailableSpinnerModes = 'indeterminate';
-  /**
-   * Value of the progress circle.
-   */
-  value = 50;
+  diameter = defaultSpinnerDiameter;
   isLoading$: Observable<boolean>;
 
   constructor(private readonly loadingService: LoadingService) {

@@ -7,6 +7,7 @@
 
   .card {
     min-width: 120px;
+    color: $oxford-blue-50;
   }
 
   .mat-radio-button {
@@ -35,16 +36,20 @@
 
   ::ng-deep {
     .mat-form-field.mat-focused .mat-form-field-label {
-      color: $blue;
+      color: $azure;
     }
 
     .mat-focused .mat-form-field-underline .mat-form-field-ripple {
-      background-color: $blue;
+      background-color: $azure;
     }
   }
 
   .mat-stroked-button:enabled {
-    background: linear-gradient(to right, $blue, $green);
-    color: rgb(27, 27, 27);
+    background: $light-azure;
+    color: $rich-white-fogra-29;
+
+    &:hover {
+      background: $oxford-blue-50;
+    }
   }
 }

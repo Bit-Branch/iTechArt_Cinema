@@ -97,7 +97,7 @@
       <div class="row row-overflow">
 
         <mat-nav-list>
-          <mat-list-item *ngFor="let hall of halls; let i = index" role="listitem">
+          <mat-list-item role="listitem" *ngFor="let hall of halls; let i = index">
             <span matLine>
               Name: {{ hall.name }} Seats: {{ hall.seats.length }}
             </span>
@@ -130,7 +130,7 @@
 
       <ng-container *ngFor="let favorForm of favorForms; let i = index">
 
-        <div [formGroup]="favorForm" class="row">
+        <div class="row" [formGroup]="favorForm">
           <div class="col">
 
             <app-search-select

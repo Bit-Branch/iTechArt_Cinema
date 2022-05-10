@@ -3,6 +3,10 @@
 :host {
   .mat-button:hover,
   .mat-icon-button:hover {
-    color: $blue;
+    color: $azure;
+  }
+
+  .mat-list-item {
+    color: $oxford-blue-50;
   }
 }

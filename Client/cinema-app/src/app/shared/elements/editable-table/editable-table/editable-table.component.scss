@@ -1,3 +1,5 @@
+@import "src/colors";
+
 :host {
   table {
     width: 100%;
@@ -6,6 +8,7 @@
 
   th, td {
     padding: 10px !important;
+    color: $oxford-blue-50;
   }
 
   td.mat-cell {

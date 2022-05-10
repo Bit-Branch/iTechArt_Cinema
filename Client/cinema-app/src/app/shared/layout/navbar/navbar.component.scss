@@ -1,7 +1,14 @@
-mat-toolbar-row {
-  background: linear-gradient(to right, #78ffd6, #a8ff78);
-  color: white;
-  position: relative;
+@import "src/colors";
+
+.header {
+  background: $rich-white-fogra-29;
+}
+
+.navbar {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mat-search-field {
@@ -9,9 +16,80 @@ mat-toolbar-row {
 }
 
 .mat-button {
-  color: white;
+  color: $black;
 }
 
-.spacer {
-  flex: 1 1 auto;
+.mat-menu-item {
+  .mat-icon,
+  span {
+    color: $oxford-blue-50;
+  }
+}
+
+.mat-icon-button span {
+  color: $oxford-blue-50;
+  font-weight: 500;
+}
+
+.logo {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+  }
+
+  h3 {
+    color: $light-azure;
+    line-height: 1.3;
+
+    span {
+      background: $light-azure;
+      color: $rich-white-fogra-29;
+      display: inline-block;
+      line-height: 1.4;
+      padding: 0 3px;
+      border-radius: 6px;
+    }
+  }
+
+  &:hover {
+    transition: all ease 0.2s;
+    box-shadow: 5px 10px 30px rgba(53, 53, 53, 0.1);
+
+    h3 {
+      color: $oxford-blue-50;
+
+      span {
+        background: $oxford-blue-50;
+        color: $rich-white-fogra-29;
+      }
+    }
+  }
+}
+
+.pages {
+  list-style: none;
+  display: flex;
+
+  a {
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: $oxford-blue-50;
+    text-decoration: none;
+    padding: 5px 12px;
+  }
+
+  li a:hover {
+    border-radius: 5px;
+    color: $rich-white-fogra-29;
+    background-color: $oxford-blue-50;
+    transition: all ease 0.2s;
+    box-shadow: 5px 10px 30px rgba(53, 53, 53, 0.1);
+  }
+}
+
+.account-icon {
+  color: $light-azure;
+  margin-left: 5px;
 }

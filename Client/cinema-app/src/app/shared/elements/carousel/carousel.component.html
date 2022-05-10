@@ -1,0 +1,40 @@
+<section class="carousel">
+  <div class="carousel-heading">
+    <h2 class="carousel-title">{{ headingText }}</h2>
+    <a
+      class="carousel-link"
+      *ngIf="withLink"
+      [routerLink]="linkPath"
+      (click)="onLinkClicked($event)"
+    >
+      {{ linkText }}
+    </a>
+  </div>
+
+  <div class="carousel-content" #carousel>
+    <div
+      class="carousel-box"
+      *ngFor="let item of carouselItems"
+      [class.album-orientation]="albumOrientation"
+      (click)="onItemClicked(item)"
+    >
+      <div class="carousel-box-image" *ngIf="itemPropertyNameForImage">
+        <img [src]="getItemImage(item) ? (getItemImage(item)! | imageBase64Url) : defaultImagePath">
+      </div>
+
+      <div class="carousel-box-content">
+        <h5 *ngIf="itemPropertyNameForHeading">{{ item[itemPropertyNameForHeading] }}</h5>
+        <p *ngIf="itemPropertyNameForParagraph">{{ item[itemPropertyNameForParagraph] }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!--Scrolling buttons-->
+  <button class="control prev" (click)="onPreviousClick()">
+    <span class="arrow left"></span>
+  </button>
+
+  <button class="control next" (click)="onNextClick()">
+    <span class="arrow right"></span>
+  </button>
+</section>

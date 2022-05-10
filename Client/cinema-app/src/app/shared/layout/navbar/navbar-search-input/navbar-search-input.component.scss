@@ -1,0 +1,23 @@
+@import "src/colors";
+
+:host {
+  .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 0 10px;
+    background-color: $light-grey;
+    width: 250px;
+    height: 40px;
+    color: $oxford-blue-50;
+
+    input {
+      width: 100%;
+      height: 30px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+    }
+  }
+}

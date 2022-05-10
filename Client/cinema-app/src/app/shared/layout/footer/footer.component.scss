@@ -1,0 +1,16 @@
+@import "src/colors";
+
+:host {
+  footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.01);
+
+    p {
+      color: $oxford-blue-50;
+      margin: 10px 0;
+      font-size: 0.9rem;
+    }
+  }
+}

@@ -59,6 +59,14 @@ export class MovieService {
     return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies`);
   }
 
+  getAllMoviesNowShowing(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies/now-showing`);
+  }
+
+  getAllMoviesComingSoon(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${environment.hostUrl}/api/movies/coming-soon`);
+  }
+
   getAllMoviesPaged(tableState: TableCurrentState): Observable<PaginationResult<Movie>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<Movie>>(

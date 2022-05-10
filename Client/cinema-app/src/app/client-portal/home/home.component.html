@@ -1,0 +1,25 @@
+<div class="movies">
+  <app-carousel
+    headingText="Now showing"
+    itemPropertyNameForImage="image"
+    itemPropertyNameForHeading="yearOfIssue"
+    itemPropertyNameForParagraph="title"
+    [withLink]="true"
+    [carouselItems]="moviesNowShowing$ | async"
+    (onItemClick)="onMovieClicked($event)"
+    (onLinkClick)="showAllMoviesPage()"
+  >
+  </app-carousel>
+
+  <app-carousel
+    headingText="Coming soon"
+    itemPropertyNameForImage="image"
+    itemPropertyNameForHeading="yearOfIssue"
+    itemPropertyNameForParagraph="title"
+    [withLink]="true"
+    [carouselItems]="moviesComingSoon$ | async"
+    (onItemClick)="onMovieClicked($event)"
+    (onLinkClick)="showAllMoviesPage()"
+  >
+  </app-carousel>
+</div>

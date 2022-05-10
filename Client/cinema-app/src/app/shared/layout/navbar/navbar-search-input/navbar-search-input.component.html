@@ -1,0 +1,36 @@
+<div class="search">
+  <input #searchInput type="text" placeholder="Search for Movies, Theaters, Cities..." [matAutocomplete]="auto">
+
+  <mat-icon>search</mat-icon>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option
+      *ngFor="let movie of searchResult?.movies"
+      [value]="movie.id"
+      (click)="onMovieSelected(movie.id)"
+    >
+      <mat-icon>movie</mat-icon>
+      <span>{{ movie.title }}</span> |
+      <small>({{ movie.yearOfIssue }})</small>
+    </mat-option>
+
+    <mat-option
+      *ngFor="let cinema of searchResult?.cinemas"
+      [value]="cinema.id"
+      (click)="onCinemaSelected(cinema.id)"
+    >
+      <mat-icon>theaters</mat-icon>
+      <span>{{ cinema.name }}</span> |
+      <small>{{ cinema.cityName}} </small>
+    </mat-option>
+
+    <mat-option
+      *ngFor="let city of searchResult?.cities"
+      [value]="city.id"
+      (click)="onCitySelected(city.id)"
+    >
+      <mat-icon>location_city</mat-icon>
+      <span>{{ city.name }}</span>
+    </mat-option>
+  </mat-autocomplete>
+</div>

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 //Components
-import { AppComponent } from './app.component';
+import { HomeComponent } from '@client-portal/home/home.component';
 
 //Guards
 import { AdminAuthGuard } from '@core/guards/admin-auth.guard';
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: AppComponent
+    component: HomeComponent
   },
   {
     path: 'admin',

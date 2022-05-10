@@ -16,8 +16,8 @@ export class SnackbarService {
       {
         duration: 3000,
         panelClass: ['snackbar', 'success-snackbar'],
-        horizontalPosition: 'end',
-        verticalPosition: 'top'
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom'
       }
     );
   }
@@ -29,8 +29,8 @@ export class SnackbarService {
       {
         duration: 3000,
         panelClass: ['snackbar', 'danger-snackbar'],
-        horizontalPosition: 'end',
-        verticalPosition: 'top'
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom'
       }
     );
   }

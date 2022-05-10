@@ -2,7 +2,7 @@
 
 .basic-seat {
   border-radius: 50%;
-  border: 1px solid $red;
+  border: 1px solid $azure;
   background: #fff;
   width: 20px;
   height: 20px;
@@ -19,13 +19,13 @@
 }
 
 .isDisabled {
-  border: solid 1px $background-white;
-  background: $background-white;
+  border: solid 1px $background-white-gray;
+  background: $background-white-gray;
   opacity: 0.25;
 
   &:hover {
     border: solid 1px #424242;
-    background: $background-white;
+    background: $background-white-gray;
     opacity: 0.25;
   }
 }
