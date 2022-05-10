@@ -27,6 +27,7 @@ namespace CinemaApp.Application.Mappings
             CreateMap<UpdateCityDto, City>();
 
             CreateMap<Movie, MovieDto>();
+            CreateMap<Movie, SearchMovieDto>();
             CreateMap<CreateMovieDto, Movie>();
             CreateMap<UpdateMovieDto, Movie>();
 
@@ -39,6 +40,8 @@ namespace CinemaApp.Application.Mappings
             CreateMap<UpdateCinemaFavorDto, CinemaFavors>();
 
             CreateMap<Cinema, CinemaDto>();
+            CreateMap<Cinema, SearchCinemaDto>()
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
             CreateMap<Cinema, DisplayCinemaDto>();
             CreateMap<CreateCinemaDto, Cinema>();
             CreateMap<UpdateCinemaDto, Cinema>();

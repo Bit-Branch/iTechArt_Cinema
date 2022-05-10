@@ -8,6 +8,8 @@ namespace CinemaApp.Application.Interfaces
         Task<int> CreateMovieAsync(CreateMovieDto createMovieDto);
         Task<MovieDto?> GetMovieByIdAsync(int id);
         Task<IEnumerable<MovieDto>> GetAllAsync();
+        Task<IEnumerable<MovieDto>> GetAllNowShowingAsync();
+        Task<IEnumerable<MovieDto>> GetAllComingSoonAsync();
         Task<IEnumerable<MovieDto>> FindAllByTermAsync(string term);
         Task<int> DeleteMovieAsync(int id);
         Task<int> UpdateMovieAsync(UpdateMovieDto movieDto);

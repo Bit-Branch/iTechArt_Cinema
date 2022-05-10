@@ -43,6 +43,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped(typeof(JwtService));
 
+builder.Services.AddScoped(typeof(SearchService));
+
 builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddScoped<IUserService, UserService>();

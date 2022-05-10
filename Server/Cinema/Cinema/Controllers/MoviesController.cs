@@ -83,6 +83,24 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(movies);
         }
 
+        [HttpGet("Now-showing")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMoviesNowShowing()
+        {
+            var movies = await _movieService.GetAllNowShowingAsync();
+
+            return Ok(movies);
+        }
+
+        [HttpGet("Coming-soon")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMoviesComingSoon()
+        {
+            var movies = await _movieService.GetAllComingSoonAsync();
+
+            return Ok(movies);
+        }
+
         [HttpGet("Paged")]
         public async Task<IActionResult> GetPagedMovies([FromQuery] PaginationRequest paginationRequest)
         {

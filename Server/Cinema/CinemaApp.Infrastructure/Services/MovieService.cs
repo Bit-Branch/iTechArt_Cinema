@@ -59,6 +59,24 @@ namespace CinemaApp.Infrastructure.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<MovieDto>> GetAllNowShowingAsync()
+        {
+            var currentDate = DateTime.Now;
+            return await _context.Movies
+                .Where(m => m.ShowInCinemasStartDate <= currentDate && m.ShowInCinemasEndDate >= currentDate)
+                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<MovieDto>> GetAllComingSoonAsync()
+        {
+            var currentDate = DateTime.Now;
+            return await _context.Movies
+                .Where(m => currentDate < m.ShowInCinemasStartDate)
+                .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MovieDto>> FindAllByTermAsync(string term)
         {
             return await _context.Movies

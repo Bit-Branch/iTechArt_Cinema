@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Infrastructure.Services;
 using CinemaApp.Application.DTOs.Authentication;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Constants;
 
 namespace CinemaApp.WebApi.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
@@ -19,6 +22,7 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpPost("Authenticate")]
+        [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto userForAuthentication)
         {
             var user = await _userService.AuthenticateAsync(userForAuthentication);
@@ -34,6 +38,7 @@ namespace CinemaApp.WebApi.Controllers
         }
 
         [HttpPost("Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto userForRegistration)
         {
             var user = await _userService.FindUserByEmailAsync(userForRegistration.Email);
