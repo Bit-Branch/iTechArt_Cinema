@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Directive, EventEmitter, Output } from '@angular/core';
 
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
@@ -13,8 +13,8 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
 /**
  * Base class for all dynamically created seating plan components
  */
-@Injectable()
-export abstract class SeatingPlanElement {
+@Directive()
+export class SeatingPlanElement {
   /**
    * id of current component
    */

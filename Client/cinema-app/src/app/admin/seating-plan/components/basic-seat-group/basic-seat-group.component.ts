@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-element/seating-plan-element';
 
+const defaultNumberOfRows = 3;
+const defaultNumberOfColumns = 3;
+
 @Component({
   selector: 'app-basic-seating-plan-element',
   templateUrl: './basic-seat-group.component.html',
@@ -11,8 +14,8 @@ import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasicSeatGroupComponent extends SeatingPlanElement {
-  rows = 3;
-  columns = 3;
+  rows = defaultNumberOfRows;
+  columns = defaultNumberOfColumns;
 
   constructor(dialog: MatDialog) {
     super(dialog);

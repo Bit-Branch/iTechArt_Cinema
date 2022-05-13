@@ -75,7 +75,7 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
   ngOnInit(): void {
     // add current seat to 'available for selection' seats array
     this.multiSelectService.addNewItemToSelectableList(this);
-    // add current seat to shareable seats array, so we can get all seats in hall-dialog component
+    // add current seat to shareable seats array, so it will be able to get all seats in hall-dialog component
     this.sharedStateService.addSeatToSharedState(this.seat);
     this.addSeatToParent.emit(this);
   }
@@ -126,12 +126,12 @@ export class SeatComponent implements SelectableItem, OnInit, AfterViewInit, OnD
     return this.selected;
   }
 
-  setStatusToSelected(): void {
+  select(): void {
     this.selected = true;
     this.changeDetectorRef.markForCheck();
   }
 
-  setStatusToNotSelected(): void {
+  unselect(): void {
     this.selected = false;
     this.changeDetectorRef.markForCheck();
   }

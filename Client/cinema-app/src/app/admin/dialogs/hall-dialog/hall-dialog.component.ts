@@ -14,6 +14,7 @@ import { Hall } from '@core/models/hall/hall';
 import { SeatType } from '@core/models/seat-type/seat-type';
 import { SeatTypeService } from '@core/services/seat-type.service';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
+import { generateRandomHexColorString } from '@core/utils/generate-random-hex-color-string';
 import { SeatingPlanComponent } from '@admin/seating-plan/seating-plan.component';
 import { SeatingPlanSharedStateService } from '@admin/seating-plan/services/seating-plan-shared-state.service';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
@@ -47,7 +48,7 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly seatTypeService: SeatTypeService,
-    private readonly sharedStateService: SeatingPlanSharedStateService,
+    private readonly seatingPlanSharedStateService: SeatingPlanSharedStateService,
     private readonly dialogRef: MatDialogRef<HallDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private dialogData: Hall
   ) {
@@ -132,7 +133,7 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   removeAvailableSeatType(availableSeatType: AvailableSeatType): void {
-    this.sharedStateService.removeSeatTypeFromSharedState(availableSeatType);
+    this.seatingPlanSharedStateService.removeSeatTypeFromSharedState(availableSeatType);
   }
 
   onSubmit(): void {
