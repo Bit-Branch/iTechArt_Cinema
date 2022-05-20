@@ -10,6 +10,6 @@ namespace CinemaApp.Application.DTOs.TicketPrice
 
         [Required]
         [Min(0)]
-        public decimal Price { get; set; }
+        public decimal Amount { get; set; }
     }
 }

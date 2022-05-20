@@ -51,24 +51,18 @@ namespace CinemaApp.Infrastructure.Services
                 .ToListAsync();
         }
 
-        public async Task<PaginationResult<DisplayMovieSessionDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        )
+        public async Task<PaginationResult<DisplayMovieSessionDto>> GetPagedAsync(PaginationRequest paginationRequest)
         {
             IQueryable<MovieSession> query;
 
             string? propertyNameForOrdering = null;
 
-            if (columnNameForOrdering != null)
+            if (paginationRequest.SortingColumn != null)
             {
-                propertyNameForOrdering = columnNameForOrdering.CapitalizeFirstLetter();
+                propertyNameForOrdering = paginationRequest.SortingColumn.CapitalizeFirstLetter();
             }
 
-            if (ascending)
+            if (paginationRequest.Ascending)
             {
                 query = _context.MovieSessions
                     .OrderBy(
@@ -83,7 +77,7 @@ namespace CinemaApp.Infrastructure.Services
                     );
             }
 
-            if (searchTerm != null)
+            if (paginationRequest.SearchTerm != null)
             {
                 query = query
                     .Where(
@@ -97,7 +91,7 @@ namespace CinemaApp.Infrastructure.Services
                                 + " "
                                 + p.EndShowingTime
                             )
-                            .Contains(searchTerm)
+                            .Contains(paginationRequest.SearchTerm)
                     );
             }
 
@@ -107,8 +101,8 @@ namespace CinemaApp.Infrastructure.Services
             {
                 TotalCountInDatabase = totalCount,
                 Items = await query
-                    .Skip(skip)
-                    .Take(take)
+                    .Skip(paginationRequest.Page * paginationRequest.PageSize)
+                    .Take(paginationRequest.PageSize)
                     .ProjectTo<DisplayMovieSessionDto>(_mapper.ConfigurationProvider)
                     .ToListAsync()
             };
@@ -148,9 +142,18 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<long> DeleteMovieSessionAsync(long id)
         {
-            var movieSession = _context.MovieSessions.Remove(_context.MovieSessions.Single(m => m.Id == id));
+            var movieSessionToRemove = _context.MovieSessions.FirstOrDefault(m => m.Id == id);
+
+            if (movieSessionToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.MovieSessions.Remove(movieSessionToRemove);
+
             await _context.SaveChangesAsync();
-            return movieSession.Entity.Id;
+
+            return movieSessionToRemove.Id;
         }
     }
 }

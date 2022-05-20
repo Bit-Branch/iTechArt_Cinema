@@ -6,10 +6,10 @@ namespace CinemaApp.Application.DTOs.MovieSession
     public class CreateMovieSessionDto
     {
         [Required]
-        public DateTime StartShowingTime { get; set; }
+        public DateTimeOffset StartShowingTime { get; set; }
 
         [Required]
-        public DateTime EndShowingTime { get; set; }
+        public DateTimeOffset EndShowingTime { get; set; }
 
         [Required]
         public int MovieId { get; set; }

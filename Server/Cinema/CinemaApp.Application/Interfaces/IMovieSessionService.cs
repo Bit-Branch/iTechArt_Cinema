@@ -9,13 +9,7 @@ namespace CinemaApp.Application.Interfaces
         Task UpdateMovieSessionsAsync(UpdateMovieSessionDto[] movieSessionDtos);
         Task<IEnumerable<MovieSessionDto>> GetAllAsync();
         Task<long> DeleteMovieSessionAsync(long id);
-        Task<PaginationResult<DisplayMovieSessionDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        );
+        Task<PaginationResult<DisplayMovieSessionDto>> GetPagedAsync(PaginationRequest paginationRequest);
         Task<IEnumerable<MovieSessionDto>?> FindAllConflicted(CreateMovieSessionDto[] movieSessionDtos);
     }
 }

@@ -74,28 +74,21 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetMovies([FromQuery] string? term)
+        public async Task<IActionResult> GetMovies(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var movies = term == null
-                ? await _movieService.GetAllAsync()
-                : await _movieService.FindAllByTermAsync(term);
-
-            return Ok(movies);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedMovies([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _movieService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(
+                    term == null
+                        ? await _movieService.GetAllAsync()
+                        : await _movieService.FindAllByTermAsync(term)
                 );
+            }
 
-            return Ok(paginatingResult);
+            return Ok(await _movieService.GetPagedAsync(paginationRequest));
         }
 
         [HttpDelete("{id:int}")]
@@ -103,7 +96,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedMovieId = await _movieService.DeleteMovieAsync(id);
 
-            if (deletedMovieId == 0)
+            if (deletedMovieId == -1)
             {
                 return NotFound();
             }

@@ -13,13 +13,7 @@ namespace CinemaApp.Application.Interfaces
         Task<IEnumerable<CinemaDto>> FindAllByTermAsync(string term);
         Task<int?> UpdateCinemaAsync(UpdateCinemaDto cinema);
         Task<int> DeleteCinemaAsync(int id);
-        Task<PaginationResult<DisplayCinemaDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        );
+        Task<PaginationResult<DisplayCinemaDto>> GetPagedAsync(PaginationRequest paginationRequest);
         Task<IEnumerable<HallDto>> GetAllHallsByCinemaIdAsync(int cinemaId);
         Task<IEnumerable<CinemaFavorDto>> GetAllCinemaFavorsByCinemaIdAsync(int id);
     }

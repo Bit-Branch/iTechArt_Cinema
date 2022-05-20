@@ -47,28 +47,21 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetCinemas([FromQuery] string? term)
+        public async Task<IActionResult> GetCinemas(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var cinemas = term == null
-                ? await _cinemaService.GetAllAsync()
-                : await _cinemaService.FindAllByTermAsync(term);
-
-            return Ok(cinemas);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedCinemas([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _cinemaService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(
+                    term == null
+                        ? await _cinemaService.GetAllAsync()
+                        : await _cinemaService.FindAllByTermAsync(term)
                 );
+            }
 
-            return Ok(paginatingResult);
+            return Ok(await _cinemaService.GetPagedAsync(paginationRequest));
         }
 
         [HttpGet("{id:int}/halls")]
@@ -92,7 +85,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedCinemaId = await _cinemaService.DeleteCinemaAsync(id);
 
-            if (deletedCinemaId == 0)
+            if (deletedCinemaId == -1)
             {
                 return NotFound();
             }

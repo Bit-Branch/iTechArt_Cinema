@@ -35,26 +35,14 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetMovieSessions()
+        public async Task<IActionResult> GetMovieSessions([FromQuery] PaginationRequest paginationRequest)
         {
-            var movieSessions = await _movieSessionService.GetAllAsync();
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(await _movieSessionService.GetAllAsync());
+            }
 
-            return Ok(movieSessions);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedMovieSessions([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _movieSessionService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
-                );
-
-            return Ok(paginatingResult);
+            return Ok(await _movieSessionService.GetPagedAsync(paginationRequest));
         }
 
         [HttpGet("Showing")]
@@ -70,7 +58,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedMovieSessionId = await _movieSessionService.DeleteMovieSessionAsync(id);
 
-            if (deletedMovieSessionId == 0)
+            if (deletedMovieSessionId == -1)
             {
                 return NotFound();
             }

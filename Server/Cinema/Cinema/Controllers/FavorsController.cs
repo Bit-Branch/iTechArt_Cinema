@@ -60,28 +60,21 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetFavors([FromQuery] string? term)
+        public async Task<IActionResult> GetFavors(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var favors = term == null
-                ? await _favorService.GetAllAsync()
-                : await _favorService.FindAllByTermAsync(term);
-
-            return Ok(favors);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedFavors([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _favorService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(
+                    term == null
+                        ? await _favorService.GetAllAsync()
+                        : await _favorService.FindAllByTermAsync(term)
                 );
+            }
 
-            return Ok(paginatingResult);
+            return Ok(await _favorService.GetPagedAsync(paginationRequest));
         }
 
         [HttpDelete("{id:int}")]
@@ -89,7 +82,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedFavorId = await _favorService.DeleteFavorAsync(id);
 
-            if (deletedFavorId == 0)
+            if (deletedFavorId == -1)
             {
                 return NotFound();
             }

@@ -59,31 +59,32 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<int> DeleteFavorAsync(int id)
         {
-            var favor = _context.Favors.Remove(_context.Favors.Single(m => m.Id == id));
+            var favorToRemove = _context.Favors.FirstOrDefault(m => m.Id == id);
+
+            if (favorToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.Favors.Remove(favorToRemove);
 
             await _context.SaveChangesAsync();
 
-            return favor.Entity.Id;
+            return favorToRemove.Id;
         }
 
-        public async Task<PaginationResult<FavorDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        )
+        public async Task<PaginationResult<FavorDto>> GetPagedAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Favor> query;
 
             string? propertyNameForOrdering = null;
 
-            if (columnNameForOrdering != null)
+            if (paginationRequest.SortingColumn != null)
             {
-                propertyNameForOrdering = columnNameForOrdering.CapitalizeFirstLetter();
+                propertyNameForOrdering = paginationRequest.SortingColumn.CapitalizeFirstLetter();
             }
 
-            if (ascending)
+            if (paginationRequest.Ascending)
             {
                 query = _context.Favors
                     .OrderBy(
@@ -98,12 +99,12 @@ namespace CinemaApp.Infrastructure.Services
                     );
             }
 
-            if (searchTerm != null)
+            if (paginationRequest.SearchTerm != null)
             {
                 query = query
                     .Where(
                         p => (p.Name + " " + p.Description)
-                            .Contains(searchTerm)
+                            .Contains(paginationRequest.SearchTerm)
                     );
             }
 
@@ -113,8 +114,8 @@ namespace CinemaApp.Infrastructure.Services
             {
                 TotalCountInDatabase = totalCount,
                 Items = await query
-                    .Skip(skip)
-                    .Take(take)
+                    .Skip(paginationRequest.Page * paginationRequest.PageSize)
+                    .Take(paginationRequest.PageSize)
                     .ProjectTo<FavorDto>(_mapper.ConfigurationProvider)
                     .ToListAsync()
             };

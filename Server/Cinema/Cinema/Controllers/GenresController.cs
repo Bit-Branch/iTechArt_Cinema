@@ -33,26 +33,14 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetGenres()
+        public async Task<IActionResult> GetGenres([FromQuery] PaginationRequest paginationRequest)
         {
-            var genres = await _genreService.GetAllAsync();
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(await _genreService.GetAllAsync());
+            }
 
-            return Ok(genres);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedGenres([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _genreService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
-                );
-
-            return Ok(paginatingResult);
+            return Ok(await _genreService.GetPagedAsync(paginationRequest));
         }
 
         [HttpDelete("{id:int}")]
@@ -60,7 +48,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedGenreId = await _genreService.DeleteGenreAsync(id);
 
-            if (deletedGenreId == 0)
+            if (deletedGenreId == -1)
             {
                 return NotFound();
             }

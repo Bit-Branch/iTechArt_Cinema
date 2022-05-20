@@ -59,31 +59,32 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<int> DeleteSeatTypeAsync(int id)
         {
-            var seatType = _context.SeatTypes.Remove(_context.SeatTypes.Single(st => st.Id == id));
+            var seatTypeToRemove = _context.SeatTypes.FirstOrDefault(m => m.Id == id);
+
+            if (seatTypeToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.SeatTypes.Remove(seatTypeToRemove);
 
             await _context.SaveChangesAsync();
 
-            return seatType.Entity.Id;
+            return seatTypeToRemove.Id;
         }
 
-        public async Task<PaginationResult<SeatTypeDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        )
+        public async Task<PaginationResult<SeatTypeDto>> GetPagedAsync(PaginationRequest paginationRequest)
         {
             IQueryable<SeatType> query;
 
             string? propertyNameForOrdering = null;
 
-            if (columnNameForOrdering != null)
+            if (paginationRequest.SortingColumn != null)
             {
-                propertyNameForOrdering = columnNameForOrdering.CapitalizeFirstLetter();
+                propertyNameForOrdering = paginationRequest.SortingColumn.CapitalizeFirstLetter();
             }
 
-            if (ascending)
+            if (paginationRequest.Ascending)
             {
                 query = _context.SeatTypes
                     .OrderBy(
@@ -98,11 +99,11 @@ namespace CinemaApp.Infrastructure.Services
                     );
             }
 
-            if (searchTerm != null)
+            if (paginationRequest.SearchTerm != null)
             {
                 query = query
                     .Where(
-                        p => p.Name.Contains(searchTerm)
+                        p => p.Name.Contains(paginationRequest.SearchTerm)
                     );
             }
 
@@ -112,8 +113,8 @@ namespace CinemaApp.Infrastructure.Services
             {
                 TotalCountInDatabase = totalCount,
                 Items = await query
-                    .Skip(skip)
-                    .Take(take)
+                    .Skip(paginationRequest.Page * paginationRequest.PageSize)
+                    .Take(paginationRequest.PageSize)
                     .ProjectTo<SeatTypeDto>(_mapper.ConfigurationProvider)
                     .ToListAsync()
             };

@@ -44,11 +44,18 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<int> DeleteCityAsync(int id)
         {
-            var city = _context.Cities.Remove(_context.Cities.Single(g => g.Id == id));
+            var cityToRemove = _context.Cities.FirstOrDefault(m => m.Id == id);
+
+            if (cityToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.Cities.Remove(cityToRemove);
 
             await _context.SaveChangesAsync();
 
-            return city.Entity.Id;
+            return cityToRemove.Id;
         }
 
         public async Task<IEnumerable<CityDto>> GetAllAsync()

@@ -6,7 +6,6 @@ namespace CinemaApp.Application.DTOs.CinemaFavor
     public class CreateCinemaFavorDto
     {
         [Required]
-        [Min(1)]
         public int FavorId { get; set; }
 
         [Required]

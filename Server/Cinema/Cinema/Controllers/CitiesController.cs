@@ -43,28 +43,29 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetCities([FromQuery] string? term)
+        public async Task<IActionResult> GetCities(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var cities = term == null
-                ? await _cityService.GetAllAsync()
-                : await _cityService.FindAllByTermAsync(term);
-
-            return Ok(cities);
-        }
-
-        [HttpGet("Paged")]
-        public async Task<IActionResult> GetPagedCities([FromQuery] PaginationRequest paginationRequest)
-        {
-            var paginatingResult = await _cityService
-                .GetPagedAsync(
-                    paginationRequest.Page * paginationRequest.PageSize,
-                    paginationRequest.PageSize,
-                    paginationRequest.Ascending,
-                    paginationRequest.SortingColumn,
-                    paginationRequest.SearchTerm
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(term == null
+                    ? await _cityService.GetAllAsync()
+                    : await _cityService.FindAllByTermAsync(term)
                 );
+            }
 
-            return Ok(paginatingResult);
+            return Ok(
+                await _cityService
+                    .GetPagedAsync(
+                        paginationRequest.Page * paginationRequest.PageSize,
+                        paginationRequest.PageSize,
+                        paginationRequest.Ascending,
+                        paginationRequest.SortingColumn,
+                        paginationRequest.SearchTerm
+                    )
+            );
         }
 
         [HttpDelete("{id:int}")]
@@ -72,7 +73,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedCityId = await _cityService.DeleteCityAsync(id);
 
-            if (deletedCityId == 0)
+            if (deletedCityId == -1)
             {
                 return NotFound();
             }

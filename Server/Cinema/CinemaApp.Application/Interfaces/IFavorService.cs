@@ -10,12 +10,6 @@ namespace CinemaApp.Application.Interfaces
         Task<IEnumerable<FavorDto>> FindAllByTermAsync(string term);
         Task<int> UpdateFavorAsync(UpdateFavorDto favor);
         Task<int> DeleteFavorAsync(int id);
-        Task<PaginationResult<FavorDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        );
+        Task<PaginationResult<FavorDto>> GetPagedAsync(PaginationRequest paginationRequest);
     }
 }

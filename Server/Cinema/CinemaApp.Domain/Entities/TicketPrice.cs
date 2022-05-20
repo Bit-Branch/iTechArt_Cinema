@@ -6,6 +6,6 @@
         public MovieSession MovieSession { get; set; }
         public int SeatTypeId { get; set; }
         public SeatType SeatType { get; set; }
-        public decimal Price { get; set; }
+        public decimal Amount { get; set; }
     }
 }

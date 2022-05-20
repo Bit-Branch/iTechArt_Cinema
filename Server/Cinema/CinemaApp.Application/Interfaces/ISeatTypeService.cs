@@ -10,13 +10,7 @@ namespace CinemaApp.Application.Interfaces
         Task<IEnumerable<SeatTypeDto>> FindAllByTermAsync(string term);
         Task<int> UpdateSeatTypeAsync(UpdateSeatTypeDto seatTypeDto);
         Task<int> DeleteSeatTypeAsync(int id);
-        Task<PaginationResult<SeatTypeDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        );
+        Task<PaginationResult<SeatTypeDto>> GetPagedAsync(PaginationRequest paginationRequest);
         Task<SeatTypeDto?> GetSeatTypeByIdAsync(int id);
     }
 }

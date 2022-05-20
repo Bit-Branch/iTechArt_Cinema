@@ -90,31 +90,32 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<int> DeleteCinemaAsync(int id)
         {
-            var cinema = _context.Cinemas.Remove(_context.Cinemas.Single(m => m.Id == id));
+            var cinemaToRemove = _context.Cinemas.FirstOrDefault(m => m.Id == id);
+
+            if (cinemaToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.Cinemas.Remove(cinemaToRemove);
 
             await _context.SaveChangesAsync();
 
-            return cinema.Entity.Id;
+            return cinemaToRemove.Id;
         }
 
-        public async Task<PaginationResult<DisplayCinemaDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        )
+        public async Task<PaginationResult<DisplayCinemaDto>> GetPagedAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Cinema> query;
 
             string? propertyNameForOrdering = null;
 
-            if (columnNameForOrdering != null)
+            if (paginationRequest.SortingColumn != null)
             {
-                propertyNameForOrdering = columnNameForOrdering.CapitalizeFirstLetter();
+                propertyNameForOrdering = paginationRequest.SortingColumn.CapitalizeFirstLetter();
             }
 
-            if (ascending)
+            if (paginationRequest.Ascending)
             {
                 query = _context.Cinemas
                     .OrderBy(
@@ -129,12 +130,12 @@ namespace CinemaApp.Infrastructure.Services
                     );
             }
 
-            if (searchTerm != null)
+            if (paginationRequest.SearchTerm != null)
             {
                 query = query
                     .Where(
                         p => (p.Name + " " + p.Address + " " + p.City.Name)
-                            .Contains(searchTerm)
+                            .Contains(paginationRequest.SearchTerm)
                     );
             }
 
@@ -144,8 +145,8 @@ namespace CinemaApp.Infrastructure.Services
             {
                 TotalCountInDatabase = totalCount,
                 Items = await query
-                    .Skip(skip)
-                    .Take(take)
+                    .Skip(paginationRequest.Page * paginationRequest.PageSize)
+                    .Take(paginationRequest.PageSize)
                     .ProjectTo<DisplayCinemaDto>(_mapper.ConfigurationProvider)
                     .ToListAsync()
             };

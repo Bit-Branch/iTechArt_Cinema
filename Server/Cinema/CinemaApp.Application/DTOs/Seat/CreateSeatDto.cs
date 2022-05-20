@@ -8,7 +8,7 @@ namespace CinemaApp.Application.DTOs.Seat
         public string RowName { get; set; }
 
         [Required]
-        public short SeatNo { get; set; }
+        public int SeatNo { get; set; }
 
         [Required]
         public int SeatGroupId { get; set; }

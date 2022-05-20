@@ -9,12 +9,6 @@ namespace CinemaApp.Application.Interfaces
         Task<IEnumerable<GenreDto>> GetAllAsync();
         Task<int> UpdateGenreAsync(UpdateGenreDto genreDto);
         Task<int> DeleteGenreAsync(int id);
-        Task<PaginationResult<GenreDto>> GetPagedAsync(
-            int skip,
-            int take,
-            bool ascending,
-            string? columnNameForOrdering,
-            string? searchTerm
-        );
+        Task<PaginationResult<GenreDto>> GetPagedAsync(PaginationRequest paginationRequest);
     }
 }
