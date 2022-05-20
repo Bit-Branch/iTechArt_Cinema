@@ -47,6 +47,7 @@ namespace CinemaApp.Infrastructure.Services
             var movie = await _context.Movies
                 .Where(m => m.Id == id)
                 .Include(m => m.Genre)
+                .Include(m => m.Image)
                 .FirstOrDefaultAsync();
 
             return movie != null ? _mapper.Map<MovieDto>(movie) : null;

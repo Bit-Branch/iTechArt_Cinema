@@ -6,12 +6,24 @@ using CinemaApp.Domain.Settings;
 using CinemaApp.Infrastructure.Contexts;
 using CinemaApp.Infrastructure.Services;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddCors();
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", policyBuilder =>
+        {
+            policyBuilder
+                .WithOrigins("http://192.168.64.193:4200", "http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        }
+    )
+);
+
+builder.Services.AddSignalR(options => options.EnableDetailedErrors = true);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -71,19 +83,14 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors(source =>
-    {
-        source
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    }
-);
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<HallHub>("/bookingSeatsConnection");
 
 app.Run();

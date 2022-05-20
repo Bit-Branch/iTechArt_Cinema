@@ -23,6 +23,7 @@ namespace CinemaApp.Infrastructure.Services
         {
             var hall = await _context.Halls
                 .Where(m => m.Id == id)
+                .Include(h => h.Seats)
                 .FirstOrDefaultAsync();
 
             return hall != null ? _mapper.Map<HallDto>(hall) : null;
