@@ -92,4 +92,9 @@
 .account-icon {
   color: $light-azure;
   margin-left: 5px;
+  transition: all ease 0.2s;
+
+  &:hover {
+    color: $oxford-blue-50;
+  }
 }

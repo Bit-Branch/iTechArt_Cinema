@@ -1,124 +1,128 @@
 <form [formGroup]="hallForm" novalidate (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>{{ dialogTitle }}</h1>
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>{{ dialogTitle }}</mat-card-title>
+    </mat-card-header>
 
-  <div mat-dialog-content>
+    <mat-card-content>
 
-    <div class="row">
-      <div class="col">
+      <div class="row">
+        <div class="col">
 
-        <mat-form-field class="full-width">
-          <input
-            matInput
-            placeholder="Name"
-            [formControlName]="nameControl"
-          >
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Name"
+              [formControlName]="nameControl"
+            >
 
-          <mat-error *ngIf="hallForm.get(nameControl)?.getError('required')">
-            Hall name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
+            <mat-error *ngIf="hallForm.get(nameControl)?.getError('required')">
+              Hall name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
 
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col">
+      <div class="row">
+        <div class="col">
 
-        <mat-form-field class="full-width">
-          <input
-            matInput
-            placeholder="Count of seats"
-            [formControlName]="seatsCountControl"
-          >
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Count of seats"
+              [formControlName]="seatsCountControl"
+            >
 
-          <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('required')">
-            Seats count need to be <strong>one or more</strong>
-          </mat-error>
+            <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('required')">
+              Seats count need to be <strong>one or more</strong>
+            </mat-error>
 
-          <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('pattern')">
-            Only nonnegative numbers is allowed
-          </mat-error>
-        </mat-form-field>
+            <mat-error *ngIf="hallForm.get(seatsCountControl)?.getError('pattern')">
+              Only nonnegative numbers is allowed
+            </mat-error>
+          </mat-form-field>
 
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col">
+      <div class="row">
+        <div class="col">
 
-        <mat-form-field class="full-width">
-          <mat-select placeholder="Seat type" (selectionChange)="onSeatTypeSelected($event)">
-            <mat-option>
-              <ngx-mat-select-search
-                placeholderLabel="Type seat type name here..."
-                noEntriesFoundLabel="No seat types found"
-                (keyup)="onSearchSeatTypes($event)"
-              >
-              </ngx-mat-select-search>
-            </mat-option>
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Seat type" (selectionChange)="onSeatTypeSelected($event)">
+              <mat-option>
+                <ngx-mat-select-search
+                  placeholderLabel="Type seat type name here..."
+                  noEntriesFoundLabel="No seat types found"
+                  (keyup)="onSearchSeatTypes($event)"
+                >
+                </ngx-mat-select-search>
+              </mat-option>
 
-            <mat-option *ngFor="let seatType of seatTypes" [value]="seatType">
-              {{ seatType.name }}
-            </mat-option>
-            <div>
-              <button mat-button type="button" (click)="openCreateSeatTypeDialog()">
-                <mat-icon>add</mat-icon>
-                Create new seat type
+              <mat-option *ngFor="let seatType of seatTypes" [value]="seatType">
+                {{ seatType.name }}
+              </mat-option>
+              <div>
+                <button mat-button type="button" (click)="openCreateSeatTypeDialog()">
+                  <mat-icon>add</mat-icon>
+                  Create new seat type
+                </button>
+              </div>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <p>Available seat types:</p>
+
+        </div>
+      </div>
+
+      <div class="row full-width" style="padding-bottom: 10px">
+        <div class="col">
+
+          <mat-chip-list>
+            <mat-chip
+              *ngFor="let availableSeatType of availableSeatTypes"
+              [style.background]="availableSeatType.color"
+              (removed)="removeAvailableSeatType(availableSeatType)"
+            >
+              {{ availableSeatType.seatType.name }}
+
+              <button matChipRemove type="button">
+                <mat-icon>cancel</mat-icon>
               </button>
-            </div>
-          </mat-select>
-        </mat-form-field>
+            </mat-chip>
+          </mat-chip-list>
 
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col">
+      <app-seating-plan-editor></app-seating-plan-editor>
 
-        <p>Available seat types:</p>
+    </mat-card-content>
 
-      </div>
-    </div>
+    <mat-error *ngIf="hallForm.invalid">
+      Please fill all fields with data.
+    </mat-error>
 
-    <div class="row full-width" style="padding-bottom: 10px">
-      <div class="col">
+    <mat-error *ngIf="seatingPlanIsNotSaved">
+      Please save seating plan first and make sure that there is at least one seat created.
+    </mat-error>
 
-        <mat-chip-list>
-          <mat-chip
-            *ngFor="let availableSeatType of availableSeatTypes"
-            [style.background]="availableSeatType.color"
-            (removed)="removeAvailableSeatType(availableSeatType)"
-          >
-            {{ availableSeatType.seatType.name }}
+    <mat-dialog-actions>
+      <button mat-raised-button type="submit" [disabled]="hallForm.invalid || seatingPlanIsNotSaved">
+        {{ actionButtonLabel }}
+      </button>
 
-            <button matChipRemove type="button">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip>
-        </mat-chip-list>
-
-      </div>
-    </div>
-
-    <app-seating-plan></app-seating-plan>
-
-  </div>
-
-  <mat-error *ngIf="hallForm.invalid">
-    Please fill all fields with data.
-  </mat-error>
-
-  <mat-error *ngIf="seatingPlanIsNotSaved">
-    Please save seating plan first and make sure that there is at least one seat created.
-  </mat-error>
-
-  <mat-dialog-actions>
-    <button mat-raised-button type="submit" [disabled]="hallForm.invalid || seatingPlanIsNotSaved">
-      {{ actionButtonLabel }}
-    </button>
-
-    <button mat-raised-button type="button" (click)="closeDialog()">
-      Cancel
-    </button>
-  </mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="closeDialog()">
+        Cancel
+      </button>
+    </mat-dialog-actions>
+  </mat-card>
 </form>

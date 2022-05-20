@@ -14,15 +14,18 @@ import { Hall } from '@core/models/hall/hall';
 import { SeatType } from '@core/models/seat-type/seat-type';
 import { SeatTypeService } from '@core/services/seat-type.service';
 import { ValidationPatterns } from '@core/constants/validation-patterns';
-import { SeatingPlanComponent } from '@admin/seating-plan/seating-plan.component';
-import { SeatingPlanSharedStateService } from '@admin/seating-plan/services/seating-plan-shared-state.service';
+import { generateRandomHexColorString } from '@core/utils/generate-random-hex-color-string';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
-import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat-type';
+import { AvailableSeatType } from '@shared/elements/seating-plan/intefraces/available-seat-type';
+import { SeatingPlanEditorComponent } from '@admin/seating-plan-editor/seating-plan-editor.component';
+import {
+  SeatingPlanSharedStateService
+} from '@shared/elements/seating-plan/services/seating-plan-shared-state.service';
 
 const nameControl = 'name';
 const seatsCountControl = 'seatsCount';
 const createDialogTitle = 'Create hall';
-const editDialogTitle = 'Edit cinema';
+const editDialogTitle = 'Edit hall';
 const createActionButtonLabel = 'Create';
 const editActionButtonLabel = 'Apply changes';
 
@@ -37,7 +40,7 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   actionButtonLabel = createActionButtonLabel;
   seatTypes: SeatType[] = [];
   availableSeatTypes: AvailableSeatType[] = [];
-  @ViewChild(SeatingPlanComponent, { static: true }) seatingPlan!: SeatingPlanComponent;
+  @ViewChild(SeatingPlanEditorComponent, { static: true }) seatingPlanEditorComponent!: SeatingPlanEditorComponent;
   private seatingPlanJson = '';
   private seats: Seat[] = [];
   private isInEditMode = false;
@@ -150,22 +153,18 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.close(this.dialogData);
   }
 
-  private generateRandomHexColorString(): string {
-    return `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substring(1, 5)}`;
-  }
-
   private fillFormWithData(): void {
     this.hallForm.get(nameControl)?.setValue(this.dialogData?.name);
     this.hallForm.get(seatsCountControl)?.setValue(this.dialogData?.seats.length);
     this.seats = this.dialogData.seats;
     this.seatingPlanJson = this.dialogData.seatingPlan;
-    this.seatingPlan.loadPlan(this.dialogData.seatingPlan);
+    this.seatingPlanEditorComponent.loadPlan(this.dialogData.seatingPlan);
     if (this.dialogData.id) {
       this.seatTypeService.findAllByHallId(this.dialogData.id)
         .subscribe(
           (seatTypes: SeatType[]) => {
             seatTypes.map(seatType => this.addAvailableSeatType(seatType));
-            this.seatingPlan.loadData(this.dialogData.seats, this.availableSeatTypes);
+            this.seatingPlanEditorComponent.loadData(this.dialogData.seats, this.availableSeatTypes);
           }
         );
     } else {
@@ -179,9 +178,9 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe(
           {
             next: (seatType: SeatType) => this.addAvailableSeatType(seatType),
-            complete: () => this.seatingPlan.loadData(this.dialogData.seats, this.availableSeatTypes)
+            complete: () => this.seatingPlanEditorComponent.loadData(this.dialogData.seats, this.availableSeatTypes)
           }
-        )
+        );
     }
   }
 
@@ -189,7 +188,7 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private addAvailableSeatType(seatType: SeatType): void {
     const availableSeatType: AvailableSeatType = {
       seatType: seatType,
-      color: this.generateRandomHexColorString()
+      color: generateRandomHexColorString()
     };
     this.sharedStateService.addSeatTypeToSharedState(availableSeatType);
   }

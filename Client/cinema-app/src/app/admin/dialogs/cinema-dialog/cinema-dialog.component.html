@@ -107,6 +107,11 @@
             <button mat-icon-button type="button" (click)="deleteHall(i)">
               <mat-icon>delete</mat-icon>
             </button>
+
+            <!--TODO remove this button and func-->
+            <button mat-icon-button type="button" (click)="openBookSeatsDialog(hall.id)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
           </mat-list-item>
         </mat-nav-list>
 

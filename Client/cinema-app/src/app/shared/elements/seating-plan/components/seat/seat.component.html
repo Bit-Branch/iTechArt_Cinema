@@ -1,0 +1,12 @@
+<div
+  class="basic-seat"
+  matTooltipPosition="below"
+  [matTooltip]="seatNumber"
+  [class.selected]="isSelected()"
+  [class.isDisabled]="isDisabled"
+  [ngStyle]="{ 'background': isBlocked ? currentSeatColor : 'transparent' }"
+  [style.border-color]="currentSeatColor"
+  (contextmenu)="openEditMenu($event)"
+  (click)="blockSeat()"
+>
+</div>

@@ -1,0 +1,14 @@
+<div class="pick-tickets-dialog">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+  <div>
+    <div class="picking-buttons">
+      <button
+        class="pick-button"
+        *ngFor="let ticket of maxTicketsCount"
+        (click)="pickTicketsCount(ticket)"
+      >
+        {{ ticket }}
+      </button>
+    </div>
+  </div>
+</div>

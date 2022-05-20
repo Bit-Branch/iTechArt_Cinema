@@ -1,0 +1,35 @@
+<div>
+  <div class="row full-width canvas-drag-area">
+    <div class="canvas-scrollable-area">
+
+      <div class="scaling-buttons">
+        <button
+          mat-icon-button
+          type="button"
+          class="scale-button"
+          (click)="increaseScale()"
+        >
+          <mat-icon>
+            add
+          </mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          type="button"
+          class="scale-button"
+          (click)="decreaseScale()"
+        >
+          <mat-icon>
+            horizontal_rule
+          </mat-icon>
+        </button>
+      </div>
+
+      <div class="canvas" [style.transform]="'scale(' + canvasScale + ')'">
+        <ng-template #canvasItem></ng-template>
+      </div>
+
+    </div>
+  </div>
+</div>

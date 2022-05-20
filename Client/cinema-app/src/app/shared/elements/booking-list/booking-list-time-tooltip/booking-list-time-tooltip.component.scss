@@ -1,0 +1,15 @@
+@import "src/colors";
+
+.tooltip-container {
+  position: absolute;
+  max-width: 280px;
+  min-width: 50px;
+  font-size: 10.5px;
+  line-height: 12px;
+  direction: ltr;
+  box-shadow: none;
+  padding: 0;
+  background-color: $rich-white-fogra-29;
+  border: 1px solid $light-grey;
+  border-radius: 10px;
+}

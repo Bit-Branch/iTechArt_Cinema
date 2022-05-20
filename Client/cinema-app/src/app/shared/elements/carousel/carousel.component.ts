@@ -4,8 +4,9 @@ import {
 } from '@angular/core';
 
 import { Favor } from '@core/models/favor/favor';
-import { Image } from '@core/models/image/image';
 import { Movie } from '@core/models/movie/movie';
+import { isImage } from '@core/type-guards/is-image';
+import { ImageUrls } from '@core/constants/image-urls';
 
 const defaultHeadingText = 'Carousel';
 const defaultLinkText = 'SEE ALL';
@@ -20,7 +21,7 @@ type availableCarouselTypes = Movie | Favor;
   styleUrls: ['./carousel.component.scss']
 })
 export class CarouselComponent<T extends availableCarouselTypes> {
-  defaultImagePath = 'assets/movie-cover-default-image.png';
+  defaultImagePath = ImageUrls.DEFAULT_MOVIE_IMAGE_URL;
   /**
    * Text which will be shown as heading
    */
@@ -109,7 +110,10 @@ export class CarouselComponent<T extends availableCarouselTypes> {
 
   getItemImage(item: T): string | null {
     if (this.itemPropertyNameForImage) {
-      return (item[this.itemPropertyNameForImage] as unknown as Image)?.content;
+      const imageValue = item[this.itemPropertyNameForImage];
+      if (isImage(imageValue)) {
+        return imageValue.content;
+      }
     }
     return null;
   }

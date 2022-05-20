@@ -20,9 +20,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 
+//Local modules
+import { SeatingPlanEditorModule } from '@admin/seating-plan-editor/seating-plan-editor.module';
+
 //Components
 import { HallDialogComponent } from '@admin/dialogs/hall-dialog/hall-dialog.component';
-import { SeatingPlanModule } from '@admin/seating-plan/seating-plan.module';
 
 @NgModule({
   declarations: [HallDialogComponent],
@@ -41,7 +43,7 @@ import { SeatingPlanModule } from '@admin/seating-plan/seating-plan.module';
     MatDialogModule,
     NgxMatSelectSearchModule,
     MatChipsModule,
-    SeatingPlanModule
+    SeatingPlanEditorModule
   ]
 })
 export class HallDialogModule {

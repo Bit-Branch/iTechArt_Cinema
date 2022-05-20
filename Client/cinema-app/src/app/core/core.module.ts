@@ -15,7 +15,7 @@ import { SentenceCaseDirective } from '@core/directives/sentence-case.directive'
 
 @NgModule({
   imports: [CommonModule, HttpClientModule],
-  exports: [SentenceCaseDirective, ImageBase64UrlPipe],
+  exports: [SentenceCaseDirective, ImageBase64UrlPipe, MinutesPipe],
   declarations: [SentenceCaseDirective, ImageBase64UrlPipe, MinutesPipe],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

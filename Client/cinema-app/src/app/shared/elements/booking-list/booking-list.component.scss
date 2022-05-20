@@ -1,0 +1,168 @@
+@import "src/colors";
+
+.booking-list-tabs {
+  &::ng-deep .mat-ink-bar {
+    background-color: $azure !important;
+  }
+}
+
+.session-tooltip {
+  font-size: 14px;
+  min-width: 100px;
+  max-width: 250px;
+  color: $oxford-blue-50;
+
+  h5 {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .td-align-center {
+    padding-left: 15px;
+    color: $azure;
+  }
+}
+
+.booking-list-search {
+  height: 50px;
+  border-bottom: 1px solid $background-white-gray;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  .search-note {
+    font-size: 16px;
+    color: $oxford-blue-50;
+    width: 280px;
+    display: flex;
+
+    div {
+      margin: 0;
+      width: 70%;
+
+      b {
+        color: $azure;
+      }
+    }
+
+    mat-select {
+      margin: 0;
+      width: 30%;
+      height: 16px;
+
+      &::ng-deep .mat-select-value {
+        color: $azure;
+      }
+    }
+  }
+
+  .search-input {
+    position: relative;
+
+    input {
+      font-size: 14px;
+      width: 184px;
+      height: 16px;
+      padding: 11px 11px 11px 43px;
+      margin: 0;
+      background: $rich-white-fogra-29;
+      border: 1px solid $background-white-gray;
+      border-radius: 10px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    mat-icon {
+      width: 16px;
+      height: 17px;
+      position: absolute;
+      top: 9px;
+      left: 12px;
+    }
+  }
+}
+
+.booking-list-items {
+  .booking-list-warning {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+
+    .mat-icon {
+      color: $azure;
+    }
+
+    h3 {
+      margin: 0 0 0 10px;
+    }
+  }
+
+  .booking-list-item {
+    overflow: hidden;
+    padding: 25px 0 0 0;
+    border-bottom: 1px solid $background-white-gray;
+
+    .item-details {
+      float: left;
+      width: 30%;
+      padding: 0 10px;
+
+      h5 {
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 15px;
+
+        a {
+          text-decoration: none;
+          color: $oxford-blue-50;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      p {
+        color: #757575;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+    }
+
+    .item-timing {
+      float: left;
+      width: 65%;
+      padding: 0 10px;
+      overflow: hidden;
+
+      ul {
+        padding: 8px 0;
+        overflow: hidden;
+        list-style: none;
+
+        li {
+          float: left;
+          margin-right: 45px;
+          padding-bottom: 14px;
+          font-size: 16px;
+
+          a {
+            text-decoration: none;
+
+            //TODO delete this 'a' if no need
+            &:hover {
+              text-decoration: underline;
+            }
+
+            &.time-green {
+              color: $darker-green;
+            }
+          }
+        }
+      }
+    }
+  }
+}

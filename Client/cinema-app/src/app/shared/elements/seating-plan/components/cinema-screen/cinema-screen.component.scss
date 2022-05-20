@@ -1,0 +1,17 @@
+@import "src/colors";
+
+.cinema-screen {
+  position: absolute;
+  width: 200px;
+  height: 5px;
+  padding: 10px;
+  background: $azure !important;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.screen-label {
+  color: $azure;
+  padding-top: 10px;
+}

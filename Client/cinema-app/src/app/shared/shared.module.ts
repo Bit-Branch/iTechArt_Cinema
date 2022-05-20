@@ -5,9 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Local modules
 import { LoginModule } from '@login/login.module';
+import { BookingListModule } from '@shared/elements/booking-list/booking-list.module';
 import { CarouselModule } from '@shared/elements/carousel/carousel.module';
 import { LoadingSpinnerModule } from '@shared/elements/loading-spinner/loading-spinner.module';
 import { SearchSelectModule } from '@shared/elements/search-select/search-select.module';
+import { SeatingPlanModule } from '@shared/elements/seating-plan/seating-plan.module';
 import { ConfirmDialogModule } from '@shared/layout/confirm-dialog/confirm-dialog.module';
 import { FooterModule } from '@shared/layout/footer/footer.module';
 import { NavbarModule } from '@shared/layout/navbar/navbar.module';
@@ -24,7 +26,9 @@ const sharedModules = [
   SearchSelectModule,
   ConfirmDialogModule,
   LoadingSpinnerModule,
-  CarouselModule
+  CarouselModule,
+  BookingListModule,
+  SeatingPlanModule
 ];
 
 @NgModule({

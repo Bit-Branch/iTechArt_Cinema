@@ -1,0 +1,116 @@
+<div class="booking-list">
+  <div class="booking-list-inner">
+
+    <div class="booking-list-tabs">
+      <mat-tab-group>
+        <mat-tab *ngFor="let date of dates">
+          <label *mat-tab-label>
+            {{ date | date: 'EEEE d'}}
+          </label>
+        </mat-tab>
+        <mat-tab>
+          <label *mat-tab-label>
+            Friday 13
+          </label>
+        </mat-tab>
+
+        <mat-tab>
+          <label *mat-tab-label>
+            Saturday 14
+          </label>
+        </mat-tab>
+
+        <mat-tab>
+          <label *mat-tab-label>
+            Sunday 15
+          </label>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <div class="booking-list-search">
+      <div class="search-input">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Search">
+      </div>
+
+      <div class="search-note">
+        <div>
+          <b>Note:</b> your current city is
+        </div>
+        <mat-select>
+          <mat-option value="Misnk">Minsk</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="booking-list-items">
+      <!-- TODO if city is not chosen
+      <div class="booking-list-warning">
+        <mat-icon>announcement</mat-icon>
+        <h3>Please, choose city first</h3>
+      </div> -->
+
+      <div class="booking-list-item">
+        <div class="item-details">
+          <h5> Balaji Digital 2K Cinema - Tavarekere </h5>
+          <p>Balaji Nagar, Tavarekere Main Road, Opp - Forum</p>
+        </div>
+        <div class="item-timing">
+          <ul>
+            <li appBookingListTimeTooltip [contentTemplate]="timeTooltipTemplate">
+              <button mat-button (click)="onTimeClicked()">6:00 AM</button>
+            </li>
+            <li appBookingListTimeTooltip [contentTemplate]="timeTooltipTemplate">
+              <button mat-button (click)="onTimeClicked()">2:00 PM</button>
+            </li>
+            <li appBookingListTimeTooltip [contentTemplate]="timeTooltipTemplate">
+              <button mat-button (click)="onTimeClicked()">11:00 PM</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="booking-list-item" *ngFor="let listItem of listItems">
+        <div class="item-details">
+          <h5 *ngIf="itemPropertyNameForHeader">
+            <a (click)="onItemClicked(listItem.item)">{{ listItem.item[itemPropertyNameForHeader] }}</a>
+          </h5>
+          <p *ngIf="itemPropertyNameForParagraph">{{ listItem.item[itemPropertyNameForParagraph] }}</p>
+        </div>
+        <div class="item-timing">
+          <ul *ngIf="showtimePropertyNameForTime">
+            <li
+              appBookingListTimeTooltip
+              *ngFor="let showtime of listItem.linkedShowtimeSessions"
+              [contentTemplate]="timeTooltipTemplate"
+            >
+              <button mat-button (click)="onTimeClicked()">
+                {{ getShowingTime(showtime) | date:'shortTime'}}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #timeTooltipTemplate>
+  <div class="session-tooltip">
+    <h5>Balaji Theatre</h5>
+    <table>
+      <tbody>
+      <tr>
+        <td>DIAMOND</td>
+        <td class="td-align-center">₹150</td>
+      </tr>
+      <tr>
+        <td>GOLD</td>
+        <td class="td-align-center">₹120</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

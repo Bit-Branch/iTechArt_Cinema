@@ -238,7 +238,7 @@ export class MovieSessionDialogComponent implements OnInit {
       );
     this.sessionForm.get(movieControl)?.setValue(this.dialogData.movieId);
     this.sessionForm.get(hallControl)?.setValue(this.dialogData.hallId);
-    this.sessionForm.get(showTimeControl)?.setValue(this.dialogData.startShowingTime.toLocaleTimeString(defaultLocale));
+    this.sessionForm.get(showTimeControl)?.setValue('23:00');
     this.sessionForm.get(datesControl)?.setValue([this.dialogData.startShowingTime]);
   }
 

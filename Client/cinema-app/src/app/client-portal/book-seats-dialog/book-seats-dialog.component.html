@@ -1,0 +1,44 @@
+<div class="book-seats-dialog">
+
+  <div class="book-seats-dialog-header">
+    <div class="header-container">
+      <div class="header-container-left">
+        <h2>Content</h2>
+        <p>Some cinema here</p>
+      </div>
+
+      <div class="header-container-right">
+        <button class="edit-tickets-count-button" (click)="openPickTicketsCountDialog()">
+          <b>{{ chosenTicketsCount }}</b> tickets
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="closeDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="showtime-section">
+      <ul>
+        <li>
+          <button mat-button>11:00 PM</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="seats-layout-box">
+    <app-seating-plan></app-seating-plan>
+
+    <div class="available-seat-types" *ngIf="blockedSeatsIds.length !== chosenTicketsCount">
+      <div class="available-seat-type" *ngFor="let availableSeatType of availableSeatTypes">
+        <div class="seat-color" [style.background]="availableSeatType.color"></div>
+        <div class="seat-name">{{ availableSeatType.seatType.name }}</div>
+      </div>
+    </div>
+
+    <div class="book-seats-action" *ngIf="blockedSeatsIds.length === chosenTicketsCount">
+      <button mat-button (click)="blockSeats()">Submit</button>
+    </div>
+  </section>
+</div>

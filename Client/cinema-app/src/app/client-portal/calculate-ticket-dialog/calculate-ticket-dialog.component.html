@@ -1,0 +1,510 @@
+<div class="book-seats-dialog">
+
+  <div class="book-seats-dialog-header">
+    <div class="header-container">
+      <div class="header-container-left">
+        <button mat-icon-button (click)="closeDialog()">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <h2>Content</h2>
+      </div>
+
+      <div class="header-container-right">
+        <button mat-icon-button (click)="closeDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="ticket-purchase-wrap">
+    <div class="favors-container">
+      <h2 class="grab-a-bite-heading">
+        Grab a <span>bite!</span>
+        <br>
+      </h2>
+
+      <span class="grab-a-bite-subheading">
+          Prebook Your Meal and<span> Save More!</span>
+        </span>
+
+      <div class="favors-scrollable">
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+
+                <span class="quantity-holder">1</span>
+
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- START BLOCKS -->
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="favor-block">
+          <div class="favor-div">
+            <div class="favor-image">
+              <img src="assets/favor-default-image.png">
+            </div>
+            <div class="favor-description">
+              <div class="item-desc">
+                <h2>
+                  <span>Upsize Nachos Combo 900ml (Flavored)</span>
+                </h2>
+                <p>Large Tub Flavored Popcorn + Nachos + Large Coke 900ml</p>
+              </div>
+
+              <div class="item-quantity">
+                <span class="add-button">ADD</span>
+
+                <span class="item-quantity-icon" (click)="addFavor()">
+                  <mat-icon>remove</mat-icon>
+                </span>
+                <span class="quantity-holder">1</span>
+                <span class="item-quantity-icon" (click)="removeFavor()">
+                  <mat-icon>add</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <!-- END OF BLOCKS -->
+      </div>
+
+    </div>
+
+    <div class="order-summary-section">
+      <div class="order-summary-wrap">
+        <div class="order-summary">
+          <h2>Booking Summary</h2>
+
+          <ul class="details">
+            <li>
+              <div>
+                <span>Balcony: G7, G8<span> ( 2 Tickets )</span></span>
+              </div>
+              <div>
+                <span class="sub-total-span">Rs.447.20</span>
+              </div>
+            </li>
+            <li class="details-total-section">
+              <div>
+                Sub total
+              </div>
+              <div>
+                <span class="sub-total-span">Rs.447.20</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="city-section">
+            <p>Your current city is <span class="city">Minsk</span></p>
+          </div>
+
+        </div>
+
+        <div class="amount-payable">
+          <div>
+            Amount Payable
+          </div>
+          <div>
+            <span>Rs. 449.20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-proceed">
+        <button mat-button>Purchase</button>
+      </div>
+    </div>
+  </section>
+
+</div>

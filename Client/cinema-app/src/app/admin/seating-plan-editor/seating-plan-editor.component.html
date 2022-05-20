@@ -1,0 +1,192 @@
+<div>
+  <div class="canvas-menu">
+    <div>
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Add basic seats"
+        matTooltipPosition="left"
+        [matMenuTriggerFor]="basicSeatMenu"
+      >
+        <mat-icon>event_seat</mat-icon>
+      </button>
+
+      <mat-menu
+        #basicSeatMenu="matMenu"
+        xPosition="after"
+      >
+        <div
+          class="mat-menu-form"
+          appClickStopPropagation
+          (keydown)="$event.stopPropagation()"
+        >
+          <span>Rows</span>
+          <mat-slider
+            #rowsSlider
+            color="primary"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="1"
+            max="100"
+            aria-label="units"
+          >
+          </mat-slider>
+
+          <span>Columns</span>
+          <mat-slider
+            #columnsSlider
+            color="primary"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="1"
+            max="100"
+            aria-label="units"
+          >
+          </mat-slider>
+
+          <button
+            mat-button
+            type="button"
+            (click)="createBasicSeatGroup(columnsSlider.value,rowsSlider.value)"
+          >
+            Create
+          </button>
+        </div>
+      </mat-menu>
+
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Add circle table"
+        matTooltipPosition="left"
+        [matMenuTriggerFor]="circleSeatMenu"
+      >
+        <mat-icon>table_bar</mat-icon>
+      </button>
+
+      <mat-menu
+        #circleSeatMenu="matMenu"
+        xPosition="after"
+      >
+        <div
+          class="mat-menu-form"
+          appClickStopPropagation
+          (keydown)="$event.stopPropagation()"
+        >
+          <span>Seats count</span>
+          <mat-slider
+            #circleSeatsSlider
+            color="primary"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="12"
+            aria-label="units"
+          >
+          </mat-slider>
+
+          <button
+            mat-button
+            type="button"
+            (click)="createRoundSeatGroup(circleSeatsSlider.value)"
+          >
+            Create
+          </button>
+        </div>
+      </mat-menu>
+
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Add sofa"
+        matTooltipPosition="left"
+        [matMenuTriggerFor]="sofaMenu"
+      >
+        <mat-icon>chair</mat-icon>
+      </button>
+
+      <mat-menu
+        #sofaMenu="matMenu"
+        xPosition="after"
+      >
+        <div
+          class="mat-menu-form"
+          appClickStopPropagation
+          (keydown)="$event.stopPropagation()"
+        >
+          <span>Seats count</span>
+          <mat-slider
+            #sofaSeatsSlider
+            color="primary"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="2"
+            max="6"
+            aria-label="units"
+          >
+          </mat-slider>
+
+          <button
+            mat-button
+            type="button"
+            (click)="createSofa(sofaSeatsSlider.value)"
+          >
+            Create
+          </button>
+        </div>
+      </mat-menu>
+
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Add cinema screen"
+        matTooltipPosition="left"
+        (click)="createCinemaScreen()"
+      >
+        <mat-icon>computer</mat-icon>
+      </button>
+    </div>
+
+    <button
+      mat-raised-button
+      type="button"
+      (click)="saveSeatingPlanInSharedState()"
+    >
+      Save plan
+    </button>
+  </div>
+
+  <app-seating-plan></app-seating-plan>
+
+</div>
+
+<div
+  #singleSeatMenuTrigger="matMenuTrigger"
+  [matMenuTriggerFor]="singleSeatMenu"
+  [style.position]="'absolute'"
+  [style.left.px]="menuPositionX"
+  [style.top.px]="menuPositionY"
+>
+</div>
+
+<div
+  #multiSeatMenuTrigger="matMenuTrigger"
+  [matMenuTriggerFor]="multiSeatMenu"
+  [style.position]="'absolute'"
+  [style.left.px]="menuPositionX"
+  [style.top.px]="menuPositionY"
+>
+</div>
+
+<mat-menu #singleSeatMenu="matMenu" class="dynamic-menu">
+  <app-single-seat-menu></app-single-seat-menu>
+</mat-menu>
+
+<mat-menu #multiSeatMenu="matMenu" class="dynamic-menu">
+  <app-multiple-seat-menu></app-multiple-seat-menu>
+</mat-menu>
+

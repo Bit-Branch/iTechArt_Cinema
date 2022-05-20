@@ -1,0 +1,23 @@
+<div
+  cdkDrag
+  class="cinema-screen"
+  cdkDragBoundary=".canvas"
+  [class.draggable-block]="isEditable"
+  [cdkDragFreeDragPosition]="positionOnCanvas"
+  [cdkDragDisabled]="!isEditable"
+  (cdkDragEnded)="rememberPositionWhenDragEnded($event)"
+  (click)="openEditMenu(menuTrigger)"
+>
+  <p class="screen-label">{{ screenLabel }}</p>
+
+  <span #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="screenMenu"></span>
+
+  <mat-menu #screenMenu class="dynamic-menu">
+    <button
+      mat-icon-button
+      (click)="deleteComponent()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-menu>
+</div>

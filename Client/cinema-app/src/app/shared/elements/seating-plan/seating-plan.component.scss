@@ -1,0 +1,32 @@
+@import "src/colors";
+
+.canvas {
+  border: #ccc 1px solid;
+  height: 10000px;
+  width: 10000px;
+}
+
+.canvas-drag-area {
+  height: 600px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.canvas-scrollable-area {
+  height: inherit;
+  overflow: auto;
+}
+
+.scaling-buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 14px;
+  top: 40%;
+  z-index: 10;
+}
+
+.mat-icon-button {
+  color: $oxford-blue-50;
+}

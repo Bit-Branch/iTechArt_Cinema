@@ -1,0 +1,39 @@
+<div class="movie-detail">
+  <div *ngIf="(currentMovie$ | async) as currentMovie; else movieNotFound">
+
+    <div class="movie-container">
+      <div class="movie-container-content">
+
+        <div class="movie-image">
+          <img
+            [src]="currentMovie.image?.content ? (currentMovie.image.content | imageBase64Url) : defaultMovieImageUrl">
+        </div>
+
+        <div class="movie-description">
+          <h2>{{ currentMovie.title }} ({{ currentMovie.yearOfIssue }})</h2>
+
+          <div class="movie-short-details">
+            <h4>{{ currentMovie.genre.name }} | {{ currentMovie.durationInMinutes | minutes }}</h4>
+            <h4>Showing in cinemas in: {{ currentMovie.showInCinemasStartDate | date }}
+              - {{ currentMovie.showInCinemasEndDate | date }}</h4>
+          </div>
+
+          <div class="movie-synopsis">
+            <h4><b>Synopsis</b></h4>
+            <p>{{ currentMovie.description }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <app-booking-list
+      (onTimeClickAction)="openBookSeatsDialog()"
+    ></app-booking-list>
+  </div>
+
+  <ng-template #movieNotFound>
+    <!--TODO just insert not found page-->
+    Not found
+  </ng-template>
+</div>

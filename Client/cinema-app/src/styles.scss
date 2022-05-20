@@ -17,7 +17,9 @@ body {
 .header,
 .banner,
 .movies,
+.movie-detail,
 .now-playing,
+.booking-list,
 .live {
   padding: 0 120px;
 }
@@ -58,4 +60,21 @@ body {
 
 .card {
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $rich-white-fogra-29;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $background-white-gray;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $font-grey;
 }

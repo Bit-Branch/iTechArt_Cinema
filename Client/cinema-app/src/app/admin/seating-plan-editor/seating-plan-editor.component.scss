@@ -1,0 +1,43 @@
+@import "src/colors";
+
+.canvas-menu {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+  }
+}
+
+mat-menu {
+  display: flex;
+}
+
+.mat-menu-form {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.drag-area {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+.dynamic-menu {
+  position: absolute;
+}
+
+::ng-deep {
+  .mat-slider-thumb-label,
+  .mat-slider-thumb {
+    background-color: $azure !important;
+  }
+}

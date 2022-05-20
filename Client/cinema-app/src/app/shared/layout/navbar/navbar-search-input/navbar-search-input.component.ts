@@ -1,5 +1,7 @@
 import { debounceTime, distinctUntilChanged, EMPTY, fromEvent, map, switchMap } from 'rxjs';
 
+import { Router } from '@angular/router';
+
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 import { MultipleSearchResult } from '@core/models/search/multiple-search-result';
@@ -15,7 +17,8 @@ export class NavbarSearchInputComponent implements AfterViewInit {
   @ViewChild('searchInput', { read: ElementRef }) private searchInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private readonly multipleSearchService: MultipleSearchService
+    private readonly multipleSearchService: MultipleSearchService,
+    private readonly router: Router
   ) {
   }
 
@@ -41,7 +44,7 @@ export class NavbarSearchInputComponent implements AfterViewInit {
   }
 
   onMovieSelected(id: number): void {
-    throw new Error('Method not implemented yet.');
+    this.router.navigate(['/movie', id]);
   }
 
   onCinemaSelected(id: number): void {
@@ -49,6 +52,7 @@ export class NavbarSearchInputComponent implements AfterViewInit {
   }
 
   onCitySelected(id: number): void {
+    //TODO show all cinemas in this city
     throw new Error('Method not implemented yet.');
   }
 }

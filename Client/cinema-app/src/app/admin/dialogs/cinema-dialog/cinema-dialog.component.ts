@@ -21,7 +21,8 @@ import { CinemaService } from '@core/services/cinema.service';
 import { CityService } from '@core/services/city.service';
 import { FavorService } from '@core/services/favor.service';
 import { SnackbarService } from '@core/services/snackbar.service';
-import { dialogsConfig } from '@core/configuration/dialogs-config';
+import { dialogsConfig, fullScreenDialogsConfig } from '@core/configuration/dialogs-config';
+import { BookSeatsDialogComponent } from '@client-portal/book-seats-dialog/book-seats-dialog.component';
 import { HallDialogComponent } from '@admin/dialogs/hall-dialog/hall-dialog.component';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
@@ -271,5 +272,12 @@ export class CinemaDialogComponent implements OnInit {
           }
         }
       );
+  }
+
+  openBookSeatsDialog(i: number): void {
+    this.dialog.open(
+      BookSeatsDialogComponent,
+      { ...fullScreenDialogsConfig, data: i }
+    );
   }
 }

@@ -19,7 +19,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 //Components
 import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialog.component';
-import { SharedModule } from '@shared/shared.module';
+import { SearchSelectModule } from '@shared/elements/search-select/search-select.module';
 
 @NgModule({
   declarations: [CinemaDialogComponent],
@@ -35,9 +35,9 @@ import { SharedModule } from '@shared/shared.module';
     MatButtonModule,
     MatDividerModule,
     MatListModule,
-    SharedModule,
     MatAutocompleteModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    SearchSelectModule
   ]
 })
 export class CinemaDialogModule {
