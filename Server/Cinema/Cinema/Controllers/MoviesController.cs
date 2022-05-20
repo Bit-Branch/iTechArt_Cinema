@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Movie;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -26,6 +27,12 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
+        [HttpPut("image")]
+        public async Task<IActionResult> UpdateMovieImage([FromForm] UpdateMovieImageDto updateMovieImageDto)
+        {
+            return Ok(await _imageService.UpdateImageAsync(updateMovieImageDto.Id, updateMovieImageDto.Content));
+        }
+
         [HttpGet("image")]
         public async Task<IActionResult> GetMovieImage([FromQuery] long imageId)
         {
@@ -45,6 +52,12 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _movieService.CreateMovieAsync(movie));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovie([FromBody] UpdateMovieDto movie)
+        {
+            return Ok(await _movieService.UpdateMovieAsync(movie));
+        }
+
         [HttpGet("{id:int}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetMovie(int id)
@@ -61,13 +74,21 @@ namespace CinemaApp.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetMovies([FromQuery] string? term)
+        public async Task<IActionResult> GetMovies(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var movies = term == null
-                ? await _movieService.GetAllAsync()
-                : await _movieService.FindAllByTermAsync(term);
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(
+                    term == null
+                        ? await _movieService.GetAllAsync()
+                        : await _movieService.FindAllByTermAsync(term)
+                );
+            }
 
-            return Ok(movies);
+            return Ok(await _movieService.GetPagedAsync(paginationRequest));
         }
 
         [HttpDelete("{id:int}")]
@@ -75,7 +96,7 @@ namespace CinemaApp.WebApi.Controllers
         {
             var deletedMovieId = await _movieService.DeleteMovieAsync(id);
 
-            if (deletedMovieId == 0)
+            if (deletedMovieId == -1)
             {
                 return NotFound();
             }

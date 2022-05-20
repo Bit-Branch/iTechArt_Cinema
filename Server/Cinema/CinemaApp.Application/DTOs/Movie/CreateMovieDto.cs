@@ -1,5 +1,7 @@
 ﻿using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
+using CinemaApp.Application.Attributes;
+using CinemaApp.Domain.Constants;
 
 namespace CinemaApp.Application.DTOs.Movie
 {
@@ -15,6 +17,10 @@ namespace CinemaApp.Application.DTOs.Movie
 
         [Required]
         public int GenreId { get; set; }
+
+        [Required]
+        [AllowedYearRange(MovieYearsOfIssue.minYear)]
+        public int YearOfIssue { get; set; }
 
         public long? ImageId { get; set; }
 

@@ -64,14 +64,26 @@ export class SeatingPlanSharedStateService {
     );
   }
 
+  removeAllSeatTypesFromSharedState(): void {
+    this.availableSeatTypesSubject.next([]);
+  }
+
   addSeatToSharedState(seat: Seat): void {
     this.seatsSubject.next([...this.seats, seat]);
+  }
+
+  addSeatsToSharedState(seats: Seat[]): void {
+    this.seatsSubject.next(seats);
   }
 
   removeSeatFromSharedState(seat: Seat): void {
     this.seatsSubject.next(
       this.seatsSubject.getValue().filter(s => s !== seat)
     );
+  }
+
+  removeAllSeatsFromSharedState(): void {
+    this.seatsSubject.next([]);
   }
 
   addSeatingPlanJsonToSharedState(seatingPlanJson: string): void {

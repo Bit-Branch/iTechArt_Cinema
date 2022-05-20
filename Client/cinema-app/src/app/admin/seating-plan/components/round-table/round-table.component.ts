@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -9,8 +9,7 @@ const defaultSeatsCount = 3;
 @Component({
   selector: 'app-circle-seating-plan-element',
   templateUrl: './round-table.component.html',
-  styleUrls: ['./round-table.component.scss', '../../shared.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./round-table.component.scss', '../../shared.css']
 })
 export class RoundTableComponent extends SeatingPlanElement implements AfterViewInit {
   seatsCount = defaultSeatsCount;

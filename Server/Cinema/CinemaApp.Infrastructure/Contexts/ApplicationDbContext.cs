@@ -17,6 +17,7 @@ namespace CinemaApp.Infrastructure.Contexts
         public DbSet<Image> Images { get; set; }
         public DbSet<CinemaFavors> CinemaFavors { get; set; }
         public DbSet<MovieSession> MovieSessions { get; set; }
+        public DbSet<TicketPrice> TicketPrices { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

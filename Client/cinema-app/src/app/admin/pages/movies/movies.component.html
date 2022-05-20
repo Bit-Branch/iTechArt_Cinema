@@ -2,4 +2,16 @@
   <button mat-stroked-button class="btn" (click)="openCreateMovieDialog()">
     Create new movie
   </button>
+
+  <app-editable-table
+    [tableData]="movies"
+    [tableColumns]="moviesTableColumns"
+    [isFilterable]="true"
+    [isPageable]="true"
+    [isEditable]="true"
+    (editingAction)="editMovie($event)"
+    (deletingAction)="deleteMovie($event)"
+    (getDataFromServerFunction)="getAllMovies($event)"
+  >
+  </app-editable-table>
 </app-admin-edit-page>

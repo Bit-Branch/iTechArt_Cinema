@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 //Local modules
+import { CoreModule } from '@core/core.module';
 import { AdminRoutingModule } from '@admin/admin-routing.module';
 import { CinemaDialogModule } from '@admin/dialogs/cinema-dialog/cinema-dialog.module';
 import { HallDialogModule } from '@admin/dialogs/hall-dialog/hall-dialog.module';
@@ -22,7 +23,8 @@ import { AdminPagesModule } from '@admin/pages/admin-pages.module';
     HallDialogModule,
     AdminRoutingModule,
     CreationDialogModule,
-    AdminPagesModule
+    AdminPagesModule,
+    CoreModule
   ]
 })
 export class AdminModule {

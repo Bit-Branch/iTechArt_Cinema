@@ -15,7 +15,7 @@
         >
       </mat-form-field>
     </mat-option>
-    <mat-option *ngFor="let value of values" [value]="bindValue ? value[bindValue] : value">
+    <mat-option *ngFor="let value of values" [value]="value[bindValue]">
       {{ value[bindLabel] }}
     </mat-option>
   </mat-select>

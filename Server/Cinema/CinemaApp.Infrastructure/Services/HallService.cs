@@ -19,6 +19,15 @@ namespace CinemaApp.Infrastructure.Services
             _mapper = mapper;
         }
 
+        public async Task<HallDto?> GetHallByIdAsync(int id)
+        {
+            var hall = await _context.Halls
+                .Where(m => m.Id == id)
+                .FirstOrDefaultAsync();
+
+            return hall != null ? _mapper.Map<HallDto>(hall) : null;
+        }
+
         public async Task<IEnumerable<HallDto>> FindAllByCinemaIdAsync(int cinemaId)
         {
             return await _context.Halls

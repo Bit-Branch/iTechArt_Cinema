@@ -30,7 +30,7 @@ export class SingleSeatMenuComponent {
   }
 
   onChangeSeatType($event: MatOptionSelectionChange): void {
-    this.selectedSeat?.onChangeSeatType($event);
+    this.selectedSeat?.changeCurrentSeatType($event.source.value as AvailableSeatType);
   }
 
   changeRowName($event: KeyboardEvent): void {

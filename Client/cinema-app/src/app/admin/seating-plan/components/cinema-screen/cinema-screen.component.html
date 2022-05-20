@@ -4,6 +4,7 @@
   cdkDragBoundary=".canvas"
   [matMenuTriggerFor]="screenMenu"
   [cdkDragFreeDragPosition]="positionOnCanvas"
+  (cdkDragEnded)="rememberPositionWhenDragEnded($event)"
 >
 
   <p class="screen-label">{{ screenLabel }}</p>

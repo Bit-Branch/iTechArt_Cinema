@@ -17,6 +17,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 
+//Local
+import { CoreModule } from '@core/core.module';
+
 //Components
 import { MovieDialogComponent } from './movie-dialog.component';
 
@@ -35,7 +38,8 @@ import { MovieDialogComponent } from './movie-dialog.component';
     MatDatepickerModule,
     MaterialFileInputModule,
     MatDividerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    CoreModule
   ]
 })
 export class MovieDialogModule {

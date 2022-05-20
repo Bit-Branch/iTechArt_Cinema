@@ -13,7 +13,7 @@ export class ConfirmDialogComponent {
   message = '';
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    private readonly dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private readonly data: ConfirmDialogData
   ) {
     this.title = data.title;

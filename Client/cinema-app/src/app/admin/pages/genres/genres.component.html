@@ -1,0 +1,17 @@
+<app-admin-edit-page title="Genres">
+  <button mat-stroked-button class="btn" (click)="openCreateGenreDialog()">
+    Create new genre
+  </button>
+
+  <app-editable-table
+    [tableData]="genres"
+    [tableColumns]="genresTableColumns"
+    [isFilterable]="true"
+    [isPageable]="true"
+    [isEditable]="true"
+    (editingAction)="editGenre($event)"
+    (deletingAction)="deleteGenre($event)"
+    (getDataFromServerFunction)="getAllGenres($event)"
+  >
+  </app-editable-table>
+</app-admin-edit-page>

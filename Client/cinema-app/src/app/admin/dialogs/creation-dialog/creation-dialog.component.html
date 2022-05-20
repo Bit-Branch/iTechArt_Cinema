@@ -3,7 +3,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>{{ currentPageContent.label }}</mat-label>
-    <input matInput [formControl]="nameControl" appSentenceCase>
+    <input matInput appSentenceCase [formControl]="nameControl">
 
     <mat-error *ngIf="nameControl.getError('required')">
       Name is <strong>required</strong>
@@ -13,8 +13,8 @@
 </div>
 
 <mat-dialog-actions>
-  <button mat-stroked-button (click)="create()" [disabled]="nameControl.invalid">
-    Create
+  <button mat-stroked-button (click)="saveEntity()" [disabled]="nameControl.invalid">
+    Save
   </button>
 
   <button mat-button (click)="closeDialog()">

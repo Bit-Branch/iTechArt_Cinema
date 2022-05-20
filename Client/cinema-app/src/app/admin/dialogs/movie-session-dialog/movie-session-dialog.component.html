@@ -1,7 +1,7 @@
 <form [formGroup]="sessionForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>Create movie session</mat-card-title>
+      <mat-card-title>{{ dialogTitle }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -10,7 +10,11 @@
         <div class="col">
 
           <mat-form-field class="full-width">
-            <mat-select placeholder="Select movie" [formControlName]="movieControl">
+            <mat-select
+              placeholder="Select movie"
+              [formControlName]="movieControl"
+              (selectionChange)="OnMovieSelected($event)"
+            >
               <mat-option>
                 <ngx-mat-select-search
                   placeholderLabel="Type movie title here..."
@@ -78,7 +82,6 @@
                 >
                 </ngx-mat-select-search>
               </mat-option>
-              <mat-divider></mat-divider>
               <mat-option *ngFor="let hall of halls" [value]="hall.id">
                 {{ hall.name }}
               </mat-option>
@@ -121,8 +124,8 @@
               placeholder="Choose dates for this session"
               [formControlName]="datesControl"
               [matDatepicker]="picker"
-              [min]="selectedMovie?.showInCinemasStartDate"
-              [max]="selectedMovie?.showInCinemasEndDate"
+              [min]="minShowDate"
+              [max]="maxShowDate"
             >
             </ngx-multiple-dates>
             <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
@@ -133,29 +136,38 @@
       </div>
 
       <h4>Available seat types:</h4>
-      <div *ngFor="let seatType of seatTypes" class="row">
-        <div class="col">
 
-          <h4>{{ seatType.name }}</h4>
+      <ng-container *ngFor="let seatType of seatPricesForms; let i = index">
 
+        <div [formGroup]="seatType" class="row">
+          <div class="col">
+
+            <h4>{{ seatTypes[i].name }}</h4>
+
+          </div>
+
+          <div class="col">
+
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                placeholder="Ticket price for this type of seat"
+                [formControlName]="ticketPriceControl"
+              >
+
+              <mat-error *ngIf="sessionForm.get(ticketPriceControl)?.getError('required')">
+                Ticket price is <strong>required</strong>
+              </mat-error>
+
+              <mat-error *ngIf="sessionForm.get(ticketPriceControl)?.getError('pattern')">
+                Only non-negative numbers is allowed
+              </mat-error>
+            </mat-form-field>
+
+          </div>
         </div>
 
-        <div class="col">
-
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Ticket price for this type of seat"
-              [formControlName]="ticketPriceControl"
-            >
-
-            <mat-error *ngIf="sessionForm.get(ticketPriceControl)?.getError('required')">
-              Ticket price is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-
-        </div>
-      </div>
+      </ng-container>
 
     </mat-card-content>
 
@@ -165,7 +177,7 @@
 
     <mat-card-actions>
       <button mat-raised-button type="submit" [disabled]="sessionForm.invalid">
-        Create
+        {{ actionButtonLabel }}
       </button>
 
       <button mat-raised-button type="button" (click)="closeDialog()">

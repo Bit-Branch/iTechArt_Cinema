@@ -31,7 +31,7 @@ export class MultipleSeatMenuComponent {
   }
 
   changeSeatTypesForAll($event: MatOptionSelectionChange): void {
-    this.selectedSeats?.forEach(seat => seat.onChangeSeatType($event));
+    this.selectedSeats?.forEach(seat => seat.changeCurrentSeatType($event.source.value as AvailableSeatType));
   }
 
   enableAll(): void {

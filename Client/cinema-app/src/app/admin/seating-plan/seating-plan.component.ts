@@ -10,6 +10,7 @@ import { CinemaScreenComponent } from '@admin/seating-plan/components/cinema-scr
 import { SeatingPlanElement } from '@admin/seating-plan/components/seating-plan-element/seating-plan-element';
 import { RoundTableComponent } from '@admin/seating-plan/components/round-table/round-table.component';
 import { PositionOnCanvas } from '@admin/seating-plan/intefraces/position-on-canvas';
+import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat-type';
 import { SeatingPlanConverterService } from '@admin/seating-plan/services/seating-plan-converter.service';
 import { MultiSelectionService } from '@admin/seating-plan/multi-select-feature/multi-selection.service';
 import { SeatingPlanSharedStateService } from '@admin/seating-plan/services/seating-plan-shared-state.service';
@@ -183,10 +184,10 @@ export class SeatingPlanComponent {
     });
   }
 
-  loadData(seatsData: Seat[]): void {
+  loadData(seatsData: Seat[], availableSeatTypes: AvailableSeatType[]): void {
     this.components.forEach(component => {
       const componentSeats = seatsData.filter(seat => seat.seatGroupId === component.instance.currentComponentId);
-      component.instance.loadValuesForSeatsComponents(componentSeats);
+      component.instance.loadValuesForSeatsComponents(componentSeats, availableSeatTypes);
     });
   }
 
@@ -204,6 +205,9 @@ export class SeatingPlanComponent {
     ) as ComponentRef<SeatingPlanElement>;
     const componentIndex = this.components.indexOf(comp);
     if (componentIndex !== -1) {
+      comp.instance.seatComponents.forEach(
+        seatComponent => this.seatingPlanSharedStateService.removeSeatFromSharedState(seatComponent.seat)
+      );
       comp?.destroy();
       this.components.splice(componentIndex, 1);
     }

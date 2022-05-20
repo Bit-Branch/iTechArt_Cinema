@@ -22,4 +22,8 @@ export class HallService {
   findAllByCinemaId(id: number): Observable<Hall[]> {
     return this.http.get<Hall[]>(`${environment.hostUrl}/api/halls`, { params: new HttpParams().set('cinemaId', id) });
   }
+
+  getHallById(id: number): Observable<Hall> {
+    return this.http.get<Hall>(`${environment.hostUrl}/api/halls/${id}`);
+  }
 }

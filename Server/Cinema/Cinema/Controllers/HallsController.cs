@@ -26,6 +26,20 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(halls);
         }
 
+        [HttpGet("{id:int}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetHall(int id)
+        {
+            var hall = await _hallService.GetHallByIdAsync(id);
+
+            if (hall == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(hall);
+        }
+
         [HttpGet("{id:int}/seat-types")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllSeatTypesInHall(int id)

@@ -1,7 +1,7 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>Create movie</mat-card-title>
+      <mat-card-title>{{ dialogTitle }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col">
 
-          <img [src]="url" height="200">
+          <img [src]="url | imageBase64Url" height="200">
           <mat-form-field class="full-width">
             <br>
             <ngx-mat-file-input
@@ -46,7 +46,38 @@
             </mat-error>
 
             <mat-error *ngIf="movieForm.get(coverControl)?.getError('invalidAspectRatio')">
-              Image ratio need to be approximately 2:3 (width:height)
+              Image ratio need to be approximately
+              {{ movieForm.get(coverControl)?.getError('invalidAspectRatio').expectedAspectRatioX }}
+              :{{ movieForm.get(coverControl)?.getError('invalidAspectRatio').expectedAspectRatioY }}
+              (width:height)
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Year of issue of the movie"
+              [formControlName]="yearOfIssue"
+            >
+
+            <mat-error *ngIf="movieForm.get(yearOfIssue)?.getError('required')">
+              Year of issue is <strong>required</strong>
+            </mat-error>
+
+            <mat-error *ngIf="movieForm.get(yearOfIssue)?.getError('pattern')">
+              Only nonnegative numbers is allowed
+            </mat-error>
+
+            <mat-error *ngIf="movieForm.get(yearOfIssue)?.getError('invalidYear')">
+              Year of issue should be between
+              {{ movieForm.get(yearOfIssue)?.getError('invalidYear').minYear }} and
+              {{ movieForm.get(yearOfIssue)?.getError('invalidYear').maxYear }}
             </mat-error>
           </mat-form-field>
 
@@ -163,7 +194,7 @@
       </mat-error>
 
       <button mat-stroked-button type="submit" [disabled]="movieForm.invalid">
-        Create
+        {{ actionButtonLabel }}
       </button>
 
       <button mat-raised-button type="button" (click)="closeDialog()">

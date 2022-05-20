@@ -13,6 +13,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
+//Local
+import { CoreModule } from '@core/core.module';
+
 //Components
 import { FavorDialogComponent } from '@admin/dialogs/favor-dialog/favor-dialog.component';
 
@@ -31,7 +34,8 @@ import { FavorDialogComponent } from '@admin/dialogs/favor-dialog/favor-dialog.c
     MatIconModule,
     MatInputModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    CoreModule
   ]
 })
 export class FavorDialogModule {

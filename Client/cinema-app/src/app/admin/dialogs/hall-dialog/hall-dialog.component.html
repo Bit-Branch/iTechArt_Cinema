@@ -1,5 +1,5 @@
 <form [formGroup]="hallForm" novalidate (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>Create hall</h1>
+  <h1 mat-dialog-title>{{ dialogTitle }}</h1>
 
   <div mat-dialog-content>
 
@@ -47,7 +47,7 @@
       <div class="col">
 
         <mat-form-field class="full-width">
-          <mat-select placeholder="Seat type" (selectionChange)="addAvailableSeatType($event)">
+          <mat-select placeholder="Seat type" (selectionChange)="onSeatTypeSelected($event)">
             <mat-option>
               <ngx-mat-select-search
                 placeholderLabel="Type seat type name here..."
@@ -85,7 +85,7 @@
 
         <mat-chip-list>
           <mat-chip
-            *ngFor="let availableSeatType of (availableSeatTypes$ | async)"
+            *ngFor="let availableSeatType of availableSeatTypes"
             [style.background]="availableSeatType.color"
             (removed)="removeAvailableSeatType(availableSeatType)"
           >
@@ -114,7 +114,7 @@
 
   <mat-dialog-actions>
     <button mat-raised-button type="submit" [disabled]="hallForm.invalid || seatingPlanIsNotSaved">
-      Create
+      {{ actionButtonLabel }}
     </button>
 
     <button mat-raised-button type="button" (click)="closeDialog()">

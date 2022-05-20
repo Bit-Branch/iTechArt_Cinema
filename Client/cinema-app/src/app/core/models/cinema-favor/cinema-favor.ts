@@ -1,4 +1,6 @@
+import { Favor } from '@core/models/favor/favor';
+
 export interface CinemaFavor {
-  favorId: number,
+  favor: Favor,
   price: number
 }

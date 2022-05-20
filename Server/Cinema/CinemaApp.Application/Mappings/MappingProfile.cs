@@ -20,35 +20,53 @@ namespace CinemaApp.Application.Mappings
         {
             CreateMap<Genre, GenreDto>();
             CreateMap<CreateGenreDto, Genre>();
+            CreateMap<UpdateGenreDto, Genre>();
 
             CreateMap<City, CityDto>();
             CreateMap<CreateCityDto, City>();
+            CreateMap<UpdateCityDto, City>();
 
             CreateMap<Movie, MovieDto>();
             CreateMap<CreateMovieDto, Movie>();
+            CreateMap<UpdateMovieDto, Movie>();
 
             CreateMap<Favor, FavorDto>();
             CreateMap<CreateFavorDto, Favor>();
+            CreateMap<UpdateFavorDto, Favor>();
 
             CreateMap<CinemaFavors, CinemaFavorDto>();
             CreateMap<CreateCinemaFavorDto, CinemaFavors>();
+            CreateMap<UpdateCinemaFavorDto, CinemaFavors>();
 
             CreateMap<Cinema, CinemaDto>();
+            CreateMap<Cinema, DisplayCinemaDto>();
             CreateMap<CreateCinemaDto, Cinema>();
+            CreateMap<UpdateCinemaDto, Cinema>();
 
-            CreateMap<Hall, HallDto>();
+            CreateMap<Hall, HallDto>()
+                .ForMember(dest => dest.SeatingPlan, opt => opt.MapFrom(src => src.SeatingPlan ?? ""));
             CreateMap<CreateHallDto, Hall>();
+            CreateMap<UpdateHallDto, Hall>();
 
             CreateMap<Seat, SeatDto>();
             CreateMap<CreateSeatDto, Seat>();
+            CreateMap<UpdateSeatDto, Seat>();
 
             CreateMap<SeatType, SeatTypeDto>();
             CreateMap<CreateSeatTypeDto, SeatType>();
+            CreateMap<UpdateSeatTypeDto, SeatType>();
 
-            CreateMap<CreateTicketPriceDto, TicketPrice>();
             CreateMap<TicketPrice, TicketPriceDto>();
+            CreateMap<CreateTicketPriceDto, TicketPrice>();
+            CreateMap<UpdateTicketPriceDto, TicketPrice>();
 
+            CreateMap<MovieSession, MovieSessionDto>();
             CreateMap<CreateMovieSessionDto, MovieSession>();
+            CreateMap<UpdateMovieSessionDto, MovieSession>();
+            CreateMap<MovieSession, DisplayMovieSessionDto>()
+                .ForMember(dest => dest.MovieName, opt => opt.MapFrom(src => src.Movie.Title))
+                .ForMember(dest => dest.HallName, opt => opt.MapFrom(src => src.Hall.Name))
+                .ForMember(dest => dest.CinemaName, opt => opt.MapFrom(src => src.Hall.Cinema.Name));
         }
     }
 }

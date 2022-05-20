@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Seat } from '@core/models/seat/seat';
 import { SeatComponent } from '@admin/seating-plan/components/seat/seat.component';
 import { PositionOnCanvas } from '@admin/seating-plan/intefraces/position-on-canvas';
+import { AvailableSeatType } from '@admin/seating-plan/intefraces/available-seat-type';
 import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-dialog.component';
 
 /**
@@ -31,7 +32,9 @@ export class SeatingPlanElement {
    */
   @Output() deleteComponentEvent = new EventEmitter();
 
-  constructor(private readonly dialog: MatDialog) {
+  protected constructor(
+    private readonly dialog: MatDialog
+  ) {
   }
 
   /**
@@ -62,15 +65,19 @@ export class SeatingPlanElement {
     });
   }
 
-  loadValuesForSeatsComponents(seats: Seat[]): void {
+  loadValuesForSeatsComponents(seats: Seat[], availableSeatTypes: AvailableSeatType[]): void {
     for (let i = 0; i < this.seatComponents.length; i++) {
       const currentSeatComponent = this.seatComponents[i];
-      const s = seats.find(seat => seat.indexInsideSeatGroup === i);
-      if (s) {
-        currentSeatComponent.seat = s;
+      const seatOfCurrentComponent = seats.find(seat => seat.indexInsideSeatGroup === i);
+      if (seatOfCurrentComponent) {
+        Object.assign(currentSeatComponent.seat, seatOfCurrentComponent);
+        currentSeatComponent.changeCurrentSeatType(
+          availableSeatTypes.find(available => available.seatType.id === seatOfCurrentComponent.seatTypeId)!
+        );
       } else {
         currentSeatComponent.isDisabled = true;
       }
+      currentSeatComponent.markForChangeDetectionCheck();
     }
   }
 

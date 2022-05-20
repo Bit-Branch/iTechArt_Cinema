@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Domain.Constants;
 using CinemaApp.Application.DTOs.Favor;
 using CinemaApp.Application.Interfaces;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.WebApi.Controllers
 {
@@ -26,21 +27,67 @@ namespace CinemaApp.WebApi.Controllers
             return Ok(await _imageService.CreateImageAsync(createImageDto.Content));
         }
 
+        [HttpPut("image")]
+        public async Task<IActionResult> UpdateFavorImage([FromForm] UpdateFavorImageDto updateFavorImageDto)
+        {
+            return Ok(await _imageService.UpdateImageAsync(updateFavorImageDto.Id, updateFavorImageDto.Content));
+        }
+
+        [HttpGet("image")]
+        public async Task<IActionResult> GetFavorImage([FromQuery] long imageId)
+        {
+            var image = await _imageService.GetImageAsync(imageId);
+
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(image);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateFavor([FromBody] CreateFavorDto favorDto)
         {
             return Ok(await _favorService.CreateFavorAsync(favorDto));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateFavor([FromBody] UpdateFavorDto favor)
+        {
+            return Ok(await _favorService.UpdateFavorAsync(favor));
+        }
+
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetFavors([FromQuery] string? term)
+        public async Task<IActionResult> GetFavors(
+            [FromQuery] string? term,
+            [FromQuery] PaginationRequest paginationRequest
+        )
         {
-            var favors = term == null
-                ? await _favorService.GetAllAsync()
-                : await _favorService.FindAllByTermAsync(term);
+            if (paginationRequest.IsEmpty())
+            {
+                return Ok(
+                    term == null
+                        ? await _favorService.GetAllAsync()
+                        : await _favorService.FindAllByTermAsync(term)
+                );
+            }
 
-            return Ok(favors);
+            return Ok(await _favorService.GetPagedAsync(paginationRequest));
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteFavor(int id)
+        {
+            var deletedFavorId = await _favorService.DeleteFavorAsync(id);
+
+            if (deletedFavorId == -1)
+            {
+                return NotFound();
+            }
+
+            return Ok(deletedFavorId);
         }
     }
 }

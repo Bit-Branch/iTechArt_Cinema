@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using CinemaApp.Domain.Entities;
 using CinemaApp.Infrastructure.Contexts;
 using CinemaApp.Application.DTOs.Movie;
+using CinemaApp.Application.ExtensionMethods;
 using CinemaApp.Application.Interfaces;
 
 namespace CinemaApp.Infrastructure.Services
@@ -24,6 +25,17 @@ namespace CinemaApp.Infrastructure.Services
             var movie = _mapper.Map<Movie>(createMovieDto);
 
             await _context.Movies.AddAsync(movie);
+
+            await _context.SaveChangesAsync();
+
+            return movie.Id;
+        }
+
+        public async Task<int> UpdateMovieAsync(UpdateMovieDto movieDto)
+        {
+            var movie = _mapper.Map<Movie>(movieDto);
+
+            _context.Movies.Update(movie);
 
             await _context.SaveChangesAsync();
 
@@ -57,9 +69,78 @@ namespace CinemaApp.Infrastructure.Services
 
         public async Task<int> DeleteMovieAsync(int id)
         {
-            var movie = _context.Movies.Remove(_context.Movies.Single(m => m.Id == id));
+            var movieToRemove = _context.Movies.FirstOrDefault(m => m.Id == id);
+
+            if (movieToRemove == null)
+            {
+                return -1;
+            }
+
+            _context.Movies.Remove(movieToRemove);
+
             await _context.SaveChangesAsync();
-            return movie.Entity.Id;
+
+            return movieToRemove.Id;
+        }
+
+        public async Task<PaginationResult<MovieDto>> GetPagedAsync(PaginationRequest paginationRequest)
+        {
+            IQueryable<Movie> query;
+
+            string? propertyNameForOrdering = null;
+
+            if (paginationRequest.SortingColumn != null)
+            {
+                propertyNameForOrdering = paginationRequest.SortingColumn.CapitalizeFirstLetter();
+            }
+
+            if (paginationRequest.Ascending)
+            {
+                query = _context.Movies
+                    .OrderBy(
+                        p => EF.Property<object>(p, propertyNameForOrdering ?? nameof(p.Id))
+                    );
+            }
+            else
+            {
+                query = _context.Movies
+                    .OrderByDescending(
+                        p => EF.Property<object>(p, propertyNameForOrdering ?? nameof(p.Id))
+                    );
+            }
+
+            if (paginationRequest.SearchTerm != null)
+            {
+                query = query
+                    .Where(
+                        p => (
+                                p.Title
+                                + " "
+                                + p.YearOfIssue
+                                + " "
+                                + p.Genre.Name
+                                + " "
+                                + p.ShowInCinemasStartDate
+                                + " "
+                                + p.ShowInCinemasEndDate
+                            )
+                            .Contains(paginationRequest.SearchTerm)
+                    );
+            }
+
+            int totalCount = query.Count();
+
+            PaginationResult<MovieDto> result = new PaginationResult<MovieDto>
+            {
+                TotalCountInDatabase = totalCount,
+                Items = await query
+                    .Skip(paginationRequest.Page * paginationRequest.PageSize)
+                    .Take(paginationRequest.PageSize)
+                    .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync()
+            };
+
+            return result;
         }
     }
 }

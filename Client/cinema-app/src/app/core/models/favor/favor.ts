@@ -1,6 +1,8 @@
+import { Image } from '@core/models/image/image';
+
 export interface Favor {
   id: number,
   name: string,
-  imageId: number,
+  image: Image,
   description: string
 }

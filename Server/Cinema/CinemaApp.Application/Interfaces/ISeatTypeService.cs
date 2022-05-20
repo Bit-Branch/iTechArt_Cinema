@@ -1,4 +1,5 @@
 ﻿using CinemaApp.Application.DTOs.SeatType;
+using CinemaApp.Domain.Entities;
 
 namespace CinemaApp.Application.Interfaces
 {
@@ -7,5 +8,9 @@ namespace CinemaApp.Application.Interfaces
         Task<int> CreateSeatTypeAsync(CreateSeatTypeDto createSeatTypeDto);
         Task<IEnumerable<SeatTypeDto>> GetAllAsync();
         Task<IEnumerable<SeatTypeDto>> FindAllByTermAsync(string term);
+        Task<int> UpdateSeatTypeAsync(UpdateSeatTypeDto seatTypeDto);
+        Task<int> DeleteSeatTypeAsync(int id);
+        Task<PaginationResult<SeatTypeDto>> GetPagedAsync(PaginationRequest paginationRequest);
+        Task<SeatTypeDto?> GetSeatTypeByIdAsync(int id);
     }
 }
