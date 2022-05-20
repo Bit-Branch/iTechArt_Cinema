@@ -18,7 +18,7 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
   templateUrl: './cities.component.html'
 })
 export class CitiesComponent implements OnInit {
-  cities: PaginationResult<City> = { totalCountInDatabase: 0, items: [] };
+  cities: PaginationResult<City> = { totalCount: 0, items: [] };
   citiesTableColumns: TableColumn[] = [];
 
   constructor(
@@ -36,7 +36,7 @@ export class CitiesComponent implements OnInit {
   }
 
   editCity($event: City): void {
-    this.openCreationDialog({ object: $event, action: 'updateCity' });
+    this.openCreationDialog({ payload: $event, action: 'updateCity' });
   }
 
   deleteCity($event: City): void {
@@ -61,7 +61,7 @@ export class CitiesComponent implements OnInit {
         (id: number) => {
           this.cities =
             {
-              totalCountInDatabase: --this.cities.totalCountInDatabase,
+              totalCount: --this.cities.totalCount,
               items: this.cities.items.filter(item => item.id !== id)
             }
         }
@@ -97,7 +97,7 @@ export class CitiesComponent implements OnInit {
         if (result.isSaved) {
           this.cities =
             {
-              totalCountInDatabase: this.cities.totalCountInDatabase,
+              totalCount: this.cities.totalCount,
               items: this.cities.items.map(
                 item => item.id === result.savedEntity.id
                   ? { ...item, ...result.savedEntity }

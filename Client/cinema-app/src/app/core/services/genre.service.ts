@@ -38,7 +38,7 @@ export class GenreService {
   getAllGenresPaged(tableState: TableCurrentState): Observable<PaginationResult<Genre>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<Genre>>(
-      `${environment.hostUrl}/api/genres/paged`,
+      `${environment.hostUrl}/api/genres`,
       { params }
     );
   }

@@ -38,7 +38,7 @@ export class CityService {
   getAllCitiesPaged(tableState: TableCurrentState): Observable<PaginationResult<City>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<City>>(
-      `${environment.hostUrl}/api/cities/paged`,
+      `${environment.hostUrl}/api/cities`,
       { params }
     );
   }

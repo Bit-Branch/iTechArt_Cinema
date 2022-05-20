@@ -34,8 +34,8 @@ export class CreationDialogComponent {
   ) {
     this.nameControl = new FormControl(null, [Validators.required]);
     this.page = this.dialogData.action;
-    if (this.dialogData.object) {
-      this.nameControl.setValue(this.dialogData.object.name);
+    if (this.dialogData.payload) {
+      this.nameControl.setValue(this.dialogData.payload.name);
     }
   }
 
@@ -43,7 +43,7 @@ export class CreationDialogComponent {
     return creationPageMessages[this.page];
   }
 
-  onSaveButtonClicked(): void {
+  saveEntity(): void {
     this.getActionByKey(this.page)
       .subscribe(
         {
@@ -73,7 +73,7 @@ export class CreationDialogComponent {
   private getActionByKey(key: CreationPageKeys): Observable<number> {
     let action: Observable<number>;
     const dataForSaving = {
-      id: this.dialogData.object?.id ?? 0,
+      id: this.dialogData.payload?.id ?? 0,
       name: this.nameControl.value
     }
     switch (key) {

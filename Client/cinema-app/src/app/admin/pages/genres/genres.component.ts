@@ -18,7 +18,7 @@ import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation
   templateUrl: './genres.component.html'
 })
 export class GenresComponent implements OnInit {
-  genres: PaginationResult<Genre> = { totalCountInDatabase: 0, items: [] };
+  genres: PaginationResult<Genre> = { totalCount: 0, items: [] };
   genresTableColumns: TableColumn[] = [];
 
   constructor(
@@ -36,7 +36,7 @@ export class GenresComponent implements OnInit {
   }
 
   editGenre($event: Genre): void {
-    this.openCreationDialog({ object: $event, action: 'updateGenre' });
+    this.openCreationDialog({ payload: $event, action: 'updateGenre' });
   }
 
   deleteGenre($event: Genre): void {
@@ -61,7 +61,7 @@ export class GenresComponent implements OnInit {
         (id: number) => {
           this.genres =
             {
-              totalCountInDatabase: --this.genres.totalCountInDatabase,
+              totalCount: --this.genres.totalCount,
               items: this.genres.items.filter(item => item.id !== id)
             }
         }
@@ -97,7 +97,7 @@ export class GenresComponent implements OnInit {
         if (result.isSaved) {
           this.genres =
             {
-              totalCountInDatabase: this.genres.totalCountInDatabase,
+              totalCount: this.genres.totalCount,
               items: this.genres.items.map(
                 item => item.id === result.savedEntity.id
                   ? { ...item, ...result.savedEntity }

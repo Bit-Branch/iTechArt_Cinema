@@ -106,7 +106,7 @@ export class EditableTableComponent<K extends object, T extends Record<string, K
 
   @Input() set tableData(data: PaginationResult<T>) {
     this.tableDataSource.data = data.items;
-    this.tableDataTotalCount = data.totalCountInDatabase;
+    this.tableDataTotalCount = data.totalCount;
   }
 
   constructor() {

@@ -61,7 +61,7 @@ export class FavorService {
   getAllFavorsPaged(tableState: TableCurrentState): Observable<PaginationResult<Favor>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<Favor>>(
-      `${environment.hostUrl}/api/favors/paged`,
+      `${environment.hostUrl}/api/favors`,
       { params }
     );
   }

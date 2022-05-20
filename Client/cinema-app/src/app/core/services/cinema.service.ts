@@ -60,7 +60,7 @@ export class CinemaService {
   getAllCinemasPaged(tableState: TableCurrentState): Observable<PaginationResult<Cinema>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<Cinema>>(
-      `${environment.hostUrl}/api/cinemas/paged`,
+      `${environment.hostUrl}/api/cinemas`,
       { params }
     );
   }

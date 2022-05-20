@@ -19,7 +19,7 @@ import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation
   templateUrl: './seat-types.component.html'
 })
 export class SeatTypesComponent implements OnInit {
-  seatTypes: PaginationResult<SeatType> = { totalCountInDatabase: 0, items: [] };
+  seatTypes: PaginationResult<SeatType> = { totalCount: 0, items: [] };
   seatTypesTableColumns: TableColumn[] = [];
 
   constructor(
@@ -37,7 +37,7 @@ export class SeatTypesComponent implements OnInit {
   }
 
   editSeatType($event: SeatType): void {
-    this.openCreationDialog({ object: $event, action: 'updateSeatType' });
+    this.openCreationDialog({ payload: $event, action: 'updateSeatType' });
   }
 
   deleteSeatType($event: Genre): void {
@@ -62,7 +62,7 @@ export class SeatTypesComponent implements OnInit {
         (id: number) => {
           this.seatTypes =
             {
-              totalCountInDatabase: --this.seatTypes.totalCountInDatabase,
+              totalCount: --this.seatTypes.totalCount,
               items: this.seatTypes.items.filter(item => item.id !== id)
             }
         }
@@ -98,7 +98,7 @@ export class SeatTypesComponent implements OnInit {
         if (result.isSaved) {
           this.seatTypes =
             {
-              totalCountInDatabase: this.seatTypes.totalCountInDatabase,
+              totalCount: this.seatTypes.totalCount,
               items: this.seatTypes.items.map(
                 item => item.id === result.savedEntity.id
                   ? { ...item, ...result.savedEntity }

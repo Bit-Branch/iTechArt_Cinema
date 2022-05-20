@@ -21,13 +21,12 @@ import { GenreService } from '@core/services/genre.service';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { MovieService } from '@core/services/movie.service';
 import { yearValidator } from '@core/validators/year-validator';
+import { MovieYearsOfIssue } from '@core/constants/movie-years-of-issue';
 import { aspectRatioValidator } from '@core/validators/aspect-ratio-validator';
 import { CreationDialogComponent } from '@admin/dialogs/creation-dialog/creation-dialog.component';
 
 /* 'size in mb' * 2 ** 20 */
 const imageMaxSizeInBytes = 0.5 * 2 ** 20;
-const minMovieYearOfIssue = 1888;
-const maxMovieYearOfIssue = new Date().getUTCFullYear();
 const imageControl = 'image';
 const titleControl = 'title';
 const descriptionControl = 'description';
@@ -71,7 +70,7 @@ export class MovieDialogComponent implements OnInit {
         [
           Validators.required,
           Validators.pattern(ValidationPatterns.ONLY_NUMBERS_PATTERN),
-          yearValidator(minMovieYearOfIssue, maxMovieYearOfIssue)
+          yearValidator(MovieYearsOfIssue.MIN_YEAR_OF_ISSUE, MovieYearsOfIssue.MAX_YEAR_OF_ISSUE)
         ]
       ],
       [showtimeRangeControl]: this.formBuilder.group({

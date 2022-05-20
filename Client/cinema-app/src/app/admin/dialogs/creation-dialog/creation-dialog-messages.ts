@@ -8,7 +8,7 @@ export type CreationPageTypes = Genre | City | SeatType;
 export type CreationPageKeys = `${CreationPageActions}${CreationPageTypeNames}`;
 
 export interface CreationPageDialogData {
-  object?: CreationPageTypes,
+  payload?: CreationPageTypes,
   action: CreationPageKeys
 }
 

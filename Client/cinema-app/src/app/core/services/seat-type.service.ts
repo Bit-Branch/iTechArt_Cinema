@@ -53,7 +53,7 @@ export class SeatTypeService {
   getAllSeatTypesPaged(tableState: TableCurrentState): Observable<PaginationResult<SeatType>> {
     const params = convertTableCurrentStateToHttpParams(tableState);
     return this.http.get<PaginationResult<SeatType>>(
-      `${environment.hostUrl}/api/seat-types/paged`,
+      `${environment.hostUrl}/api/seat-types`,
       { params }
     );
   }

@@ -67,9 +67,9 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sharedStateServiceSubscription =
       combineLatest(
         [
-          this.sharedStateService.seats$,
-          this.sharedStateService.seatingPlanJson$,
-          this.sharedStateService.availableSeatTypes$
+          this.seatingPlanSharedStateService.seats$,
+          this.seatingPlanSharedStateService.seatingPlanJson$,
+          this.seatingPlanSharedStateService.availableSeatTypes$
         ]
       )
         .subscribe(
@@ -89,9 +89,9 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sharedStateServiceSubscription.unsubscribe();
-    this.sharedStateService.removeAllSeatTypesFromSharedState();
-    this.sharedStateService.removeAllSeatsFromSharedState();
-    this.sharedStateService.removeSeatingPlanJsonFromSharedState();
+    this.seatingPlanSharedStateService.removeAllSeatTypesFromSharedState();
+    this.seatingPlanSharedStateService.removeAllSeatsFromSharedState();
+    this.seatingPlanSharedStateService.removeSeatingPlanJsonFromSharedState();
   }
 
   get nameControl(): string {
@@ -151,10 +151,6 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.close(this.dialogData);
   }
 
-  private generateRandomHexColorString(): string {
-    return `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substring(1, 5)}`;
-  }
-
   private fillFormWithData(): void {
     this.hallForm.get(nameControl)?.setValue(this.dialogData?.name);
     this.hallForm.get(seatsCountControl)?.setValue(this.dialogData?.seats.length);
@@ -190,8 +186,8 @@ export class HallDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private addAvailableSeatType(seatType: SeatType): void {
     const availableSeatType: AvailableSeatType = {
       seatType: seatType,
-      color: this.generateRandomHexColorString()
+      color: generateRandomHexColorString()
     };
-    this.sharedStateService.addSeatTypeToSharedState(availableSeatType);
+    this.seatingPlanSharedStateService.addSeatTypeToSharedState(availableSeatType);
   }
 }

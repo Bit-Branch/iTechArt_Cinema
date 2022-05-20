@@ -40,7 +40,6 @@ const createDialogTitle = 'Create movie session';
 const editDialogTitle = 'Edit movie session';
 const createActionButtonLabel = 'Create';
 const editActionButtonLabel = 'Apply changes';
-const defaultLocale = 'nu';
 
 @Component({
   selector: 'app-movie-dialog-session',
@@ -197,7 +196,7 @@ export class MovieSessionDialogComponent implements OnInit {
           seatType: seatType,
           movieSessionId: this.dialogData?.id ?? 0,
           seatTypeId: seatType.id,
-          price: this.seatPrices.at(index)?.get(seatPriceControl)?.value
+          amount: this.seatPrices.at(index)?.get(seatPriceControl)?.value
         };
         ticketPrices.push(ticketPrice);
       }
@@ -238,7 +237,8 @@ export class MovieSessionDialogComponent implements OnInit {
       );
     this.sessionForm.get(movieControl)?.setValue(this.dialogData.movieId);
     this.sessionForm.get(hallControl)?.setValue(this.dialogData.hallId);
-    this.sessionForm.get(showTimeControl)?.setValue(this.dialogData.startShowingTime.toLocaleTimeString(defaultLocale));
+    console.log(this.dialogData.startShowingTime);
+    this.sessionForm.get(showTimeControl)?.setValue(this.dialogData.startShowingTime.toTimeString());
     this.sessionForm.get(datesControl)?.setValue([this.dialogData.startShowingTime]);
   }
 
@@ -249,7 +249,7 @@ export class MovieSessionDialogComponent implements OnInit {
       });
       this.seatPrices.push(seatPriceForm);
       seatPriceForm.patchValue({
-        [seatPriceControl]: ticketPrice.price
+        [seatPriceControl]: ticketPrice.amount
       });
     });
   }

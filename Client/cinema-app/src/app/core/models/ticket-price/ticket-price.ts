@@ -4,5 +4,5 @@ export interface TicketPrice {
   movieSessionId: number,
   seatTypeId: number,
   seatType: SeatType,
-  price: number
+  amount: number
 }

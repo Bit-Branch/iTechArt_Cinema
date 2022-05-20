@@ -20,7 +20,7 @@ import { CinemaDialogComponent } from '@admin/dialogs/cinema-dialog/cinema-dialo
   templateUrl: './cinemas.component.html'
 })
 export class CinemasComponent implements OnInit {
-  cinemas: PaginationResult<DisplayCinema> = { totalCountInDatabase: 0, items: [] };
+  cinemas: PaginationResult<DisplayCinema> = { totalCount: 0, items: [] };
   cinemasTableColumns: TableColumn[] = [];
 
   constructor(
@@ -55,7 +55,7 @@ export class CinemasComponent implements OnInit {
           // update cinemas list
           this.cinemas =
             {
-              totalCountInDatabase: this.cinemas.totalCountInDatabase,
+              totalCount: this.cinemas.totalCount,
               items: this.cinemas.items.map(item => item.id === data.id ? { ...item, ...data } : item)
             };
         }
@@ -84,7 +84,7 @@ export class CinemasComponent implements OnInit {
         (id: number) => {
           this.cinemas =
             {
-              totalCountInDatabase: --this.cinemas.totalCountInDatabase,
+              totalCount: --this.cinemas.totalCount,
               items: this.cinemas.items.filter(item => item.id !== id)
             }
         }

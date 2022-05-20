@@ -21,7 +21,7 @@ import { TableColumn } from '@shared/elements/editable-table/interfaces/table-co
   templateUrl: './favors.component.html'
 })
 export class FavorsComponent implements OnInit {
-  favors: PaginationResult<Favor> = { totalCountInDatabase: 0, items: [] };
+  favors: PaginationResult<Favor> = { totalCount: 0, items: [] };
   favorsTableColumns: TableColumn[] = [];
 
   constructor(
@@ -45,7 +45,7 @@ export class FavorsComponent implements OnInit {
         (data: Favor) => {
           this.favors =
             {
-              totalCountInDatabase: this.favors.totalCountInDatabase,
+              totalCount: this.favors.totalCount,
               items: this.favors.items.map(item => item.id === data.id ? { ...item, ...data } : item)
             };
         }
@@ -74,7 +74,7 @@ export class FavorsComponent implements OnInit {
         (id: number) => {
           this.favors =
             {
-              totalCountInDatabase: --this.favors.totalCountInDatabase,
+              totalCount: --this.favors.totalCount,
               items: this.favors.items.filter(item => item.id !== id)
             }
         }

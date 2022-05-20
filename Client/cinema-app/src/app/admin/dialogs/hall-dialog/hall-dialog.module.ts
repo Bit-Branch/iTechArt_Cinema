@@ -27,21 +27,21 @@ import { SeatingPlanModule } from '@admin/seating-plan/seating-plan.module';
 @NgModule({
   declarations: [HallDialogComponent],
   imports: [
+    NgxMatSelectSearchModule,
     CommonModule,
+    ReactiveFormsModule,
+    DragDropModule,
+    SeatingPlanModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatCardModule,
-    ReactiveFormsModule,
     MatSelectModule,
     MatButtonModule,
     MatDividerModule,
     MatListModule,
-    DragDropModule,
     MatDialogModule,
-    NgxMatSelectSearchModule,
-    MatChipsModule,
-    SeatingPlanModule
+    MatChipsModule
   ]
 })
 export class HallDialogModule {

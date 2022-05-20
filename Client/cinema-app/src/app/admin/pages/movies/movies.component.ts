@@ -22,7 +22,7 @@ import { ConfirmDialogComponent } from '@shared/layout/confirm-dialog/confirm-di
   templateUrl: './movies.component.html'
 })
 export class MoviesComponent implements OnInit {
-  movies: PaginationResult<Movie> = { totalCountInDatabase: 0, items: [] };
+  movies: PaginationResult<Movie> = { totalCount: 0, items: [] };
   moviesTableColumns: TableColumn[] = [];
 
   constructor(
@@ -46,7 +46,7 @@ export class MoviesComponent implements OnInit {
         (data: Movie) => {
           this.movies =
             {
-              totalCountInDatabase: this.movies.totalCountInDatabase,
+              totalCount: this.movies.totalCount,
               items: this.movies.items.map(item => item.id === data.id ? { ...item, ...data } : item)
             };
         }
@@ -75,7 +75,7 @@ export class MoviesComponent implements OnInit {
         (id: number) => {
           this.movies =
             {
-              totalCountInDatabase: --this.movies.totalCountInDatabase,
+              totalCount: --this.movies.totalCount,
               items: this.movies.items.filter(item => item.id !== id)
             }
         }
